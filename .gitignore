@@ -4,7 +4,8 @@
 bin-int/
 
 # DAGGer files
-*.log
+**.log
+**.json
 
 # Visual Studio files and folder
 .vs/
