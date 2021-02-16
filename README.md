@@ -5,7 +5,7 @@ This is supposed to serve as an easy to use C++17 graphics/game engine.
 I'm not writting the engine with the intent for other people use use,
 however feel free to use, modify, and create whatever you want with it!
 
-##Features:
+## Features:
   ->  Free and Open Source
   ->  Cross-platform
   ->  Multi-Render API (only OpenGL for now)
@@ -21,7 +21,7 @@ SandboxApp | DAGGer application template
 DAGGer | The actual engine itself
 			
 
-##License: GPLv3
+## License: GPLv3
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
