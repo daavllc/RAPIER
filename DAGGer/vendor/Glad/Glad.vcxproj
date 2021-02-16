@@ -127,7 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="OpenGL\include\KHR\khrplatform.h" />
-    <ClInclude Include="OpenGL\include\glad\glad.h" />
+    <ClInclude Include="OpenGL\include\glad.h" />
     <ClInclude Include="Vulkan\include\glad\vulkan.h" />
     <ClInclude Include="Vulkan\include\vk_platform.h" />
   </ItemGroup>

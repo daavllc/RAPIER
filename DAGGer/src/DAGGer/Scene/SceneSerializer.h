@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the definitions for Opening/Saving files
+////////////////////////////////
 #pragma once
 
 #include "Scene.h"

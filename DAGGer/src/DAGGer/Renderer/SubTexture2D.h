@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the abstracted defintions for loading 2D subtextures
+////////////////////////////////
 #pragma once
 
 #include <glm/glm.hpp>

@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the implementation for Opening/Saving files
+////////////////////////////////
 #include "drpch.h"
 #include "SceneSerializer.h"
 
@@ -17,6 +23,7 @@ namespace YAML {
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -42,6 +49,7 @@ namespace YAML {
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
 			node.push_back(rhs.w);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -83,6 +91,8 @@ namespace DAGGer
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
+		Dr_PROFILE_FUNCTION();
+
 		out << YAML::BeginMap; // Entity
 		out << YAML::Key << "Entity" << YAML::Value << "12837192831273"; // TODO: Entity ID goes here
 
@@ -151,6 +161,8 @@ namespace DAGGer
 
 	void SceneSerializer::Serialize(const std::string& filepath)
 	{
+		Dr_PROFILE_FUNCTION();
+
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
@@ -172,17 +184,16 @@ namespace DAGGer
 
 	void SceneSerializer::SerializeRuntime(const std::string& filepath)
 	{
+		Dr_PROFILE_FUNCTION();
 		// Not implemented
 		Dr_CORE_ASSERT(false);
 	}
 
 	bool SceneSerializer::Deserialize(const std::string& filepath)
 	{
-		std::ifstream stream(filepath);
-		std::stringstream strStream;
-		strStream << stream.rdbuf();
+		Dr_PROFILE_FUNCTION();
 
-		YAML::Node data = YAML::Load(strStream.str());
+		YAML::Node data = YAML::LoadFile(filepath);
 		if (!data["Scene"])
 			return false;
 
@@ -249,6 +260,8 @@ namespace DAGGer
 
 	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
 	{
+		Dr_PROFILE_FUNCTION();
+
 		// Not implemented
 		Dr_CORE_ASSERT(false);
 		return false;

@@ -18,12 +18,14 @@ namespace DAGGer
 		const char* message,
 		const void* userParam)
 	{
+		std::string msg = "[OpenGL] ";
+		msg += message;
 		switch (severity)
 		{
-			case GL_DEBUG_SEVERITY_HIGH:         Dr_CORE_CRITICAL(message); return;
-			case GL_DEBUG_SEVERITY_MEDIUM:       Dr_CORE_ERROR(message); return;
-			case GL_DEBUG_SEVERITY_LOW:          Dr_CORE_WARN(message); return;
-			case GL_DEBUG_SEVERITY_NOTIFICATION: Dr_CORE_TRACE(message); return;
+			case GL_DEBUG_SEVERITY_HIGH:         Dr_CORE_CRITICAL(msg); return;
+			case GL_DEBUG_SEVERITY_MEDIUM:       Dr_CORE_ERROR(msg); return;
+			case GL_DEBUG_SEVERITY_LOW:          Dr_CORE_WARN(msg); return;
+			case GL_DEBUG_SEVERITY_NOTIFICATION: Dr_CORE_TRACE(msg); return;
 		}
 
 		Dr_CORE_ASSERT(false, "Unknown severity level!");

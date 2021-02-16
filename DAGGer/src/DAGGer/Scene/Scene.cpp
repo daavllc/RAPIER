@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the implementation for scenes
+////////////////////////////////
 #include "drpch.h"
 #include "Scene.h"
 
@@ -20,6 +26,8 @@ namespace DAGGer
 	// Name
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		Dr_PROFILE_FUNCTION();
+
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
@@ -32,7 +40,7 @@ namespace DAGGer
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdate(Timestep ts)
+	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 		Dr_PROFILE_FUNCTION();
 
@@ -56,6 +64,8 @@ namespace DAGGer
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
 		{
+			Dr_PROFILE_FUNCTION();
+
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
 			{
@@ -72,6 +82,8 @@ namespace DAGGer
 
 		if (mainCamera)
 		{
+			Dr_PROFILE_FUNCTION();
+
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
@@ -79,15 +91,34 @@ namespace DAGGer
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 
 			Renderer2D::EndScene();
 		}
 	}
 
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+		Dr_PROFILE_FUNCTION();
+
+		Renderer2D::BeginScene(camera);
+
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+		}
+
+		Renderer2D::EndScene();
+	}
+
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
+		Dr_PROFILE_FUNCTION();
+
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
 
@@ -99,6 +130,21 @@ namespace DAGGer
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
+	}
+
+
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		Dr_PROFILE_FUNCTION();
+
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			const auto& camera = view.get<CameraComponent>(entity);
+			if (camera.Primary)
+				return Entity(entity, this);
+		}
+		return {};
 	}
 
 	template<typename T>

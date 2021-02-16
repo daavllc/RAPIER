@@ -1,7 +1,9 @@
+/////////////////////////////////////////////////////////////////
 //  Author: Devon Adams (https://github.com/devonadams)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as the OpenGL definitions for the buffer.h file
+//////////////////////////////
 #pragma once
 
 #include "DAGGer/Renderer/Buffer.h"

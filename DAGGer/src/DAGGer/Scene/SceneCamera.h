@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the definitions for scene cameras
+////////////////////////////////
 #pragma once
 
 #include "DAGGer/Renderer/Camera.h"

@@ -4,6 +4,10 @@
 #include <imgui/imgui_internal.h>
 
 #include "DAGGer/Scene/Components.h"
+#include <cstring>
+#ifdef _MSVC_LANG
+	#define _CRT_SECURE_NO_WARNINGS
+#endif
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -18,6 +22,18 @@ namespace DAGGer
 	{
 		m_Context = context;
 		m_SelectionContext = {};
+	}
+
+	void SceneHierarchyPanel::SetEntity(const uint32_t entityID)
+	{
+		m_Context->m_Registry.each([&](auto EntityID)
+		{
+			Entity entity{ EntityID, m_Context.get() };
+			if ((uint32_t)EntityID == entityID)
+				m_SelectionContext = entity;
+		});
+		//Entity entity{ entityID };
+		//m_SelectionContext = entity;
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
@@ -208,7 +224,7 @@ namespace DAGGer
 
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
-			strcpy_s(buffer, sizeof(buffer), tag.c_str());
+			std::strncpy(buffer, tag.c_str(), sizeof(buffer));
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			{
 				tag = std::string(buffer);
@@ -225,13 +241,19 @@ namespace DAGGer
 		{
 			if (ImGui::MenuItem("Camera"))
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
+				if (!m_SelectionContext.HasComponent<CameraComponent>())
+					m_SelectionContext.AddComponent<CameraComponent>();
+				else
+					Dr_CORE_WARN("This entity already has the Camera Component!");
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::MenuItem("Sprite Renderer"))
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				else
+					Dr_CORE_WARN("This entity already has the Sprite Renderer Component!");
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -284,11 +306,11 @@ namespace DAGGer
 				float perspectiveNear = camera.GetPerspectiveNearClip();
 				float perspectiveFar = camera.GetPerspectiveFarClip();
 
-				if (ImGui::DragFloat("Size", &perspectiveFOV))			//	FOV
+				if (ImGui::DragFloat("Vertical FOV", &perspectiveFOV))			//	FOV
 					camera.SetPerspectiveVerticalFOV(glm::radians(perspectiveFOV));
-				if (ImGui::DragFloat("Near Clip", &perspectiveNear))	//	Near
+				if (ImGui::DragFloat("Near", &perspectiveNear))	//	Near
 					camera.SetPerspectiveNearClip(perspectiveNear);
-				if (ImGui::DragFloat("Far Clip", &perspectiveFar))		//	Far
+				if (ImGui::DragFloat("Far", &perspectiveFar))		//	Far
 					camera.SetPerspectiveFarClip(perspectiveFar);
 			}
 

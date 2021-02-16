@@ -1,7 +1,9 @@
+/////////////////////////////////////////////////////////////////
 //  Author: Devon Adams (https://github.com/devonadams)
 //  License : GPLv3
 //  Language: C++
-//  This file serves as the abstracted implementation of textures
+//  This file serves as the abstracted implementation for textures
+////////////////////////////////
 #include "drpch.h"
 #include "DAGGer/Renderer/Texture.h"
 

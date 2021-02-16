@@ -17,6 +17,7 @@
 #include <GLFW/glfw3.h>
 #include <Glad/OpenGL/include/glad/glad.h>
 
+#include <imguizmo.h>
 
 namespace DAGGer
 {
@@ -92,6 +93,7 @@ namespace DAGGer
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End()
@@ -117,6 +119,8 @@ namespace DAGGer
 
 	void ImGuiLayer::SetDarkThemeColors()
 	{
+		Dr_PROFILE_FUNCTION();
+
 		auto& style = ImGui::GetStyle().Colors;
 		style[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
 

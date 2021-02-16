@@ -12,8 +12,10 @@
       -  glad............(modern loader for OpenGL / Vulkan)
       -  glm.............(complex mathematics)
       -  ImGui...........(debug GUI)
+      -  ImGuizmo........(3D gizmos)
       -  stb_image.......(load images)
       -  EnTT............(Entity Component System)
+      -  yaml-cpp........(Saving/loading scenes for FORGE)
 
 ----------------------    Structure of DAGGer    -------------------------
 Note: This isn't important information unless you're trying to understand the engine, or make changes to DAGGer itself.

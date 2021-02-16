@@ -1,10 +1,16 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the defintions for scenes
+////////////////////////////////
 #pragma once
 
-#include <entt.hpp>
-
 #include "DAGGer/Core/Timestep.h"
+#include "DAGGer/Renderer/EditorCamera.h"
 
-#include <glm/glm.hpp>
+#include <entt.hpp>
+//#include <glm/glm.hpp>
 
 namespace DAGGer
 {
@@ -19,8 +25,11 @@ namespace DAGGer
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
-		void OnUpdate(Timestep ts);
+		void OnUpdateRuntime(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		Entity GetPrimaryCameraEntity();
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);

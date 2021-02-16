@@ -10,8 +10,10 @@
 
 #include "DAGGer/Renderer/Texture.h"
 #include "DAGGer/Renderer/SubTexture2D.h"
+#include "DAGGer/Scene/Components.h"
 
 #include "DAGGer/Renderer/Camera.h"
+#include "DAGGer/Renderer/EditorCamera.h"
 
 namespace DAGGer
 {
@@ -28,6 +30,7 @@ namespace DAGGer
 		static void Shutdown();
 
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const OrthographicCamera& camera);	//	TODO: Remove
 		static void EndScene();
 		static void Flush();
@@ -56,9 +59,12 @@ namespace DAGGer
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& SubTexture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));	//	Position, Size, Rotation, SubTexture, [Tiling Factor] &| [Tint Color]
 
 		// Matrix Transform Quads - Parent functions
-		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0));	//	Transform, color
-		static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));	//	Transform, [Tiling Factor] &| [Tint Color]
-		static void DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& SubTexture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));	//	Transform, [Tiling Factor] &| [Tint Color]
+		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0), int entityID = -1);	//	Transform, color, [entityID]
+		static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f), int entityID = -1);	//	Transform, [Tiling Factor] &| [Tint Color] &| [entityID]
+		static void DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& SubTexture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f), int entityID = -1);	//	Transform, [Tiling Factor] &| [Tint Color]
+
+		//	Matrix Transform Sprites
+		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID);	//	Transform, SpriteRendererComponent
 
 		// Stats
 		struct Statistics
@@ -67,14 +73,15 @@ namespace DAGGer
 			uint32_t QuadCount = 0;
 			uint32_t TextureCount = 1;
 
-			uint32_t GetTotalVertexCount() { return QuadCount * 4; }
-			uint32_t GetTotalIndexCount() { return QuadCount * 6; }
+			uint32_t GetTotalVertexCount() const { return QuadCount * 4; }
+			uint32_t GetTotalIndexCount() const { return QuadCount * 6; }
 		};
 		static void ResetStats();
 		static Statistics GetStats();
 
 	private:
-		static void FlushAndReset();
+		static void StartBatch();
+		static void NextBatch();
 	};
 
 }	//	END namespace DAGGer

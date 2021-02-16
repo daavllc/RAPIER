@@ -3,6 +3,8 @@
 #include <DAGGer.h>
 #include "FORGE/src/Panels/SceneHierarchyPanel.h"
 
+#include "DAGGer/Renderer/EditorCamera.h"
+
 namespace DAGGer
 {
 	class EditorLayer : public Layer
@@ -38,15 +40,20 @@ namespace DAGGer
 		bool m_PrimaryCamera = true;
 		bool m_EnableVSync = true;
 
+		EditorCamera m_EditorCamera;
+
 		Ref<Texture2D> m_CheckerboardTexture;
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = DrPos2(0.0f, 0.0f);
+		glm::vec2 m_ViewportBounds[2];
+
+		int m_GizmoType = -1;
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 
-		std::string m_FilePath;
+		std::string m_FilePath;	//	Remeber filepath for Ctrl+S (Save)
 	};
 
 }	//	END namespace DAGGer

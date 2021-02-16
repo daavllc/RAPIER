@@ -1,7 +1,9 @@
+/////////////////////////////////////////////////////////////////
 //  Author: Devon Adams (https://github.com/devonadams)
 //  License : GPLv3
 //  Language: C++
-//  This file serves as the abstracted definitions for Vertex Arrays
+//  This file serves as the abstracted definitions for VertexArrays
+////////////////////////////////
 #pragma once
 
 #include <memory>
@@ -12,7 +14,7 @@ namespace DAGGer
 	class VertexArray
 	{
 	public:
-		virtual ~VertexArray() {}
+		virtual ~VertexArray() = default;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;

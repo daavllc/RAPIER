@@ -1,7 +1,9 @@
+/////////////////////////////////////////////////////////////////
 //  Author: Devon Adams (https://github.com/devonadams)
 //  License : GPLv3
 //  Language: C++
-//  This file serves as the abstracted implementation for Vertex Arrays
+//  This file serves as the abstracted implementation of VertexArrays
+////////////////////////////////
 #include "drpch.h"
 #include "DAGGer/Renderer/VertexArray.h"
 

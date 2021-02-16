@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as abstracted implementation for creating an application
+/////////////////////////////
 #include "drpch.h"
 #include "DAGGer/Core/Application.h"
 
@@ -129,12 +135,6 @@ namespace DAGGer
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
-	}
-
-
-	float Application::GetTime()
-	{
-		return (float)glfwGetTime();
 	}
 
 }	//	END namespace DAGGer

@@ -1,7 +1,9 @@
+/////////////////////////////////////////////////////////////////
 //  Author: Devon Adams (https://github.com/devonadams)
 //  License : GPLv3
 //  Language: C++
-//  This file serves as OpenGL implementation of the Buffer.cpp file
+//  This file serves as the OpenGL implementation of the buffer class
+////////////////////////////////
 #include "drpch.h"
 #include "OpenGLBuffer.h"
 
@@ -12,7 +14,7 @@ namespace DAGGer
 	// --------------- Vertex Buffer ---------------------------------------------------------
 	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -20,7 +22,7 @@ namespace DAGGer
 	}
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -29,27 +31,29 @@ namespace DAGGer
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Unbind() const
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
 	{
+		Dr_PROFILE_RENDERER_FUNCTION();
+
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
@@ -59,7 +63,7 @@ namespace DAGGer
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 		:m_Count(count)
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 
@@ -71,21 +75,21 @@ namespace DAGGer
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Bind() const
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Unbind() const
 	{
-		Dr_PROFILE_FUNCTION();
+		Dr_PROFILE_RENDERER_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

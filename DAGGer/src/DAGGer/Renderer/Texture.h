@@ -1,7 +1,9 @@
+/////////////////////////////////////////////////////////////////
 //  Author: Devon Adams (https://github.com/devonadams)
 //  License : GPLv3
 //  Language: C++
-//  This file serves as abstraction definitions for textures
+//  This file serves as the abstracted defintion for textures
+////////////////////////////////
 #pragma once
 
 #include "DAGGer/Core/Base.h"

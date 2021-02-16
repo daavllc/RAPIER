@@ -1,4 +1,9 @@
-// DAGGer PreCompiled Header
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as DAGGer PreCompiled Header
+////////////////////////////////
 #pragma once
 
 #include <iostream>

@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the implementation of scene cameras
+////////////////////////////////
 #include "drpch.h"
 #include "SceneCamera.h"
 
@@ -36,6 +42,8 @@ namespace DAGGer
 
 	void SceneCamera::RecalculateProjection()
 	{
+		Dr_PROFILE_FUNCTION();
+
 		if (m_ProjectionType == ProjectionType::Perspective)
 		{
 			m_Projection = glm::perspective(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);

@@ -13,13 +13,11 @@ namespace DAGGer
 		SceneHierarchyPanel(const Ref<Scene>& context);
 
 		void SetContext(const Ref<Scene>& context);
+		void SetEntity(const uint32_t entity);
 
 		void OnImGuiRender();
 
-		void DrawSceneHierarchy();
-		void DrawEntityMenu();
-		void DrawProperties();
-
+		Entity GetSelectedEntity() const { return m_SelectionContext; }
 
 		//template<typename T, typename... Args>
 		//void DrawComponent<T>(Args&&... args);

@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////
+//  Author: Devon Adams (https://github.com/devonadams)
+//  License : GPLv3
+//  Language: C++
+//  This file serves as the abstracted defines for a camera
+/////////////////////////////
 #pragma once
 
 #include <glm/glm.hpp>

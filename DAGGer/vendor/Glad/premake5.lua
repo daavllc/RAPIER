@@ -8,8 +8,10 @@ project "Glad"
 
 		files
 		{
-			"OpenGL/include/**.h",
-			"OpenGL/src/*.c",
+			"OpenGL/include/glad.h",
+			"OpenGL/include/KHR/khrplatform.h",
+			"OpenGL/src/glad.c",
+
 			"Vulkan/include/**.h",
 			"Vulkan/src/vulkan.c"
 		}

@@ -10,9 +10,6 @@
     <Filter Include="OpenGL\include\KHR">
       <UniqueIdentifier>{F15C8352-DD40-44A8-46A1-3EFB32A42E2A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="OpenGL\include\glad">
-      <UniqueIdentifier>{24F1FEA2-9052-DCB0-19C0-226385201370}</UniqueIdentifier>
-    </Filter>
     <Filter Include="OpenGL\src">
       <UniqueIdentifier>{A179FA5F-8D31-3CAD-F638-1509E20FD79D}</UniqueIdentifier>
     </Filter>
@@ -33,8 +30,8 @@
     <ClInclude Include="OpenGL\include\KHR\khrplatform.h">
       <Filter>OpenGL\include\KHR</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGL\include\glad\glad.h">
-      <Filter>OpenGL\include\glad</Filter>
+    <ClInclude Include="OpenGL\include\glad.h">
+      <Filter>OpenGL\include</Filter>
     </ClInclude>
     <ClInclude Include="Vulkan\include\glad\vulkan.h">
       <Filter>Vulkan\include\glad</Filter>
