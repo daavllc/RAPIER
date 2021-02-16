@@ -1,26 +1,27 @@
 # DAGGer
- Devon Adams Gordian Graphics Engine Reimagined
+#### Devon Adams Gordian Graphics Engine Reimagined
 
-==========================================================================
-                               DAGGer:
-Features:
-	Free and Open Source
-	Cross-platform
-	Multi-Render API (only OpenGL for now)
-	Easy-to-use API
-	Supporting a single freelance developer 
+This is supposed to serve as an easy to use C++17 graphics/game engine.
+I'm not writting the engine with the intent for other people use use,
+however feel free to use, modify, and create whatever you want with it!
 
-~Written 2021/01/18
-	
-==========================================================================
-                         DAGGer Structure:
-	-- FORGE.........DAGGer graphical scene editor
-	-- SandboxApp....DAGGer application template
-	-- DAGGer........The actual engine itself
+##Features:
+  ->  Free and Open Source
+  ->  Cross-platform
+  ->  Multi-Render API (only OpenGL for now)
+  ->  Easy-to-use API
+  ->  Supporting a single freelance developer 
+
+~Written 2021/02/16
+##Structure:
+Project Name | Purpose
+------------ | --------
+FORGE | DAGGer graphical scene editor
+SandboxApp | DAGGer application template
+DAGGer | The actual engine itself
 			
 
-==========================================================================
-                             License:
+##License: GPLv3
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
