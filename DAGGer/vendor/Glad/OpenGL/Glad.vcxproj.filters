@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\glad">
+      <UniqueIdentifier>{30A0DB69-1C03-6B0E-C588-A3C4B1CA3691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vulkan">
+      <UniqueIdentifier>{F6FEA123-E2A0-CCF9-CB5B-E04DB79C534A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vulkan\include">
+      <UniqueIdentifier>{69BCE196-558A-D59C-3E1E-46C32A8BB101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vulkan\include\glad">
+      <UniqueIdentifier>{10B9D18D-7C1A-AF9B-0588-F54D71E8E55A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vulkan\src">
+      <UniqueIdentifier>{0D48F011-F9FF-315F-6207-0BBB4EDECC4F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\vulkan\include\glad\vulkan.h">
+      <Filter>vulkan\include\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vulkan\include\vk_platform.h">
+      <Filter>vulkan\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glad\vulkan.h">
+      <Filter>include\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vk_platform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\vulkan\src\vulkan.c">
+      <Filter>vulkan\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vulkan.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
