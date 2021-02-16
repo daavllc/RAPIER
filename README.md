@@ -6,14 +6,14 @@ I'm not writting the engine with the intent for other people use use,
 however feel free to use, modify, and create whatever you want with it!
 
 ## Features:
-  ->  Free and Open Source
-  ->  Cross-platform
-  ->  Multi-Render API (only OpenGL for now)
-  ->  Easy-to-use API
-  ->  Supporting a single freelance developer 
+  * Free and Open Source
+  * Cross-platform
+  * Multi-Render API (only OpenGL for now)
+  * Easy-to-use API
+  * Supporting a single freelance developer 
 
 ~Written 2021/02/16
-##Structure:
+## Structure:
 Project Name | Purpose
 ------------ | --------
 FORGE | DAGGer graphical scene editor
