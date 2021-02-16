@@ -1,39 +1,22 @@
 # DAGGer
  Devon Adams Gordian Graphics Engine Reimagined
- 
- This is another long development project that is way outside of my bounds as of writing.
- I'd like to create a Graphics Engine to make my workflow easier in the future.
- I'm more comfortable with programming than using something like Unity,
- So why not!
- Welcome to the journey!
- 
-----
+
+==========================================================================
+                               DAGGer:
 Features:
 	Free and Open Source
-	Cross-platform window system (GFLW)
-	Vulkan API (Better Preformance)
-	Libraries to draw items to screen easier
-		(Vulkan's worst feature)
+	Cross-platform
+	Multi-Render API (only OpenGL for now)
+	Easy-to-use API
 	Supporting a single freelance developer 
- ----
- There are two branches of DAGGer
- DA Console Engine		//		DA Graphics Engine
-		DACE			//			DAGE
 
-	These two will be separated, at the very least for now.
-	This allows for the code to remain smaller, 
-	and for not being forced to include redundant code.
 ~Written 2021/01/18
 	
-----
-DAGGer Structure:
-	-- main.cpp (Your Application)
-		Contains App information and settings, etc
-		Stores App specific code for where things are drawn
-		-- DAGGer (DAGraphical.h / DAConsole.h)
-			Contains code for GLFW, GLM and Vulkan
-			Creates Vulkan devices etc
-			
+==========================================================================
+                         DAGGer Structure:
+	-- FORGE.........DAGGer graphical scene editor
+	-- SandboxApp....DAGGer application template
+	-- DAGGer........The actual engine itself
 			
 
 ==========================================================================
