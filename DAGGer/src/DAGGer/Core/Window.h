@@ -28,7 +28,7 @@ namespace DAGGer
 	};	//	END struct WindowProps
 
 	// Interface representing a desktop system based window
-	class Window
+	class Window : public RefCounted
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

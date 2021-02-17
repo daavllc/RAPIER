@@ -18,7 +18,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:		Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:		return CreateRef<OpenGLVertexArray>();
+			case RendererAPI::API::OpenGL:		return Ref<OpenGLVertexArray>::Create();
 			case RendererAPI::API::Vulkan:		Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 

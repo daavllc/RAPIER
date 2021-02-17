@@ -18,7 +18,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:		Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:		return CreateRef<OpenGLShader>(filepath);
+			case RendererAPI::API::OpenGL:		return Ref<OpenGLShader>::Create(filepath);
 			case RendererAPI::API::Vulkan:		Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 
@@ -31,7 +31,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:		Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:		return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			case RendererAPI::API::OpenGL:		return Ref<OpenGLShader>::Create(name, vertexSrc, fragmentSrc);
 			case RendererAPI::API::Vulkan:		Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 
@@ -72,12 +72,12 @@ namespace DAGGer
 		return shader;
 	}
 
-	Ref<Shader> ShaderLibrary::Get(const std::string& name)
+	const Ref<Shader> ShaderLibrary::Get(const std::string& name) const
 	{
 		Dr_PROFILE_RENDERER_FUNCTION();
 
 		Dr_CORE_ASSERT(Exists(name), "Shader not found!");
-		return m_Shaders[name];
+		return m_Shaders.at(name);
 	}
 
 	bool ShaderLibrary::Exists(const std::string& name) const

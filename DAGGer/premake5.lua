@@ -61,7 +61,13 @@ project "DAGGer"
 	filter "files:vendor/ImGuizmo/**.cpp"
 		flags {"NoPCH"}
 
-	filter "system:windows"			--	WINDOWS
+	filter {"system:windows"}			--	WINDOWS
+		systemversion "latest"
+
+	filter {"system:linux"}				--	LINUX
+		systemversion "latest"
+
+	filter {"system:macosx"}			--	MACOS
 		systemversion "latest"
 
 	filter "configurations:Debug"	--	DEBUG

@@ -17,7 +17,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:		Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:		return CreateRef<OpenGLTexture2D>(width, height);
+			case RendererAPI::API::OpenGL:		return Ref<OpenGLTexture2D>::Create(width, height);
 			case RendererAPI::API::Vulkan:		Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 
@@ -30,7 +30,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:		Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:		return CreateRef<OpenGLTexture2D>(path);
+			case RendererAPI::API::OpenGL:		return Ref<OpenGLTexture2D>::Create(path);
 			case RendererAPI::API::Vulkan:		Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 

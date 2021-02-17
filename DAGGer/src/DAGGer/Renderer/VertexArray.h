@@ -11,7 +11,7 @@
 
 namespace DAGGer
 {
-	class VertexArray
+	class VertexArray : public RefCounted
 	{
 	public:
 		virtual ~VertexArray() = default;

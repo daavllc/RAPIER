@@ -18,7 +18,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(size);
+			case RendererAPI::API::OpenGL:	return Ref<OpenGLVertexBuffer>::Create(size);
 			case RendererAPI::API::Vulkan:	Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 
@@ -32,7 +32,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(vertices, size);
+			case RendererAPI::API::OpenGL:	return Ref<OpenGLVertexBuffer>::Create(vertices, size);
 			case RendererAPI::API::Vulkan:	Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 
@@ -46,7 +46,7 @@ namespace DAGGer
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	Dr_CORE_ASSERT(false, "RenderAPI::None is currently not supported!");  return nullptr;
-			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(indices, size);
+			case RendererAPI::API::OpenGL:	return Ref<OpenGLIndexBuffer>::Create(indices, size);
 			case RendererAPI::API::Vulkan:	Dr_CORE_ASSERT(false, "RenderAPI::Vulkan is currently not supported!"); return nullptr;
 		}
 

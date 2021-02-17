@@ -31,7 +31,7 @@ namespace DAGGer
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
-		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene = Ref<Scene>::Create();
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
@@ -401,7 +401,7 @@ namespace DAGGer
 
 	void EditorLayer::NewScene()
 	{
-		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene = Ref<Scene>::Create();
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
@@ -410,7 +410,7 @@ namespace DAGGer
 		std::string filepath = FileDialogs::OpenFile("DAGGer Scene (*.dr)\0*.dr\0");
 		if (!filepath.empty())
 		{
-			m_ActiveScene = CreateRef<Scene>();
+			m_ActiveScene = Ref<Scene>::Create();
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 

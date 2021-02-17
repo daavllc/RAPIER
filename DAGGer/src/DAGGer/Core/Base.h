@@ -67,6 +67,7 @@ Let's start off in chronological order:
 
 #include <memory>
 #include "CoreConfig.h" //  includes DAGGer defines
+#include "Ref.h"
 
 #define Dr_RENDERER_OPENGL
 
@@ -77,7 +78,8 @@ Let's start off in chronological order:
         // Windows x64  //
         #define Dr_PLATFORM_WINDOWS
     #else
-        #error "x86 Builds are not supported!"
+		#define Dr_PLATFORM_WINDOWS
+        //#error "x86 Builds are not supported!"
     #endif
 #elif defined(__APPLE__) || defined(__MACH__)   //  Apple Platforms
     #include <TargetConditionals.h>

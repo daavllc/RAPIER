@@ -16,7 +16,7 @@ namespace DAGGer
 {
 	class Entity;
 
-	class Scene
+	class Scene : public RefCounted
 	{
 	public:
 		Scene();

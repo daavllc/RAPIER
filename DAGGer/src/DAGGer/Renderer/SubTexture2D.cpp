@@ -37,7 +37,7 @@ namespace DAGGer
 		}
 		glm::vec2 min = { (coords.x * (spriteSize.x / AddX)) / texture->GetWidth(), (coords.y * (spriteSize.y / AddY)) / texture->GetHeight() };
 		glm::vec2 max = { ((coords.x + AddX) * (spriteSize.x / AddX)) / texture->GetWidth(), ((coords.y + AddY) * (spriteSize.y / AddY)) / texture->GetHeight() };
-		return CreateRef<SubTexture2D>(texture, min, max);
+		return Ref<SubTexture2D>::Create(texture, min, max);
 	}
 
 }	//	END namespace DAGGer

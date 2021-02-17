@@ -28,7 +28,7 @@ namespace DAGGer
 	{
 		m_Context->m_Registry.each([&](auto EntityID)
 		{
-			Entity entity{ EntityID, m_Context.get() };
+			Entity entity{ EntityID, m_Context.Raw() };
 			if ((uint32_t)EntityID == entityID)
 				m_SelectionContext = entity;
 		});
@@ -42,7 +42,7 @@ namespace DAGGer
 
 		m_Context->m_Registry.each([&](auto entityID)
 		{
-			Entity entity{ entityID, m_Context.get() };
+			Entity entity{ entityID, m_Context.Raw() };
 			DrawEntityNode(entity);
 		});
 
