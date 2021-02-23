@@ -21,6 +21,7 @@ namespace DAGGer
 		void OnEvent(Event& e) override;
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void NewScene();
 		void OpenScene();
 		void SaveScene();
@@ -36,6 +37,7 @@ namespace DAGGer
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
+		Entity m_HoveredEntity;
 
 		bool m_PrimaryCamera = true;
 		bool m_EnableVSync = true;

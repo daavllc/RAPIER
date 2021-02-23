@@ -6,6 +6,7 @@
 ////////////////////////////////
 #pragma once
 
+#include "DAGGer/Core/UUID.h"
 #include "DAGGer/Core/Timestep.h"
 #include "DAGGer/Renderer/EditorCamera.h"
 
@@ -23,6 +24,7 @@ namespace DAGGer
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithID(UUID uuid, const std::string& name = "");
 		void DestroyEntity(Entity entity);
 
 		void OnUpdateRuntime(Timestep ts);

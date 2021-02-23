@@ -12,11 +12,17 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+#include "DAGGer/Core/UUID.h"
 #include "DAGGer/Scene/SceneCamera.h"
 #include "DAGGer/Scene/ScriptableEntity.h"
 
 namespace DAGGer
 {
+	//  -----------------------------  ID COMPONENT  -----------------------------  //
+	struct IDComponent
+	{
+		UUID ID = 0;
+	};
 	//  -----------------------------  TAG COMPONENT  -----------------------------  //
 	struct TagComponent
 	{

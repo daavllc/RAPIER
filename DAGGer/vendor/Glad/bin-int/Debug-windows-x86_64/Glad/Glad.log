@@ -1,1 +1,4 @@
-﻿  Glad.vcxproj -> D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib
+﻿  glad.c
+  vulkan.c
+  Generating Code...
+  Glad.vcxproj -> D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib

@@ -29,6 +29,23 @@ namespace DAGGer
 		Dr_PROFILE_FUNCTION();
 
 		Entity entity = { m_Registry.create(), this };
+		auto& idComponent = entity.AddComponent<IDComponent>();
+		idComponent.ID = {};
+
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+		return entity;
+	}
+
+	Entity Scene::CreateEntityWithID(UUID uuid, const std::string& name)
+	{
+		Dr_PROFILE_FUNCTION();
+
+		Entity entity = { m_Registry.create(), this };
+		auto& idComponent = entity.AddComponent<IDComponent>();
+		idComponent.ID = {};
+
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
@@ -150,7 +167,7 @@ namespace DAGGer
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
-		static_assert(false);
+		//static_assert(false);
 	}
 
 	template<>

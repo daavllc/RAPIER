@@ -24,16 +24,9 @@ namespace DAGGer
 		m_SelectionContext = {};
 	}
 
-	void SceneHierarchyPanel::SetEntity(const uint32_t entityID)
+	void SceneHierarchyPanel::SetSelectedEntity(Entity entity)
 	{
-		m_Context->m_Registry.each([&](auto EntityID)
-		{
-			Entity entity{ EntityID, m_Context.Raw() };
-			if ((uint32_t)EntityID == entityID)
-				m_SelectionContext = entity;
-		});
-		//Entity entity{ entityID };
-		//m_SelectionContext = entity;
+		m_SelectionContext = entity;
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
@@ -73,6 +66,7 @@ namespace DAGGer
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
 	{
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
+		auto& id = entity.GetComponent<IDComponent>().ID;
 		
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -94,7 +88,8 @@ namespace DAGGer
 		if (opened)
 		{
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-			bool opened = ImGui::TreeNodeEx((void*)69420, flags, tag.c_str());
+			std::string StrID = "ID: \'" + std::to_string(id) + "\'";
+			bool opened = ImGui::TreeNodeEx((void*)69420, flags, StrID.c_str());
 			if (opened)
 				ImGui::TreePop();
 			ImGui::TreePop();
