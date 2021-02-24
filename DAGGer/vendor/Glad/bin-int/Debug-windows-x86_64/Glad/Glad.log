@@ -1,4 +1,8 @@
 ﻿  glad.c
   vulkan.c
+  Running Code Analysis for C/C++...
   Generating Code...
   Glad.vcxproj -> D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib
+D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\Vulkan\src\vulkan.c(449): warning C6385: Reading invalid data from 'ext_properties':  the readable size is 'max_extension_count*sizeof(VkExtensionProperties)' bytes, but '520' bytes may be read.
+D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\Vulkan\src\vulkan.c(453): warning C6385: Reading invalid data from 'extensions':  the readable size is '_Param_(1)*_Param_(2)' bytes, but '16' bytes may be read.
+D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\Vulkan\src\vulkan.c(452): warning C6386: Buffer overrun while writing to 'extensions':  the writable size is '_Param_(1)*_Param_(2)' bytes, but '16' bytes might be written.

@@ -6,10 +6,13 @@
 ////////////////////////////////
 #pragma once
 
-#include "Scene.h"
-//#include "Components.h"
-
+#include <glm/glm.hpp>
 #include <entt.hpp>
+
+#include "Scene.h"
+#include "Components.h"
+
+//#include <entt.hpp>
 
 namespace DAGGer
 {
@@ -19,6 +22,8 @@ namespace DAGGer
 		Entity() = default;
 		Entity(entt::entity handle, Scene* scene);
 		Entity(const Entity& other) = default;
+
+		~Entity();
 
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
@@ -56,12 +61,16 @@ namespace DAGGer
 		bool operator==(const Entity& other) const { return m_EntityHandle == other.m_EntityHandle && other.m_Scene; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
 
-		//UUID GetUUID() { return GetComponent<IDComponent>().ID; }
-		//UUID GetSceneUUID() { return m_Scene->GetUUID(); }
-
+		const UUID GetUUID() { return GetComponent<DAGGer::IDComponent>().ID; };
+		const UUID GetSceneUUID() const { return m_Scene->GetUUID(); };
+	private:
+		Entity(const std::string& name);
 	private:
 		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr;	//	12 Bytes on x64
+
+		friend class Scene;
+		friend class SceneSerializer;
 	};
 
 }	//	END namespace DAGGer

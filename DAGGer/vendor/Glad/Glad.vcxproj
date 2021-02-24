@@ -219,74 +219,74 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win-64|x64'">
-    <OutDir>bin\Debug-windows-x86_64\Glad\</OutDir>
-    <IntDir>bin-int\Debug-windows-x86_64\Glad\</IntDir>
+    <OutDir>bin\Debug-windows-Win-64\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-Win-64\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win-32|Win32'">
-    <OutDir>bin\Debug-windows-x86\Glad\</OutDir>
-    <IntDir>bin-int\Debug-windows-x86\Glad\</IntDir>
+    <OutDir>bin\Debug-windows-Win-32\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-Win-32\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS-ARM|Win32'">
-    <OutDir>bin\Debug-windows-\Glad\</OutDir>
-    <IntDir>bin-int\Debug-windows-\Glad\iOS-ARM\</IntDir>
+    <OutDir>bin\Debug-windows-iOS-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-iOS-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid-ARM|Win32'">
-    <OutDir>bin\Debug-windows-\Glad\</OutDir>
-    <IntDir>bin-int\Debug-windows-\Glad\Anrdoid-ARM\</IntDir>
+    <OutDir>bin\Debug-windows-Anrdoid-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-Anrdoid-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win-64|x64'">
-    <OutDir>bin\Release-windows-x86_64\Glad\</OutDir>
-    <IntDir>bin-int\Release-windows-x86_64\Glad\</IntDir>
+    <OutDir>bin\Release-windows-Win-64\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-Win-64\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win-32|Win32'">
-    <OutDir>bin\Release-windows-x86\Glad\</OutDir>
-    <IntDir>bin-int\Release-windows-x86\Glad\</IntDir>
+    <OutDir>bin\Release-windows-Win-32\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-Win-32\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS-ARM|Win32'">
-    <OutDir>bin\Release-windows-\Glad\</OutDir>
-    <IntDir>bin-int\Release-windows-\Glad\iOS-ARM\</IntDir>
+    <OutDir>bin\Release-windows-iOS-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-iOS-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid-ARM|Win32'">
-    <OutDir>bin\Release-windows-\Glad\</OutDir>
-    <IntDir>bin-int\Release-windows-\Glad\Anrdoid-ARM\</IntDir>
+    <OutDir>bin\Release-windows-Anrdoid-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-Anrdoid-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Win-64|x64'">
-    <OutDir>bin\Distribution-windows-x86_64\Glad\</OutDir>
-    <IntDir>bin-int\Distribution-windows-x86_64\Glad\</IntDir>
+    <OutDir>bin\Distribution-windows-Win-64\Glad\</OutDir>
+    <IntDir>bin-int\Distribution-windows-Win-64\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Win-32|Win32'">
-    <OutDir>bin\Distribution-windows-x86\Glad\</OutDir>
-    <IntDir>bin-int\Distribution-windows-x86\Glad\</IntDir>
+    <OutDir>bin\Distribution-windows-Win-32\Glad\</OutDir>
+    <IntDir>bin-int\Distribution-windows-Win-32\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS-ARM|Win32'">
-    <OutDir>bin\Distribution-windows-\Glad\</OutDir>
-    <IntDir>bin-int\Distribution-windows-\Glad\iOS-ARM\</IntDir>
+    <OutDir>bin\Distribution-windows-iOS-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Distribution-windows-iOS-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid-ARM|Win32'">
-    <OutDir>bin\Distribution-windows-\Glad\</OutDir>
-    <IntDir>bin-int\Distribution-windows-\Glad\Anrdoid-ARM\</IntDir>
+    <OutDir>bin\Distribution-windows-Anrdoid-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Distribution-windows-Anrdoid-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>

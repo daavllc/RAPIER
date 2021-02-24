@@ -14,7 +14,6 @@
 
 #include "DAGGer/Core/UUID.h"
 #include "DAGGer/Scene/SceneCamera.h"
-#include "DAGGer/Scene/ScriptableEntity.h"
 
 namespace DAGGer
 {
@@ -79,17 +78,7 @@ namespace DAGGer
 	//  -----------------------------  NATIVE SCRIPT COMPONENT  -----------------------------  //
 	struct NativeScriptComponent
 	{
-		ScriptableEntity* Instance = nullptr;
-
-		ScriptableEntity*(*InstantiateScript)();
-		void(*DestroyScript)(NativeScriptComponent*);
-
-		template<typename T>
-		void Bind()
-		{
-			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
-			DestroyScript = [](NativeScriptComponent* nsc) {delete nsc->Instance; nsc->Instance = nullptr; };
-		}
+		
 	};
 
 }	//	END namespace DAGGer

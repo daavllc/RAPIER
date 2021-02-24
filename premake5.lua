@@ -47,7 +47,7 @@ workspace "DAGGer"
 		"MultiProcessorCompile"
 	}
 
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.platform}"
 
 -- Include directories relative to root folder
 IncludeDir = {}

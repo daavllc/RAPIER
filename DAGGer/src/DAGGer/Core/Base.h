@@ -69,6 +69,12 @@ Let's start off in chronological order:
 #include "CoreConfig.h" //  includes DAGGer defines
 #include "Ref.h"
 
+namespace DAGGer
+{
+	void InitalizeCore();
+	void ShutdownCore();
+}	//	END namespace DAGGer
+
 #define Dr_RENDERER_OPENGL
 
 // Platform detection

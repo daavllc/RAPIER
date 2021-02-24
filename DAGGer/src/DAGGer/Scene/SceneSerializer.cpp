@@ -12,10 +12,33 @@
 
 #include <yaml-cpp/yaml.h>
 
-namespace YAML {
+namespace YAML
+{
+	template<>
+	struct convert<glm::vec2>	//	VEC2
+	{
+		static Node encode(const glm::vec2& rhs)
+		{
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs)
+		{
+			if (!node.IsSequence() || node.size() != 2)
+				return false;
+
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
 
 	template<>
-	struct convert<glm::vec3>
+	struct convert<glm::vec3>	//	VEC3
 	{
 		static Node encode(const glm::vec3& rhs)
 		{
@@ -40,7 +63,7 @@ namespace YAML {
 	};
 
 	template<>
-	struct convert<glm::vec4>
+	struct convert<glm::vec4>	//	VEC4
 	{
 		static Node encode(const glm::vec4& rhs)
 		{
@@ -66,36 +89,82 @@ namespace YAML {
 		}
 	};
 
-}	//	END namespace YAML
+	template<>
+	struct convert<glm::quat>	//	QUAT
+	{
+		static Node encode(const glm::quat& rhs)
+		{
+			Node node;
+			node.push_back(rhs.w);
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
 
+		static bool decode(const Node& node, glm::quat& rhs)
+		{
+			if (!node.IsSequence() || node.size() != 4)
+				return false;
+
+			rhs.w = node[0].as<float>();
+			rhs.x = node[1].as<float>();
+			rhs.y = node[2].as<float>();
+			rhs.z = node[3].as<float>();
+			return true;
+		}
+	};
+
+
+}	//	END namespace YAML
+//=---=------------------------------------------------------------=---=//
+//=---=-                       Scene Serializer                   -=---=//
+//=---=------------------------------------------------------------=---=//
 namespace DAGGer
 {
-	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& v)
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& v)	//	VEC2
+	{
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << YAML::EndSeq;
+		return out;
+	}
+
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& v)	//	VEC3
 	{
 		out << YAML::Flow;
 		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
 		return out;
 	}
 
-	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& v)
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& v)	//	VEC4
 	{
 		out << YAML::Flow;
 		out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
 		return out;
 	}
 
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::quat& v)	//	QUAT
+	{
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.w << v.x << v.y << v.z << YAML::EndSeq;
+		return out;
+	}
+
+
 	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
 		: m_Scene(scene)
 	{
 	}
-
-	static void SerializeEntity(YAML::Emitter& out, Entity entity)
+	void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
 		Dr_PROFILE_FUNCTION();
 
-		out << YAML::BeginMap; // Entity
-		out << YAML::Key << "Entity" << YAML::Value << "12837192831273"; // TODO: Entity ID goes here
+		UUID uuid = entity.GetComponent<IDComponent>().ID;
 
+		out << YAML::BeginMap; // Entity
+		out << YAML::Key << "Entity" << YAML::Value << uuid;
+		// --------------------------- TAG COMPONENT ----------------------- //
 		if (entity.HasComponent<TagComponent>())
 		{
 			out << YAML::Key << "TagComponent";
@@ -106,7 +175,7 @@ namespace DAGGer
 
 			out << YAML::EndMap; // TagComponent
 		}
-
+		// --------------------------- TRANSFORM COMPONENT ----------------------- //
 		if (entity.HasComponent<TransformComponent>())
 		{
 			out << YAML::Key << "TransformComponent";
@@ -119,7 +188,7 @@ namespace DAGGer
 
 			out << YAML::EndMap; // TransformComponent
 		}
-
+		// --------------------------- CAMERA COMPONENT ----------------------- //
 		if (entity.HasComponent<CameraComponent>())
 		{
 			out << YAML::Key << "CameraComponent";
@@ -144,7 +213,7 @@ namespace DAGGer
 
 			out << YAML::EndMap; // CameraComponent
 		}
-
+		// --------------------------- SPRITE RENDERER COMPONENT ----------------------- //
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
 			out << YAML::Key << "SpriteRendererComponent";
@@ -158,7 +227,9 @@ namespace DAGGer
 
 		out << YAML::EndMap; // Entity
 	}
-
+	//////////////////////////////////////////////////////////////////////////////
+	//  -------------------------------  SERIALIZE  --------------------------  //
+	//////////////////////////////////////////////////////////////////////////////
 	void SceneSerializer::Serialize(const std::string& filepath)
 	{
 		Dr_PROFILE_FUNCTION();
@@ -181,14 +252,18 @@ namespace DAGGer
 		std::ofstream fout(filepath);
 		fout << out.c_str();
 	}
-
+	//////////////////////////////////////////////////////////////////////////////
+	//  ---------------------------  SERIALIZE RUNTIME  ----------------------  //
+	//////////////////////////////////////////////////////////////////////////////
 	void SceneSerializer::SerializeRuntime(const std::string& filepath)
 	{
 		Dr_PROFILE_FUNCTION();
 		// Not implemented
 		Dr_CORE_ASSERT(false);
 	}
-
+	//////////////////////////////////////////////////////////////////////////////
+	//  -----------------------------  DESERIALIZE  --------------------------  //
+	//////////////////////////////////////////////////////////////////////////////
 	bool SceneSerializer::Deserialize(const std::string& filepath)
 	{
 		Dr_PROFILE_FUNCTION();
@@ -205,17 +280,17 @@ namespace DAGGer
 		{
 			for (auto entity : entities)
 			{
-				uint64_t uuid = entity["Entity"].as<uint64_t>(); // TODO
-
+				uint64_t uuid = entity["Entity"].as<uint64_t>();
+				// --------------------------- TAG COMPONENT ----------------------- //
 				std::string name;
 				auto tagComponent = entity["TagComponent"];
 				if (tagComponent)
 					name = tagComponent["Tag"].as<std::string>();
 
-				Dr_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
+				Dr_CORE_TRACE("Deserialized entity with ID: \'{0}\',\tname: \'{1}\'", uuid, name);
 
 				Entity deserializedEntity = m_Scene->CreateEntity(name);
-
+				// --------------------------- TRANSFORM COMPONENT ----------------------- //
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
 				{
@@ -225,7 +300,7 @@ namespace DAGGer
 					tc.Rotation = transformComponent["Rotation"].as<glm::vec3>();
 					tc.Scale = transformComponent["Scale"].as<glm::vec3>();
 				}
-
+				// --------------------------- CAMERA COMPONENT ----------------------- //
 				auto cameraComponent = entity["CameraComponent"];
 				if (cameraComponent)
 				{
@@ -245,7 +320,7 @@ namespace DAGGer
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
-
+				// --------------------------- SPRITE RENDERER COMPONENT ----------------------- //
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
 				if (spriteRendererComponent)
 				{
@@ -257,7 +332,9 @@ namespace DAGGer
 
 		return true;
 	}
-
+	//////////////////////////////////////////////////////////////////////////////
+	//  -------------------------  DESERIALIZE RUNTIME  ----------------------  //
+	//////////////////////////////////////////////////////////////////////////////
 	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
 	{
 		Dr_PROFILE_FUNCTION();

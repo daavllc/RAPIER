@@ -8,8 +8,6 @@
 
 #include "DAGGer/Core/Application.h"
 
-#include <regex>
-
 namespace DAGGer
 {
 	std::string FileDialogs::OpenFile(const char* filter)
@@ -52,13 +50,7 @@ namespace DAGGer
 		if (GetSaveFileNameA(&ofn) == TRUE)
 		{
 			std::string filepath = ofn.lpstrFile;
-			if (std::regex_match(filepath, std::regex(".dr$")))
-				return filepath;
-			else
-			{
-				filepath.append(".dr");
-				return filepath;
-			}
+			return filepath;
 		}
 		return std::string();
 	}

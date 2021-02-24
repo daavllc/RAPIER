@@ -14,4 +14,9 @@ namespace DAGGer
 	{
 	}
 
+	Entity::~Entity()
+	{
+
+	}
+
 }	//	END namespace DAGGer

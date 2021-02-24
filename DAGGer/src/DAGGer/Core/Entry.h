@@ -13,9 +13,7 @@ extern DAGGer::Application* DAGGer::CreateApplication();
 
 int main(int argc, char** argv)
 {
-	DAGGer::Log::Init();
-	Dr_CORE_INFO("Initalized Log!");
-	Dr_TRACE("Initalized Log!");
+	DAGGer::InitalizeCore();
 
 	Dr_PROFILE_BEGIN_SESSION("Startup", "DAGGerProfile-Startup.json");
 	auto app = DAGGer::CreateApplication();
@@ -27,6 +25,7 @@ int main(int argc, char** argv)
 
 	Dr_PROFILE_BEGIN_SESSION("Shutdown", "DAGGerProfile-Shutdown.json");
 	delete app;
+	DAGGer::ShutdownCore();
 	Dr_PROFILE_END_SESSION();
 }
 

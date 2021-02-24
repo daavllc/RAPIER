@@ -10,7 +10,7 @@
 //----=               MMMM       M    M       MMMM        MMMM       MMMM      M  M                      =---- 
 //----=                                                                                                  =----
 //----====================================================================================================~~~~
-//----=----------------------------------------  version 0.1.5    ---------------------------------------=----
+//----=----------------------------------------  version 0.1.5a  ----------------------------------------=----
 //----====================================================================================================----
 //	Author: Devon Adams (https://github.com/devonadams)
 //	License : GPLv3
@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////
 #pragma once
 
-// For use in DAGGer Applications
+// This file is included inside DAGGer Applications
 
 #include "DAGGer/Core/Base.h"
 
@@ -30,20 +30,22 @@
 #include "DAGGer/Core/Log.h"				//	Class for accessing logging functions
 
 #include "DAGGer/Core/Timestep.h"			//	Allows updates based of real time instead of frame time
-
+//  --------------  Input headers  --------------  //
 #include "DAGGer/Core/Input.h"				//	Main input header file 
 #include "DAGGer/Core/KeyCodes.h"			//	DAGGer Key Codes
 #include "DAGGer/Core/MouseCodes.h"			//	DAGGer Mouse button codes
+// ----------------------------------------------  //
+
 #include "DAGGer/Renderer/OrthographicCameraController.h"	//	Class for controlling the orthographic camera
 
 #include "DAGGer/ImGui/ImGuiLayer.h"		//	Debug class for implementing ImGui
-
+//  --------------  Scene headers  --------------  //
 #include "DAGGer/Scene/Scene.h"				//	Scene class for the ECS
 #include "DAGGer/Scene/Entity.h"			//	Entity class for the ECS
-#include "DAGGer/Scene/ScriptableEntity.h"	//	Scripting class for creating entities
 #include "DAGGer/Scene/Components.h"		//	Struct for components
+// ----------------------------------------------  //
 
-//	------------    Renderer headers    ------------
+//  --------------  Renderer headers  --------------  //
 #include "DAGGer/Renderer/Renderer.h"		//	User-end 3D Render commands
 #include "DAGGer/Renderer/Renderer2D.h"		//	User-end 2D Render commands
 #include "DAGGer/Renderer/RenderCommand.h"	//	Backend DAGGer Render commands
@@ -56,4 +58,4 @@
 #include "DAGGer/Renderer/VertexArray.h"	//	Abstracted class for Vertex Arrays
 
 #include "DAGGer/Renderer/OrthographicCamera.h"	//	Class for implementing a camera
-//	-------------------------------------------------
+//  ------------------------------------------------  //

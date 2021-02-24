@@ -22,6 +22,15 @@ namespace DAGGer
 	{
 		m_Context = context;
 		m_SelectionContext = {};
+		if (m_SelectionContext && false)
+		{
+			// Try and find same entity in new scene
+			auto& entityMap = m_Context->GetEntityMap();
+			UUID selectedEntityID = m_SelectionContext.GetUUID();
+			if (entityMap.find(selectedEntityID) != entityMap.end())
+				m_SelectionContext = entityMap.at(selectedEntityID);
+		}
+
 	}
 
 	void SceneHierarchyPanel::SetSelectedEntity(Entity entity)
@@ -32,45 +41,50 @@ namespace DAGGer
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
-
-		m_Context->m_Registry.each([&](auto entityID)
+		if (m_Context)
 		{
-			Entity entity{ entityID, m_Context.Raw() };
-			DrawEntityNode(entity);
-		});
+			m_Context->m_Registry.each([&](auto entity)
+			{
+				Entity e(entity, m_Context.Raw());
+				if (e.HasComponent<IDComponent>())
+					DrawEntityNode(e);
+			});
 
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext = {};
 
-		// Right-click on blank space
-		if (ImGui::BeginPopupContextWindow(0, 1, false))
-		{
-			if (ImGui::MenuItem("Create Empty Entity"))
-				m_Context->CreateEntity("Empty Entity");
+			// Right-click on blank space
+			if (ImGui::BeginPopupContextWindow(0, 1, false))
+			{
+				if (ImGui::BeginMenu("Create"))
+				{
+					if (ImGui::MenuItem("Empty Entity"))
+					{
+						auto newEntity = m_Context->CreateEntity("Empty Entity");
+						SetSelectedEntity(newEntity);
+					}
+					ImGui::EndMenu();
+				}
+				ImGui::EndPopup();
+			}	//	END right-click on blank space
 
-			ImGui::EndPopup();
+			ImGui::End();
+
+			ImGui::Begin("Properties");
+			if (m_SelectionContext)
+				DrawComponents(m_SelectionContext);
 		}
-
-
-		ImGui::End();
-
-		ImGui::Begin("Properties");
-		if (m_SelectionContext)
-		{
-			DrawComponents(m_SelectionContext);
-		}
-			
 		ImGui::End();
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
 	{
-		auto& tag = entity.GetComponent<TagComponent>().Tag;
-		auto& id = entity.GetComponent<IDComponent>().ID;
+		const char* name = "Unnamed Entity";
+		if (entity.HasComponent<TagComponent>())
+			name = entity.GetComponent<TagComponent>().Tag.c_str();
 		
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+
+		bool opened = ImGui::TreeNodeEx((void*)(uint32_t)entity, flags, name);
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectionContext = entity;
@@ -79,7 +93,7 @@ namespace DAGGer
 		bool entityDeleted = false;
 		if (ImGui::BeginPopupContextItem())
 		{
-			if (ImGui::MenuItem("Delete Entity"))
+			if (ImGui::MenuItem("Delete"))
 				entityDeleted = true;
 
 			ImGui::EndPopup();
@@ -87,14 +101,15 @@ namespace DAGGer
 
 		if (opened)
 		{
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-			std::string StrID = "ID: \'" + std::to_string(id) + "\'";
-			bool opened = ImGui::TreeNodeEx((void*)69420, flags, StrID.c_str());
-			if (opened)
-				ImGui::TreePop();
+			//for (auto child : entity.Children())
+			//{
+			//	Entity e = m_Context->FindEntityByUUID(child);
+			//	if (e)
+			//		DrawEntityNode(e);
+			//}
 			ImGui::TreePop();
 		}
-
+		//	Wait until end of node UI to delete entity
 		if (entityDeleted)
 		{
 			m_Context->DestroyEntity(entity);
@@ -213,49 +228,55 @@ namespace DAGGer
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
+		ImGui::AlignTextToFramePadding();
+
+		auto id = entity.GetComponent<IDComponent>().ID;
+
+		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+
 		if (entity.HasComponent<TagComponent>())
 		{
 			auto& tag = entity.GetComponent<TagComponent>().Tag;
-
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
 			std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+			ImGui::PushItemWidth(contentRegionAvailable.x * 0.5f);
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			{
 				tag = std::string(buffer);
 			}
+			ImGui::PopItemWidth();
 		}	//	END TagComponent
 
+		// ID
 		ImGui::SameLine();
-		ImGui::PushItemWidth(-1);
-
+		ImGui::TextDisabled("%llx", id);
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 textSize = ImGui::CalcTextSize("Add Component");
+		ImGui::SameLine(contentRegionAvailable.x - (textSize.x + GImGui->Style.FramePadding.y));
 		if (ImGui::Button("Add Component"))
-			ImGui::OpenPopup("AddComponent");
+			ImGui::OpenPopup("AddComponentPanel");
 
-		if (ImGui::BeginPopup("AddComponent"))
+		if (ImGui::BeginPopup("AddComponentPanel"))
 		{
-			if (ImGui::MenuItem("Camera"))
+			if (!m_SelectionContext.HasComponent<CameraComponent>())
 			{
-				if (!m_SelectionContext.HasComponent<CameraComponent>())
+				if (ImGui::Button("Camera"))
+				{
 					m_SelectionContext.AddComponent<CameraComponent>();
-				else
-					Dr_CORE_WARN("This entity already has the Camera Component!");
-				ImGui::CloseCurrentPopup();
+					ImGui::CloseCurrentPopup();
+				}
 			}
-
-			if (ImGui::MenuItem("Sprite Renderer"))
+			if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
 			{
-				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
+				if (ImGui::Button("Sprite Renderer"))
+				{
 					m_SelectionContext.AddComponent<SpriteRendererComponent>();
-				else
-					Dr_CORE_WARN("This entity already has the Sprite Renderer Component!");
-				ImGui::CloseCurrentPopup();
+					ImGui::CloseCurrentPopup();
+				}
 			}
-
 			ImGui::EndPopup();
 		}
-
-		ImGui::PopItemWidth();
 
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
 		{
@@ -308,8 +329,7 @@ namespace DAGGer
 				if (ImGui::DragFloat("Far", &perspectiveFar))		//	Far
 					camera.SetPerspectiveFarClip(perspectiveFar);
 			}
-
-			if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
+			else if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 			{
 				float orthoSize = camera.GetOrthographicSize();
 				float orthoNear = camera.GetOrthographicNearClip();

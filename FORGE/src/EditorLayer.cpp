@@ -39,7 +39,7 @@ namespace DAGGer
 		// Entity
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
-		redSquare.AddComponent<SpriteRendererComponent>(DrColor(1.0f, 0.0f, 0.0f, 1.0f ));
+		redSquare.AddComponent<SpriteRendererComponent>(DrColor(1.0f, 0.0f, 0.0f, 1.0f));
 
 		auto square = m_ActiveScene->CreateEntity("Green Square");
 		square.AddComponent<SpriteRendererComponent>(DrColor(0.0f, 1.0f, 0.0f, 1.0f));
@@ -304,8 +304,8 @@ namespace DAGGer
 
 			float snapValues[3] = { snapValue, snapValue, snapValue };
 
-			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), 
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), 
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 				nullptr, snap ? snapValues : nullptr);
 
 			if (ImGuizmo::IsUsing())
@@ -356,45 +356,45 @@ namespace DAGGer
 		bool shift = (Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift));
 		switch (e.GetKeyCode())
 		{
-			case Key::N:	//	Ctrl+N
-			{
-				if (control)
-					NewScene();
-				break;
-			}
-			case Key::O:	//	Ctrl+O
-			{
-				if (control)
-					OpenScene();
-				break;
-			}
-			case Key::S:	//	Ctrl+S
-			{
-				if (control && shift)
-					SaveSceneAs();
-				else if (control)
-					SaveScene();
-				break;
-			}
+		case Key::N:	//	Ctrl+N
+		{
+			if (control)
+				NewScene();
+			break;
+		}
+		case Key::O:	//	Ctrl+O
+		{
+			if (control)
+				OpenScene();
+			break;
+		}
+		case Key::S:	//	Ctrl+S
+		{
+			if (control && shift)
+				SaveSceneAs();
+			else if (control)
+				SaveScene();
+			break;
+		}
 
-			//	Gizmos
-			case Key::Q:
-				if (!ImGuizmo::IsUsing())
-					m_GizmoType = -1;
-				break;
-			case Key::W:
-				if (!ImGuizmo::IsUsing())
-					m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-				break;
-			case Key::R:
-				if (!ImGuizmo::IsUsing())
-					m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-				break;
-			case Key::E:
-				if (!ImGuizmo::IsUsing())
-					m_GizmoType = ImGuizmo::OPERATION::SCALE;
-				break;
-			
+		//	Gizmos
+		case Key::Q:
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = -1;
+			break;
+		case Key::W:
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case Key::R:
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case Key::E:
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+
 		}
 	}
 

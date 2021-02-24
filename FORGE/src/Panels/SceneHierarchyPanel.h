@@ -1,8 +1,8 @@
 #pragma once
 
+#include "DAGGer/Scene/Entity.h"
 #include "DAGGer/Scene/Scene.h"
 #include "DAGGer/Core/Base.h"
-#include "DAGGer/Scene/Entity.h"
 
 namespace DAGGer
 {

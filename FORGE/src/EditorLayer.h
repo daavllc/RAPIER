@@ -15,11 +15,13 @@ namespace DAGGer
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-
 		void OnUpdate(Timestep ts) override;
+
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 	private:
+		void UpdateWindowTitle(const std::string& sceneName);
+
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void NewScene();
@@ -45,6 +47,7 @@ namespace DAGGer
 		EditorCamera m_EditorCamera;
 
 		Ref<Texture2D> m_CheckerboardTexture;
+		Ref<Texture2D> m_PlayButtonTexture;
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = DrPos2(0.0f, 0.0f);
@@ -54,6 +57,7 @@ namespace DAGGer
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+
 
 		std::string m_FilePath;	//	Remeber filepath for Ctrl+S (Save)
 	};
