@@ -28,7 +28,7 @@ DAALS Name | Purpose | Sub-items
 ---------- | ------- | -----------
 DAAGS | Generation of maps/weather | LARG, LASG, LAWS
 DACMS | Color Management Systems | CAPE, CARP
-DAINS | A.I./machine learning | NIANN, NIME, NNICS
+DAINS | A.I./machine learning | NIANN, NIME, NISST, NNICS
 DAUMS | Health Management | HARE, HATE
 DAUSS | Music and Sound | MASAE, MASTA
 
