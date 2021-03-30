@@ -21,6 +21,17 @@ SandboxApp | DAGGer application template
 DAGGer | The actual engine itself
 			
 
+## Libraries:
+#### DAALS (Devon Adams Asset Library Systemics)
+DAALS are various abstrtacted libraries for specific tasks, from a music and sound engine to weather to health management
+DAALS Name | Purpose | Sub-items
+---------- | ------- | -----------
+DAAGS | Generation of maps/weather | LARG, LASG, LAWS
+DACMS | Color Management Systems | CAPE, CARP
+DAINS | A.I./machine learning | NIANN, NIME, NNICS
+DAUMS | Health Management | HARE, HATE
+DAUSS | Music and Sound | MASAE, MASTA
+
 ## License: GPLv3
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
