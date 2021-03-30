@@ -45,6 +45,7 @@ project "DAGGer"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.mono}",
 		"%{wks.location}",
 
 		"%{IncludeDir.Vulkan}"
@@ -55,7 +56,8 @@ project "DAGGer"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"yaml-cpp"
+		"yaml-cpp",
+		"%{LibraryDir.mono}"
 	}
 	
 	filter "files:vendor/ImGuizmo/**.cpp"

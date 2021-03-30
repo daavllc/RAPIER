@@ -3,7 +3,7 @@
 
 #include "Log.h"
 
-#define DAGGer_BUILD_ID "v0.1.5a"
+#define DAGGer_BUILD_ID "v0.2.1a"
 
 namespace DAGGer
 {
@@ -11,8 +11,8 @@ namespace DAGGer
 	{
 		DAGGer::Log::Init();
 
-		Dr_CORE_TRACE("DAGGer Engine {}", DAGGer_BUILD_ID);
-		Dr_CORE_TRACE("Initalizing...");
+		Dr_CORE_INFO("DAGGer Engine {}", DAGGer_BUILD_ID);
+		Dr_CORE_INFO("Initalizing...");
 	}
 
 	void ShutdownCore()

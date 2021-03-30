@@ -8,6 +8,13 @@
 
 namespace DAGGer
 {
+	struct GraphicsInfo
+	{
+		int TextureSlots;
+		int MaxTextureCoords;
+		int MaxCombinedTextureImageUnits;
+	};
+
 	class GraphicsContext
 	{
 	public:

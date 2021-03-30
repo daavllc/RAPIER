@@ -4,7 +4,6 @@
 
 namespace DAGGer
 {
-
 	class RefCounted
 	{
 	public:
@@ -47,14 +46,14 @@ namespace DAGGer
 		template<typename T2>
 		Ref(const Ref<T2>& other)
 		{
-			m_Instance = other.m_Instance;
+			m_Instance = (T*)other.m_Instance;
 			IncRef();
 		}
 
 		template<typename T2>
 		Ref(Ref<T2>&& other)
 		{
-			m_Instance = other.m_Instance;
+			m_Instance = (T*)other.m_Instance;
 			other.m_Instance = nullptr;
 		}
 
@@ -100,7 +99,7 @@ namespace DAGGer
 		{
 			DecRef();
 
-			m_Instance = other.m_Instance;
+			m_Instance = (T*)other.m_Instance;
 			other.m_Instance = nullptr;
 			return *this;
 		}
@@ -121,6 +120,12 @@ namespace DAGGer
 		{
 			DecRef();
 			m_Instance = instance;
+		}
+
+		template<typename T2>
+		Ref<T2> As()
+		{
+			return Ref<T2>(*this);
 		}
 
 		template<typename... Args>
@@ -151,6 +156,7 @@ namespace DAGGer
 		friend class Ref;
 		T* m_Instance;
 	};
+
 
 	// TODO: WeakRef
 

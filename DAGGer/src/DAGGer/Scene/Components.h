@@ -75,10 +75,16 @@ namespace DAGGer
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
-	//  -----------------------------  NATIVE SCRIPT COMPONENT  -----------------------------  //
-	struct NativeScriptComponent
+	//  -----------------------------  SCRIPT COMPONENT  -----------------------------  //
+	struct ScriptComponent
 	{
-		
+		std::string ModuleName;
+
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent& other) = default;
+		ScriptComponent(const std::string& moduleName)
+			: ModuleName(moduleName) {}
 	};
+
 
 }	//	END namespace DAGGer

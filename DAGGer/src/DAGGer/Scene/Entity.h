@@ -71,6 +71,7 @@ namespace DAGGer
 
 		friend class Scene;
 		friend class SceneSerializer;
+		friend class ScriptEngine;
 	};
 
 }	//	END namespace DAGGer
