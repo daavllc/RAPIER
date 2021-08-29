@@ -1,4 +1,0 @@
-D:\Programming\GitHub\VisualStudio\DAGGer\DAGGer\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.pdb
-D:\Programming\GitHub\VisualStudio\DAGGer\DAGGer\vendor\Glad\bin-int\Debug-windows-x86_64\Glad\Glad.pdb
-D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib.lastcodeanalysissucceeded
-D:\Programming\GitHub\DAGGer\DAGGer\vendor\Glad\bin-int\Debug-windows-x86_64\Glad\NativeCodeAnalysis.read.1.tlog

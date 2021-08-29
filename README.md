@@ -1,5 +1,5 @@
 # DAGGer v0.1.5a
-#### Devon Adams Gordian Graphics Engine Reimagined
+#### DA Gordian Graphics Engine Reimagined
 
 This is supposed to serve as an easy to use C++17 graphics/game engine.
 I'm not writting the engine with the intent for other people use use,
@@ -22,7 +22,7 @@ DAGGer | The actual engine itself
 			
 
 ## Libraries:
-#### DAALS (Devon Adams Asset Library Systemics)
+#### DAALS (DA Asset Library Systemics)
 DAALS are various abstrtacted libraries for specific tasks, from a music and sound engine to weather to health management
 DAALS Name | Purpose | Sub-items
 ---------- | ------- | -----------

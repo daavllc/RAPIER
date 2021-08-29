@@ -11,3 +11,6 @@
 [submodule "DAGGer/vendor/ImGuizmo"]
 	path = DAGGer/vendor/ImGuizmo
 	url = https://github.com/devonadams/ImGuizmo
+[submodule "DAGGer/vendor/DAALS"]
+	path = DAGGer/vendor/DAALS
+	url = https://github.com/devonadams/DAALS

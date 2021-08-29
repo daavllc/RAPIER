@@ -1,4 +1,4 @@
-//  Author: Devon Adams (https://github.com/devonadams)
+//  Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as the OpenGL definitions for the Texture.h file
@@ -6,7 +6,7 @@
 
 #include "DAGGer/Renderer/Texture.h"
 
-#include <glad/OpenGL/include/glad/glad.h>
+#include <glad/glad.h>
 
 namespace DAGGer
 {

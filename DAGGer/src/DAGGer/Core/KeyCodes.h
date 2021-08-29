@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////
-//  Author: Devon Adams (https://github.com/devonadams)
+//  Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file contains DAGGer KeyCode defines

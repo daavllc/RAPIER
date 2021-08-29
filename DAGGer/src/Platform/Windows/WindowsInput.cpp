@@ -1,4 +1,4 @@
-//  Author: Devon Adams (https://github.com/devonadams)
+//  Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as implementation for thew WindowsInput.h file

@@ -1,11 +1,11 @@
-//  Author: Devon Adams (https://github.com/devonadams)
+//  Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as the implementation for the GraphicsContext.cpp file
 #include "drpch.h"
 #include "Platform/OpenGL/OpenGLContext.h"
 
-#include <glad/OpenGL/include/glad/glad.h>
+#include <Glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace DAGGer

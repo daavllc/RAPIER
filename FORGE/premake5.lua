@@ -2,7 +2,7 @@ project "FORGE"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 	
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -17,11 +17,10 @@ project "FORGE"
 	{
 		"%{wks.location}/DAGGer/vendor/",
 		"%{wks.location}/DAGGer/src",
-		"%{IncludeDir.Glad}/Vulkan/include",
-		"%{IncludeDir.Glad}/OpenGL/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.DAALS}",
 
 		"%{wks.location}",
 	}

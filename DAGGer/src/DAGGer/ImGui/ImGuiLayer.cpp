@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////
-//  Author: Devon Adams (https://github.com/devonadams)
+//	Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as the implementation for the ImGui layer
@@ -15,7 +15,7 @@
 
 // TEMPORARY
 #include <GLFW/glfw3.h>
-#include <Glad/OpenGL/include/glad/glad.h>
+#include <Glad/glad.h>
 
 #include <imguizmo.h>
 

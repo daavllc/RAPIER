@@ -1,4 +1,4 @@
-//  Author: Devon Adams (https://github.com/devonadams)
+//  Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as the OpenGL implementation of the Shader.cpp file
@@ -6,7 +6,7 @@
 #include "OpenGLShader.h"
 
 #include <fstream>
-#include <Glad/OpenGL/include/glad/glad.h>
+#include <Glad/glad.h>
 
 #include <glm/gtc/type_ptr.hpp>
 

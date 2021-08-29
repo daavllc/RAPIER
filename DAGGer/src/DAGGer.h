@@ -12,11 +12,11 @@
 //----====================================================================================================~~~~
 //----=----------------------------------------  version 0.2.1a  ----------------------------------------=----
 //----====================================================================================================----
-//	Author: Devon Adams (https://github.com/devonadams)
+// Author: Anonoei (https://github.com/anonoei)
 //	License : GPLv3
 //	Language: C++17
 //	Dependencies: A Sandbox Application
-//	This is the include file for DAGGer... the Devon Adams Gordian Graphics Engine Reimagined (I'm not full of myself)
+//	This is the include file for DAGGer... the DA Gordian Graphics Engine Reimagined (I'm not full of myself)
 //		If you're interested, there's more information about the engine inside DAGGer/Core/Base.h - Thanks for checking it out! :)
 //	For some useful libraries, be sure to check out DAALS - There's a lot of functionality there!
 ///////////////////////////////////////////////////

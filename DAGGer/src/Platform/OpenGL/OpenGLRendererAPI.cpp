@@ -1,11 +1,11 @@
-//  Author: Devon Adams (https://github.com/devonadams)
+//  Author: Anonoei (https://github.com/anonoei)
 //  License : GPLv3
 //  Language: C++
 //  This file serves as the OpenGL implementation for the RendererAPI.cpp file
 #include "drpch.h"
 #include "OpenGLRendererAPI.h"
 
-#include <glad/OpenGL/include/glad/glad.h>
+#include <Glad/glad.h>
 
 namespace DAGGer
 {

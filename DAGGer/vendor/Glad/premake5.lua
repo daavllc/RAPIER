@@ -8,17 +8,13 @@ project "Glad"
 
 		files
 		{
-			"OpenGL/include/glad.h",
-			"OpenGL/include/KHR/khrplatform.h",
-			"OpenGL/src/glad.c",
-
-			"Vulkan/include/**.h",
-			"Vulkan/src/vulkan.c"
+			"include/glad.h",
+			"include/KHR/khrplatform.h",
+			"src/glad.c",
 		}
 		includedirs
 		{
-			"Vulkan/include",
-			"OpenGL/include"
+			"include"
 		}	
 
 	filter "system:windows"			--	WINDOWS

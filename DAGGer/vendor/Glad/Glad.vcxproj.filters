@@ -1,51 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="OpenGL">
-      <UniqueIdentifier>{8A864AC8-7628-759E-5FE3-88F24B24FCEE}</UniqueIdentifier>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="OpenGL\include">
-      <UniqueIdentifier>{FD97125B-E965-0661-D2F9-7687BE66E2C5}</UniqueIdentifier>
+    <Filter Include="include\KHR">
+      <UniqueIdentifier>{7D5AC031-E90F-3927-7204-33FEDEB82F2B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="OpenGL\include\KHR">
-      <UniqueIdentifier>{F15C8352-DD40-44A8-46A1-3EFB32A42E2A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="OpenGL\src">
-      <UniqueIdentifier>{A179FA5F-8D31-3CAD-F638-1509E20FD79D}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vulkan">
-      <UniqueIdentifier>{D6EAFCD8-C28C-27AF-AB47-3B039788AEFF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vulkan\include">
-      <UniqueIdentifier>{4988DA2E-3556-CE34-1EEA-3E5B0A57AA99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vulkan\include\glad">
-      <UniqueIdentifier>{F0F08472-5C52-6280-E5BF-A8325120993F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vulkan\src">
-      <UniqueIdentifier>{ED239E90-D9DB-DFDD-42E3-B8392EBA7ACE}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenGL\include\KHR\khrplatform.h">
-      <Filter>OpenGL\include\KHR</Filter>
+    <ClInclude Include="include\KHR\khrplatform.h">
+      <Filter>include\KHR</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGL\include\glad.h">
-      <Filter>OpenGL\include</Filter>
-    </ClInclude>
-    <ClInclude Include="Vulkan\include\glad\vulkan.h">
-      <Filter>Vulkan\include\glad</Filter>
-    </ClInclude>
-    <ClInclude Include="Vulkan\include\vk_platform.h">
-      <Filter>Vulkan\include</Filter>
+    <ClInclude Include="include\glad.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OpenGL\src\glad.c">
-      <Filter>OpenGL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="Vulkan\src\vulkan.c">
-      <Filter>Vulkan\src</Filter>
+    <ClCompile Include="src\glad.c">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "drpch.h"
 #include "OpenGLFrameBuffer.h"
 
-#include <Glad/OpenGL/Include/glad/glad.h>
+#include <Glad/glad.h>
 
 namespace DAGGer
 {
