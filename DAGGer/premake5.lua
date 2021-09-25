@@ -15,14 +15,14 @@ project "DAGGer"
 		"src/**.h",
 		"src/**.cpp",
 
-		"vendor/stb_image/**.cpp",
-		"vendor/stb_image/**.h",
+		"%{IncludeDir.stb_image}/**.h",
+		"%{IncludeDir.stb_image}/**.cpp",
 
-		"vendor/glm/**.hpp",
-		"vendor/glm/**.inl",
+		"%{IncludeDir.glm}/**.hpp",
+		"%{IncludeDir.glm}/**.inl",
 		
-		"vendor/ImGuizmo/ImGuizmo.h",
-		"vendor/ImGuizmo/ImGuizmo.cpp"
+		"%{IncludeDir.ImGuizmo}/**.h",
+		"%{IncludeDir.ImGuizmo}/**.cpp"
 	}
 	
 	defines
@@ -34,7 +34,7 @@ project "DAGGer"
 	includedirs
 	{
 		"src",
-		"vendor",
+		"vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
@@ -53,7 +53,8 @@ project "DAGGer"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"yaml-cpp"
+		"yaml-cpp",
+		"opengl32.lib"
 	}
 	
 	filter "files:vendor/ImGuizmo/**.cpp"

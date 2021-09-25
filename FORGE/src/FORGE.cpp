@@ -10,13 +10,13 @@
 //----=                       M            MMMM       M   M       MMMM       MMMMM                       =----
 //----=                                                                                                  =----
 //----====================================================================================================~~~~
-//----=--------------------------------------    version 0.0.5    ---------------------------------------=----
+//----=--------------------------------------    version 0.1.2    ---------------------------------------=----
 //----====================================================================================================----
 // Author: Anonoei (https://github.com/anonoei)
 //	License : GPLv3
 //	Language: C++17
 //	Dependencies: DAGGer
-//	The level editor for DAGGer... FORGE - the Fast Open Reliable Graphics Editor!
+//	The graphical editor for DAGGer... FORGE - the Fast Open Reliable Graphics Editor!
 ///////////////////////////////////////
 #include <DAGGer.h>				//	Include DAGGer
 #include <DAGGer/Core/Entry.h>	//	Entry Point
@@ -28,8 +28,8 @@ namespace DAGGer
 	class FORGE : public Application
 	{
 	public:
-		FORGE()
-			: Application("DAGGer FORGE")
+		FORGE(ApplicationCommandLineArgs args)
+			: Application("DAGGer FORGE", args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -39,9 +39,9 @@ namespace DAGGer
 		}
 	};	//	END class Sandbox
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new FORGE();
+		return new FORGE(args);
 	}	//	END CreateApplication
 
 }	//	END namespace DAGGer

@@ -1,7 +1,7 @@
 # Binaries
 **/bin/
-!vendor/premake/bin/
 bin-int/
+*.pyc
 
 # DAGGer files
 **.log
@@ -13,3 +13,8 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+
+# Directories
+DAGGer/vendor/VulkanSDK
+FORGE/assets/cache
+scripts/__pycache__

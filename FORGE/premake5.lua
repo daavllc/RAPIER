@@ -15,14 +15,15 @@ project "FORGE"
 	
 	includedirs
 	{
-		"%{wks.location}/DAGGer/vendor/",
+		"%{wks.location}/DAGGer/vendor/spdlog/include",
 		"%{wks.location}/DAGGer/src",
-		"%{IncludeDir.GLM}",
+		"%{wks.location}/DAGGer/vendor",
+		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.DAALS}",
 
-		"%{wks.location}",
+		"%{wks.location}"
 	}
 	
 	links
@@ -42,8 +43,8 @@ project "FORGE"
 	filter "configurations:Debug"	--	DEBUG
 		defines "Dr_DEBUG"
 		runtime "Debug"
-		symbols "on"		
-		
+		symbols "on"
+
 	filter "configurations:Release"	--	RELEASE
 		defines "Dr_RELEASE"
 		runtime "Release"

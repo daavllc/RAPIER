@@ -1,4 +1,4 @@
-# DAGGer v0.1.5a
+# DAGGer v0.1.6a
 #### DA Gordian Graphics Engine Reimagined
 
 This is supposed to serve as an easy to use C++17 graphics/game engine.

@@ -28,3 +28,49 @@ namespace DAGGer
 
 	};
 }	//	END namespace DAGGer
+
+#ifdef Dr_DEBUG	//	DEBUG
+	// Core Log Defines
+	#define Dr_CORE_TRACE(...)		::DAGGer::Log::GetCoreLogger()->trace(__VA_ARGS__)
+	#define Dr_CORE_INFO(...)		::DAGGer::Log::GetCoreLogger()->info(__VA_ARGS__)
+	#define Dr_CORE_WARN(...)		::DAGGer::Log::GetCoreLogger()->warn(__VA_ARGS__)
+	#define Dr_CORE_ERROR(...)		::DAGGer::Log::GetCoreLogger()->error(__VA_ARGS__)
+	#define Dr_CORE_CRITICAL(...)	::DAGGer::Log::GetCoreLogger()->critical(__VA_ARGS__)
+
+	//	Client Log Defines
+	#define Dr_TRACE(...)			::DAGGer::Log::GetClientLogger()->trace(__VA_ARGS__)
+	#define Dr_INFO(...)			::DAGGer::Log::GetClientLogger()->info(__VA_ARGS__)
+	#define Dr_WARN(...)			::DAGGer::Log::GetClientLogger()->warn(__VA_ARGS__)
+	#define Dr_ERROR(...)			::DAGGer::Log::GetClientLogger()->error(__VA_ARGS__)
+	#define Dr_CRITICAL(...)		::DAGGer::Log::GetClientLogger()->critical(__VA_ARGS__)
+#endif
+
+#ifdef Dr_RELEASE	//	RFELEASE
+		//	Don't Log Engine Messages
+	#define Dr_CORE_TRACE
+	#define Dr_CORE_INFO
+	#define Dr_CORE_WARN
+	#define Dr_CORE_ERROR
+	#define Dr_CORE_CRITICAL
+	//	Client Log Defines
+	#define Dr_TRACE(...)			::DAGGer::Log::GetClientLogger()->trace(__VA_ARGS__)
+	#define Dr_INFO(...)			::DAGGer::Log::GetClientLogger()->info(__VA_ARGS__)
+	#define Dr_WARN(...)			::DAGGer::Log::GetClientLogger()->warn(__VA_ARGS__)
+	#define Dr_ERROR(...)			::DAGGer::Log::GetClientLogger()->error(__VA_ARGS__)
+	#define Dr_CRITICAL(...)		::DAGGer::Log::GetClientLogger()->critical(__VA_ARGS__)
+#endif
+
+#ifdef Dr_DISTRIBUTION	//	DISTRIBUTION
+		//	Don't Log Engine Messages
+	#define Dr_CORE_TRACE
+	#define Dr_CORE_INFO
+	#define Dr_CORE_WARN
+	#define Dr_CORE_ERROR
+	#define Dr_CORE_CRITICAL
+		//	Don't Log Client Messages
+	#define Dr_TRACE
+	#define Dr_INFO
+	#define Dr_WARN
+	#define Dr_ERROR
+	#define Dr_CRITICAL
+#endif	//	END LOGGING DEFINES

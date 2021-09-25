@@ -1,0 +1,6 @@
+configurations
+{
+	"Debug",
+	"Release",
+	"Distribution"
+}

@@ -20,48 +20,6 @@
 #define Dr		DAGGer	//	Shortcut for the DAGGer namespace
 
 //  ---------------------------------------------------------------------------------------------------------------------  //
-//  ----------------------------------------------    SCOPE/REF DEFINES    ----------------------------------------------  //
-//  ---------------------------------------------------------------------------------------------------------------------  //
-
-namespace DAGGer
-{
-	template<typename T>
-	using Scope = std::unique_ptr<T>;
-	template<typename T, typename ... Args>
-	constexpr Scope<T> CreateScope(Args&& ... args)
-	{
-		return std::make_unique<T>(std::forward<Args>(args)...);
-	}
-
-	using byte = uint8_t;
-	//template<typename T>	//	TODO: inclusive reference system
-	//using Ref = std::shared_ptr<T>;
-	//template<typename T, typename ... Args>
-	//constexpr Ref<T> CreateRef(Args&& ... args)
-	//{
-	//	return std::make_shared<T>(std::forward<Args>(args)...);
-	//}
-
-}   //  END namespace DAGGer
-
-
-//  ---------------------------------------------------------------------------------------------------------------------  //
-//  ------------------------------------------------    ASSERT DEFINES    -----------------------------------------------  //
-//  ---------------------------------------------------------------------------------------------------------------------  //
-// TODO: ASSERT w/ no arguments except condition
-#ifdef Dr_ENABLE_ASSERTS
-	#define Dr_ASSERT(x, ...) { if(!(x)) { Dr_ERROR("Assertion Failed: {0}", __VA_ARGS__); Dr_DEBUGBREAK(); } }
-	#define Dr_CORE_ASSERT(x, ...) { if(!(x)) { Dr_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); Dr_DEBUGBREAK(); } }
-#else
-	#define Dr_ASSERT(x, ...)
-	#define Dr_CORE_ASSERT(x, ...)
-#endif
-
-#define BIT(x) (1 << x)
-
-#define Dr_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
-
-//  ---------------------------------------------------------------------------------------------------------------------  //
 //  ----------------------------------------------    PROFILING DEFINES    ----------------------------------------------  //
 //  ---------------------------------------------------------------------------------------------------------------------  //
 #ifdef Dr_DEBUG
@@ -108,56 +66,6 @@ namespace DAGGer
 	#define Dr_PROFILE_RENDERER_SCOPE(name)
 	#define Dr_PROFILE_RENDERER_FUNCTION()
 #endif	//  END PROFILING DEFINES
-
-//  ---------------------------------------------------------------------------------------------------------------------  //
-//  -----------------------------------------------    LOGGING DEFINES    -----------------------------------------------  //
-//  ---------------------------------------------------------------------------------------------------------------------  //
-#ifdef Dr_DEBUG	//	DEBUG
-	// Core Log Defines
-	#define Dr_CORE_TRACE(...)		::DAGGer::Log::GetCoreLogger()->trace(__VA_ARGS__)
-	#define Dr_CORE_INFO(...)		::DAGGer::Log::GetCoreLogger()->info(__VA_ARGS__)
-	#define Dr_CORE_WARN(...)		::DAGGer::Log::GetCoreLogger()->warn(__VA_ARGS__)
-	#define Dr_CORE_ERROR(...)		::DAGGer::Log::GetCoreLogger()->error(__VA_ARGS__)
-	#define Dr_CORE_CRITICAL(...)	::DAGGer::Log::GetCoreLogger()->critical(__VA_ARGS__)
-
-	//	Client Log Defines
-	#define Dr_TRACE(...)			::DAGGer::Log::GetClientLogger()->trace(__VA_ARGS__)
-	#define Dr_INFO(...)			::DAGGer::Log::GetClientLogger()->info(__VA_ARGS__)
-	#define Dr_WARN(...)			::DAGGer::Log::GetClientLogger()->warn(__VA_ARGS__)
-	#define Dr_ERROR(...)			::DAGGer::Log::GetClientLogger()->error(__VA_ARGS__)
-	#define Dr_CRITICAL(...)		::DAGGer::Log::GetClientLogger()->critical(__VA_ARGS__)
-#endif
-
-#ifdef Dr_RELEASE	//	RFELEASE
-		//	Don't Log Engine Messages
-	#define Dr_CORE_TRACE
-	#define Dr_CORE_INFO
-	#define Dr_CORE_WARN
-	#define Dr_CORE_ERROR
-	#define Dr_CORE_CRITICAL
-	//	Client Log Defines
-	#define Dr_TRACE(...)			::DAGGer::Log::GetClientLogger()->trace(__VA_ARGS__)
-	#define Dr_INFO(...)			::DAGGer::Log::GetClientLogger()->info(__VA_ARGS__)
-	#define Dr_WARN(...)			::DAGGer::Log::GetClientLogger()->warn(__VA_ARGS__)
-	#define Dr_ERROR(...)			::DAGGer::Log::GetClientLogger()->error(__VA_ARGS__)
-	#define Dr_CRITICAL(...)		::DAGGer::Log::GetClientLogger()->critical(__VA_ARGS__)
-#endif
-
-#ifdef Dr_DISTRIBUTION	//	DISTRIBUTION
-		//	Don't Log Engine Messages
-	#define Dr_CORE_TRACE
-	#define Dr_CORE_INFO
-	#define Dr_CORE_WARN
-	#define Dr_CORE_ERROR
-	#define Dr_CORE_CRITICAL
-		//	Don't Log Client Messages
-	#define Dr_TRACE
-	#define Dr_INFO
-	#define Dr_WARN
-	#define Dr_ERROR
-	#define Dr_CRITICAL
-#endif	//	END LOGGING DEFINES
-
 
 //  ---------------------------------------------------------------------------------------------------------------------  //
 //  ------------------------------------------------    MACRO DEFINES    ------------------------------------------------  //

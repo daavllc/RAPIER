@@ -66,7 +66,11 @@ Let's start off in chronological order:
 #pragma once
 
 #include <memory>
+
+#include "DAGGer/Core/PlatformDetection.h"
+
 #include "CoreConfig.h" //  includes DAGGer defines
+#include "Assert.h"
 #include "Ref.h"
 
 namespace DAGGer
@@ -78,39 +82,7 @@ namespace DAGGer
 #define Dr_RENDERER_OPENGL
 
 // Platform detection
-#ifdef _WIN32
-    //  Windows x64/x86 //
-    #ifdef _WIN64
-        // Windows x64  //
-        #define Dr_PLATFORM_WINDOWS
-    #else
-		#define Dr_PLATFORM_WINDOWS
-        //#error "x86 Builds are not supported!"
-    #endif
-#elif defined(__APPLE__) || defined(__MACH__)   //  Apple Platforms
-    #include <TargetConditionals.h>
-    #if TARGET_IPHONE_SIMULATOR == 1
-        #error "iOS simulator is not supported!"
-    #elif TARGET_OS_IPHONE == 1
-        #define Dr_PLATFORM_IOS     //  iOS
-        #error "iOS is not supported!"
-    #elif TARGET_OS_MAC == 1        MacOS
-        #define Dr_PLATFORM_MACOS
-        #error "MacOS is not supported!"
-    #else
-        #error "Unknown Apple platform!"
-    #endif
-    //  Android is based off the linux kernel, so __ANDROID__ must be checked first
-#elif defined(__ANDROID__)          //  Android
-    #define Dr_PLATFORM_ANDROID
-    #error "Android is not supported!"
-#elif defined(__linux__)            //  Linux
-    #define Dr_PLATFORM_LINUX
-    #error "Linux is not supported!"
-#else
-    //  Unknown compiler/platform   //
-    #error "Unknown platform!"
-#endif  //    END platform detection
+
 
 #ifdef Dr_DEBUG
     #if defined(Dr_PLATFORM_WINDOWS)
@@ -125,3 +97,24 @@ namespace DAGGer
 #else
     #define Dr_DEBUGBREAK()
 #endif
+
+#define Dr_EXPAND_MACRO(x) x
+#define Dr_STRINGIFY_MACRO(x) #x
+
+#define BIT(x) (1 << x)
+
+#define Dr_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
+namespace DAGGer
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr Scope<T> CreateScope(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+}	//	END namespace DAGGer
+
+#include "DAGGer/Core/Log.h"
+#include "DAGGer/Core/Assert.h"

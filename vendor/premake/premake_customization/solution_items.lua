@@ -2,9 +2,9 @@
 require('vstudio')
 
 premake.api.register {
-	name = "solution_items",
+	name  = "solution_items",
 	scope = "workspace",
-	kind = "list:string",
+	kind  = "list:string"
 }
 
 premake.override(premake.vstudio.sln2005, "projects", function(base, wks)
