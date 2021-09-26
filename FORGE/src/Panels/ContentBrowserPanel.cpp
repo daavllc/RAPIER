@@ -23,7 +23,7 @@ namespace DAGGer
 		ImGui::Separator();
 
 		static float padding = 16.0f;
-		static float thumbnailSize = 24.0f;
+		static float thumbnailSize = ImGui::GetFontSize();
 		float cellSize = thumbnailSize + padding;
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;

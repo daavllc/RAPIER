@@ -14,3 +14,6 @@
 [submodule "DAGGer/vendor/DAALS"]
 	path = DAGGer/vendor/DAALS
 	url = https://github.com/devonadams/DAALS
+[submodule "DAGGer/vendor/box2d"]
+	path = DAGGer/vendor/box2d
+	url = https://github.com/anonoei/box2d

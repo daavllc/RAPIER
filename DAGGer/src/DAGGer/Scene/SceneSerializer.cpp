@@ -151,6 +151,27 @@ namespace DAGGer
 		return out;
 	}
 
+	static std::string RigidBody2DBodyTypeToString(RigidBody2DComponent::BodyType bodyType)
+	{
+		switch (bodyType)
+		{
+			case RigidBody2DComponent::BodyType::Static:    return "Static";
+			case RigidBody2DComponent::BodyType::Dynamic:   return "Dynamic";
+			case RigidBody2DComponent::BodyType::Kinematic: return "Kinematic";
+		}
+
+		Dr_CORE_ASSERT(false, "Unknown body type!");
+		return {};
+	}
+	static RigidBody2DComponent::BodyType RigidBody2DBodyTypeFromString(std::string bodyTypeString)
+	{
+		if (bodyTypeString == "Static")    return RigidBody2DComponent::BodyType::Static;
+		if (bodyTypeString == "Dynamic")   return RigidBody2DComponent::BodyType::Dynamic;
+		if (bodyTypeString == "Kinematic") return RigidBody2DComponent::BodyType::Kinematic;
+
+		Dr_CORE_ASSERT(false, "Unknown body type!");
+		return RigidBody2DComponent::BodyType::Static;
+	}
 
 	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
 		: m_Scene(scene)
@@ -159,11 +180,11 @@ namespace DAGGer
 	void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
 		Dr_PROFILE_FUNCTION();
-
-		UUID uuid = entity.GetComponent<IDComponent>().ID;
+		Dr_CORE_ASSERT(entity.HasComponent<IDComponent>(), "No ID Component");
 
 		out << YAML::BeginMap; // Entity
-		out << YAML::Key << "Entity" << YAML::Value << uuid;
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
+
 		// --------------------------- TAG COMPONENT ----------------------- //
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -224,6 +245,34 @@ namespace DAGGer
 
 			out << YAML::EndMap; // SpriteRendererComponent
 		}
+		// --------------------------- Rigidbody 2D COMPONENT ----------------------- //
+		if (entity.HasComponent<RigidBody2DComponent>())
+		{
+			out << YAML::Key << "RigidBody2DComponent";
+			out << YAML::BeginMap; // RigidBody2DComponent
+
+			auto& rb2dComponent = entity.GetComponent<RigidBody2DComponent>();
+			out << YAML::Key << "BodyType" << YAML::Value << RigidBody2DBodyTypeToString(rb2dComponent.Type);
+			out << YAML::Key << "FixedRotation" << YAML::Value << rb2dComponent.FixedRotation;
+
+			out << YAML::EndMap; // RigidBody2DComponent
+		}
+		// --------------------------- Box Collider 2D COMPONENT ----------------------- //
+		if (entity.HasComponent<BoxCollider2DComponent>())
+		{
+			out << YAML::Key << "BoxCollider2DComponent";
+			out << YAML::BeginMap; // BoxCollider2DComponent
+
+			auto& bc2dComponent = entity.GetComponent<BoxCollider2DComponent>();
+			out << YAML::Key << "Offset" << YAML::Value << bc2dComponent.Offset;
+			out << YAML::Key << "Size"   << YAML::Value << bc2dComponent.Size;
+			out << YAML::Key << "Density"     << YAML::Value << bc2dComponent.Density;
+			out << YAML::Key << "Friction"    << YAML::Value << bc2dComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << bc2dComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << bc2dComponent.RestitutionThreshold;
+
+			out << YAML::EndMap; // BoxCollider2DComponent
+		}
 
 		out << YAML::EndMap; // Entity
 	}
@@ -239,13 +288,13 @@ namespace DAGGer
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		m_Scene->m_Registry.each([&](auto entityID)
-			{
-				Entity entity = { entityID, m_Scene.Raw() };
-				if (!entity)
-					return;
+		{
+			Entity entity = { entityID, m_Scene.Raw() };
+			if (!entity)
+				return;
 
-				SerializeEntity(out, entity);
-			});
+			SerializeEntity(out, entity);
+		});
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
 
@@ -268,7 +317,15 @@ namespace DAGGer
 	{
 		Dr_PROFILE_FUNCTION();
 
-		YAML::Node data = YAML::LoadFile(filepath);
+		YAML::Node data;
+		try
+		{
+			data = YAML::LoadFile(filepath);
+		}
+		catch (YAML::ParserException e)
+		{
+			return false;
+		}
 		if (!data["Scene"])
 			return false;
 
@@ -289,7 +346,7 @@ namespace DAGGer
 
 				Dr_CORE_TRACE("Deserialized entity with ID: \'{0}\',\tname: \'{1}\'", uuid, name);
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
 				// --------------------------- TRANSFORM COMPONENT ----------------------- //
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
@@ -326,6 +383,26 @@ namespace DAGGer
 				{
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+				}
+				// --------------------------- RIGIDBODY 2D COMPONENT ----------------------- //
+				auto rb2dComponent = entity["RigidBody2DComponent"];
+				if (rb2dComponent)
+				{
+					auto& rb2d = deserializedEntity.AddComponent<RigidBody2DComponent>();
+					rb2d.Type = RigidBody2DBodyTypeFromString(rb2dComponent["BodyType"].as<std::string>());
+					rb2d.FixedRotation = rb2dComponent["FixedRotation"].as<bool>();
+				}
+				// --------------------------- BOX COLLIDER 2D COMPONENT ----------------------- //
+				auto bc2dComponent = entity["BoxCollider2DComponent"];
+				if (bc2dComponent)
+				{
+					auto& bc2d = deserializedEntity.AddComponent<BoxCollider2DComponent>();
+					bc2d.Offset  = bc2dComponent["Offset"].as<glm::vec2>();
+					bc2d.Size    = bc2dComponent["Size"].as<glm::vec2>();
+					bc2d.Density     = bc2dComponent["Density"].as<float>();
+					bc2d.Friction    = bc2dComponent["Friction"].as<float>();
+					bc2d.Restitution = bc2dComponent["Restitution"].as<float>();
+					bc2d.RestitutionThreshold = bc2dComponent["RestitutionThreshold"].as<float>();
 				}
 			}
 		}

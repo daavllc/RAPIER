@@ -31,7 +31,7 @@ namespace DAGGer
 	{
 	public:
 		FORGE(ApplicationCommandLineArgs args)
-			: Application("DAGGer FORGE", args)
+			: Application("DAGGer FORGE", args, false)
 		{
 			Dr_INFO("DAGGer FORGE {}", FORGE_BUILD_ID);
 			PushLayer(new EditorLayer());

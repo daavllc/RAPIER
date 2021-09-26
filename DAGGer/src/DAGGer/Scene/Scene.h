@@ -13,6 +13,8 @@
 #include <entt.hpp>
 //#include <glm/glm.hpp>
 
+class b2World;
+
 namespace DAGGer
 {
 	class Entity;
@@ -30,16 +32,13 @@ namespace DAGGer
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
-		//	Runtime
 		void OnRuntimeStart();
 		void OnRuntimeStop();
-
-		//void SetViewportSize(uint32_t width, uint32_t height);
 
 		Entity GetPrimaryCameraEntity();
 
 		Entity CreateEntity(const std::string& name = std::string());
-		Entity CreateEntityWithID(UUID uuid, const std::string& name = "");
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = "");
 		void DestroyEntity(Entity entity);
 
 		void DuplicateEntity(Entity entity);
@@ -60,11 +59,13 @@ namespace DAGGer
 		void OnComponentAdded(Entity entity, T& component);
 	protected:
 		UUID m_SceneID;
-		entt::entity m_SceneEntity;
+		//entt::entity m_SceneEntity;
 		entt::registry m_Registry;
+		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
+
+		b2World* m_PhysicsWorld = nullptr;
 
 		std::string m_DebugName;
-		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 
 		EntityMap m_EntityIDMap;
 		bool m_IsPlaying = false;

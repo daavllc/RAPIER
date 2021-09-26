@@ -2,6 +2,8 @@
 
 #include "Base.h"
 
+#include <xhash>
+
 namespace DAGGer
 {
 	class UUID
@@ -9,7 +11,7 @@ namespace DAGGer
 	public:
 		UUID();
 		UUID(uint64_t uuid);
-		UUID(const UUID& other);
+		UUID(const UUID& other) = default;
 
 		operator uint64_t () { return m_UUID; }
 		operator const uint64_t() const { return m_UUID; }
@@ -21,7 +23,6 @@ namespace DAGGer
 
 namespace std
 {
-
 	template <>
 	struct hash<DAGGer::UUID>
 	{
@@ -30,4 +31,4 @@ namespace std
 			return hash<uint64_t>()((uint64_t)uuid);
 		}
 	};
-}
+}	//	END namespace std

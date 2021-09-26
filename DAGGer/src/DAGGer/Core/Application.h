@@ -35,7 +35,7 @@ namespace DAGGer
 	class Application
 	{
 	public:
-		Application(const std::string& name = "DAGGer Application", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
+		Application(const std::string& name = "DAGGer Application", ApplicationCommandLineArgs args = ApplicationCommandLineArgs(), bool vSync = true);
 		virtual ~Application();
 
 		void OnEvent(Event& e);

@@ -6,24 +6,24 @@
 ////////////////////////////////
 #pragma once
 
+#include "Scene.h"
+#include "DAGGer/Core/UUID.h"
+#include "Components.h" // < Fails to compile
+
 #include <glm/glm.hpp>
 #include <entt.hpp>
 
-#include "Scene.h"
-#include "Components.h"
-
-//#include <entt.hpp>
 
 namespace DAGGer
 {
 	class Entity
 	{
 	public:
-		Entity() = default;
+		Entity() {};
 		Entity(entt::entity handle, Scene* scene);
 		Entity(const Entity& other) = default;
 
-		~Entity();
+		~Entity() {};
 
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
@@ -61,7 +61,7 @@ namespace DAGGer
 		bool operator==(const Entity& other) const { return m_EntityHandle == other.m_EntityHandle && other.m_Scene; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
 
-		const UUID GetUUID() { return GetComponent<DAGGer::IDComponent>().ID; };
+		UUID GetUUID() { return GetComponent<IDComponent>().ID; };
 		const UUID GetSceneUUID() const { return m_Scene->GetUUID(); };
 	private:
 		Entity(const std::string& name);

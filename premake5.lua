@@ -44,6 +44,7 @@ workspace "DAGGer"
 	
 	group "Dependencies"
 		include "vendor/premake"
+		include "DAGGer/vendor/box2d"
 		include "DAGGer/vendor/glfw"
 		include "DAGGer/vendor/Glad"
 		include "DAGGer/vendor/imgui"

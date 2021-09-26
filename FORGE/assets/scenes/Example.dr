@@ -1,6 +1,13 @@
 Scene: Untitled
 Entities:
-  - Entity: 12837192831273
+  - Entity: 4429069257333376198
+    TagComponent:
+      Tag: Entity
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+  - Entity: 748063171371712695
     TagComponent:
       Tag: Red Square
     TransformComponent:
@@ -9,7 +16,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 0, 0, 1]
-  - Entity: 12837192831273
+  - Entity: 2149239879233693927
     TagComponent:
       Tag: Green Square
     TransformComponent:
@@ -18,7 +25,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 1, 0, 1]
-  - Entity: 12837192831273
+  - Entity: 805048111023373325
     TagComponent:
       Tag: Camera A
     TransformComponent:
@@ -36,7 +43,7 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 12837192831273
+  - Entity: 13197447714997704631
     TagComponent:
       Tag: Camera B
     TransformComponent:

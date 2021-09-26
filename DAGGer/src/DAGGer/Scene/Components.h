@@ -6,16 +6,15 @@
 ////////////////////////////////
 #pragma once
 
+#include "DAGGer/Core/UUID.h"
+#include "DAGGer/Scene/SceneCamera.h"
+#include "DAGGer/Renderer/Texture.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
-
-#include "DAGGer/Core/UUID.h"
-#include "DAGGer/Scene/SceneCamera.h"
-
-#include "DAGGer/Renderer/Texture.h"
 
 namespace DAGGer
 {
@@ -23,6 +22,9 @@ namespace DAGGer
 	struct IDComponent
 	{
 		UUID ID = 0;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent& other) = default;
 	};
 	//  -----------------------------  TAG COMPONENT  -----------------------------  //
 	struct TagComponent
@@ -78,6 +80,22 @@ namespace DAGGer
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
+	//  -----------------------------  NATIVE SCRIPT COMPONENT  -----------------------------  //
+	class ScriptableEntity;	//	Forward declaration
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		ScriptableEntity* (*InstantiateScript)();
+		void (*DestroyScript)(NativeScriptComponent*);
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
+		}
+	};
 	//  -----------------------------  SCRIPT COMPONENT  -----------------------------  //
 	struct ScriptComponent
 	{
@@ -89,5 +107,38 @@ namespace DAGGer
 			: ModuleName(moduleName) {}
 	};
 
+	//	Physics
+
+	//  -----------------------------  RIGID BODY 2D COMPONENT  -----------------------------  //
+	struct RigidBody2DComponent
+	{
+		enum class BodyType { Static = 0, Dynamic, Kinematic};
+		BodyType Type = BodyType::Static;
+		bool FixedRotation = false;
+
+		//	Storage for runtime
+		void* RuntimeBody = nullptr;
+
+		RigidBody2DComponent() = default;
+		RigidBody2DComponent(const RigidBody2DComponent& other) = default;
+	};
+	//  -----------------------------  BOX COLLIDER 2D COMPONENT  -----------------------------  //
+	struct BoxCollider2DComponent
+	{
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size   = { 0.5f, 0.5f };
+
+		// TODO: move into physics material
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f; // Threshhold when objects stop bouncing
+
+		//	Storage for runtime
+		void* RuntimeFixture = nullptr;
+
+		BoxCollider2DComponent() = default;
+		BoxCollider2DComponent(const BoxCollider2DComponent& other) = default;
+	};
 
 }	//	END namespace DAGGer

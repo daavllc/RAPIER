@@ -53,7 +53,7 @@ namespace DAGGer
 		Entity m_HoveredEntity;
 
 		bool m_PrimaryCamera = true;
-		bool m_EnableVSync = true;
+		bool m_EnableVSync = false;
 
 		EditorCamera m_EditorCamera;
 

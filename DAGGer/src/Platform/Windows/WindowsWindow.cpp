@@ -197,7 +197,7 @@ namespace DAGGer
 		m_Data.VSync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+	bool WindowsWindow::IsVSyncEnabled() const
 	{
 		return m_Data.VSync;
 	}
