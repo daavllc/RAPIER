@@ -3,7 +3,7 @@
 
 #include "Log.h"
 
-#define DAGGer_BUILD_ID "v0.2.1a"
+#include "conf/Dr_VER.h"	//	contains DAGGer_BUILD_ID
 
 namespace DAGGer
 {

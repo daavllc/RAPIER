@@ -1,4 +1,4 @@
-# DAGGer v0.1.6a
+# DAGGer v0.2.2a
 #### DA Gordian Graphics Engine Reimagined
 This is supposed to serve as an easy to use C++17 graphics/game engine. I'm not writting the engine with the intent for other people use use, however feel free to use, modify, and create whatever you want with it!
 
@@ -36,7 +36,7 @@ Project Name | Purpose
 FORGE | DAGGer graphical scene editor
 SandboxApp | DAGGer application template
 DAGGer | The actual engine itself
-			
+
 
 ## Libraries:
 #### DAALS (DA Asset Library Systemics)

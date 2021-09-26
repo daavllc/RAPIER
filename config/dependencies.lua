@@ -16,6 +16,7 @@ IncludeDir["shaderc"]     = "%{wks.location}/DAGGer/vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "%{wks.location}/DAGGer/vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"]   = "%{VULKAN_SDK}/Include"
 
+IncludeDir["Config"]      = "%{wks.location}/config/include"
 IncludeDir["DAALS"]       = "%{wks.location}/DAGGer/vendor/DAALS/include"
 
 LibraryDir = {}

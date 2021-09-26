@@ -10,7 +10,9 @@ project "FORGE"
 	files
 	{
 		"src/**.h",
-		"src/**.cpp"
+		"src/**.cpp",
+		
+		"%{IncludeDir.Config}/conf/Fe_VER.h"
 	}
 	
 	includedirs
@@ -23,6 +25,7 @@ project "FORGE"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.DAALS}",
 
+		"%{IncludeDir.Config}",
 		"%{wks.location}"
 	}
 	

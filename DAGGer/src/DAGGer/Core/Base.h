@@ -70,6 +70,7 @@ Let's start off in chronological order:
 #include "DAGGer/Core/PlatformDetection.h"
 
 #include "CoreConfig.h" //  includes DAGGer defines
+#include "Log.h"
 #include "Assert.h"
 #include "Ref.h"
 

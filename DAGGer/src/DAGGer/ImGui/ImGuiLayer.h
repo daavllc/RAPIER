@@ -32,6 +32,7 @@ namespace DAGGer
 		void SetDarkThemeColors();
 	private:
 		bool m_BlockEvents = true;
+		float m_FontSize = 18.0f;
 
 	};	//	END class ImGuiLayer
 

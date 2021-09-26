@@ -1,7 +1,8 @@
 #pragma once
 
 #include <DAGGer.h>
-#include "FORGE/src/Panels/SceneHierarchyPanel.h"
+#include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 #include "DAGGer/Renderer/EditorCamera.h"
 
@@ -26,9 +27,19 @@ namespace DAGGer
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void SaveScene();
 		void SaveSceneAs();
+
+		void OnScenePlay();
+		void OnSceneStop();
+
+		//	UI Panels
+		void UI_Toolbar();
 	private:
+		float m_Time = 0.0f;
+		int m_FrameCount = 0;
+		float m_AverageFrameTime = 0.0f;
 		OrthographicCameraController m_CameraController;
 
 		// TEMPORARY
@@ -55,11 +66,22 @@ namespace DAGGer
 
 		int m_GizmoType = -1;
 
+		enum class SceneState
+		{
+			Stop = 0, Play = 1,
+			Edit = 2, Simulate = 3
+		};
+		SceneState m_SceneState = SceneState::Edit;
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 
 
 		std::string m_FilePath;	//	Remeber filepath for Ctrl+S (Save)
+
+		//	Editor Resources
+		Ref<Texture2D> m_IconPlay, m_IconStop;
 	};
 
 }	//	END namespace DAGGer

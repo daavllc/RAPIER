@@ -22,7 +22,9 @@ project "DAGGer"
 		"%{IncludeDir.glm}/**.inl",
 		
 		"%{IncludeDir.ImGuizmo}/**.h",
-		"%{IncludeDir.ImGuizmo}/**.cpp"
+		"%{IncludeDir.ImGuizmo}/**.cpp",
+		
+		"%{IncludeDir.Config}/conf/Dr_VER.h"
 	}
 	
 	defines
@@ -45,6 +47,7 @@ project "DAGGer"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}",
 
+		"%{IncludeDir.Config}",
 		"%{wks.location}"
 	}
 

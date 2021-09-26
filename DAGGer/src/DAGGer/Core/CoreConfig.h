@@ -5,8 +5,6 @@
 //  This file serves as the hub for DAGGer definitions
 /////////////////////////////
 /*
-	SCOPE/REF....DEFINES
-	ASSERT.......DEFINES
 	PROFILING....DEFINES
 	LOGGING......DEFINES
 

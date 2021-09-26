@@ -1,17 +1,15 @@
 //------------------------------------------------------------------------------------------------------------
 //----====================================================================================================~~~~
-//----=                                                                                                  =----
-//----=               MMMM        MMMM        MMMM        MMMM                                           =----
-//----=               M   M      M    M      M           M                                               =----
-//----=               M   M      M    M      M           M           MMMM      MMM                       =----
-//----=               M   M      MMMMMM      M  MMM      M  MMM      M         M  M                      =----
-//----=               M   M      M    M      M    M      M    M      MMM       MMM                       =----
-//----=               M   M      M    M      M    M      M    M      M         M  M                      =----
-//----=               MMMM       M    M       MMMM        MMMM       MMMM      M  M                      =---- 
+//----=                _____          __         ______       ______                                     =----
+//----=               |  __ \        /  \       / ____ \     / ____ \                                    =----
+//----=               | |  \ \      / /\ \     | /    \_\   | /    \_\     ____    _  ___                =----
+//----=               | |   \ \    / /  \ \    | |   ___    | |   ___     / __ \  | |/ __\               =----
+//----=               | |   | |   | /____\ |   | |  |_  |   | |  |_  |   | /__\ \ |   /                  =----
+//----=               | |   / /   |  ____  |   | |    | |   | |    | |   |  ____/ |  /                   =----
+//----=               | |__/ /    | |    | |    \ \___| |    \ \___| |   | |___   | |                    =----
+//----=               |_____/     |_|    |_|     \_____/      \_____/     \____|  |_|                    =----
 //----=                                                                                                  =----
 //----====================================================================================================~~~~
-//----=----------------------------------------  version 0.2.1a  ----------------------------------------=----
-//----====================================================================================================----
 // Author: Anonoei (https://github.com/anonoei)
 //	License : GPLv3
 //	Language: C++17
@@ -29,6 +27,7 @@
 #include "DAGGer/Core/Application.h"		//	Abstracted class for applications
 #include "DAGGer/Core/Layer.h"				//	Class for managing layers
 #include "DAGGer/Core/Log.h"				//	Class for accessing logging functions
+#include "DAGGer/Core/Assert.h"				//	Defines to DAGGer Asserts
 
 #include "DAGGer/Core/Timestep.h"			//	Allows updates based of real time instead of frame time
 //  --------------  Input headers  --------------  //
@@ -43,6 +42,7 @@
 //  --------------  Scene headers  --------------  //
 #include "DAGGer/Scene/Scene.h"				//	Scene class for the ECS
 #include "DAGGer/Scene/Entity.h"			//	Entity class for the ECS
+// #include "DAGGer/Scene/ScriptableEntity.h"
 #include "DAGGer/Scene/Components.h"		//	Struct for components
 // ----------------------------------------------  //
 
@@ -55,8 +55,8 @@
 #include "DAGGer/Renderer/Shader.h"			//	Abstracted class for shaders
 #include "DAGGer/Renderer/Framebuffer.h"	//	Abstracted class for Framebuffers
 #include "DAGGer/Renderer/Texture.h"		//	Abstracted class for textures
-#include "DAGGer/Renderer/SubTexture2D.h"	//	Abstracted class for 2D SubTextures
 #include "DAGGer/Renderer/VertexArray.h"	//	Abstracted class for Vertex Arrays
+#include "DAGGer/Renderer/SubTexture2D.h"	//	Abstracted class for 2D SubTextures
 
 #include "DAGGer/Renderer/OrthographicCamera.h"	//	Class for implementing a camera
 //  ------------------------------------------------  //
