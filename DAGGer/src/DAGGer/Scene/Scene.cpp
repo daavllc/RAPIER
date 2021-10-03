@@ -21,6 +21,7 @@
 #include <box2d/b2_body.h>
 #include <box2d/b2_fixture.h>
 #include <box2d/b2_polygon_shape.h>
+#include <box2d/b2_circle_shape.h>
 
 namespace DAGGer
 {
@@ -75,17 +76,9 @@ namespace DAGGer
 		// Update scripts
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
-				{
-					// TODO: Move to Scene::OnScenePlay
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
-
-					nsc.Instance->OnUpdate(ts);
-				});
+			{
+				nsc.Instance->OnUpdate(ts);
+			});
 		}
 
 		//	Physics
@@ -168,6 +161,17 @@ namespace DAGGer
 
 	void Scene::OnRuntimeStart()
 	{
+		{	//	Initialize Scripts
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			{
+				if (!nsc.Instance)
+				{
+					nsc.Instance = nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.Instance->OnCreate();
+				}
+			});
+		}
 		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view)
@@ -200,6 +204,21 @@ namespace DAGGer
 				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
 				body->CreateFixture(&fixtureDef);
 			}
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2CircleShape circleShape;
+				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.density = cc2d.Density;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				body->CreateFixture(&fixtureDef);
+			}
 		}
 
 		m_IsPlaying = true;
@@ -207,6 +226,12 @@ namespace DAGGer
 
 	void Scene::OnRuntimeStop()
 	{
+		{	//	Stop Scripts
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			{
+				nsc.Instance = nullptr;
+			});
+		}
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
 		m_IsPlaying = false;
@@ -296,25 +321,81 @@ namespace DAGGer
 	void Scene::DuplicateEntity(Entity entity)
 	{
 		Entity newEntity;
+		std::string name = entity.GetName();
 		if (entity.HasComponent<TagComponent>())
-			newEntity = CreateEntity(entity.GetComponent<TagComponent>().Tag);
+			newEntity = CreateEntity(name);
 		else
 			newEntity = CreateEntity();
 
 		CopyComponentIfExists<TransformComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
-		//CopyComponentIfExists<MeshComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
-		//CopyComponentIfExists<DirectionalLightComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
-		//CopyComponentIfExists<SkyLightComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
 		CopyComponentIfExists<NativeScriptComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
-		//CopyComponentIfExists<ScriptComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
 		CopyComponentIfExists<CameraComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
 		CopyComponentIfExists<SpriteRendererComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
 		CopyComponentIfExists<RigidBody2DComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
 		CopyComponentIfExists<BoxCollider2DComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
-		//CopyComponentIfExists<CircleCollider2DComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
+		CopyComponentIfExists<CircleCollider2DComponent>(newEntity.m_EntityHandle, entity.m_EntityHandle, m_Registry);
+	}
+
+	Entity Scene::FindEntityByTag(const std::string& tag)
+	{
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view)
+		{
+			const auto& candidate = view.get<TagComponent>(entity).Tag;
+			if (candidate == tag)
+				return Entity(entity, this);
+		}
+
+		Dr_CORE_ASSERT(false, "Entity not found by tag!");
+		return Entity{};
+	}
+
+	Entity Scene::FindEntityByUUID(UUID id)
+	{
+		auto view = m_Registry.view<IDComponent>();
+		for (auto entity : view)
+		{
+			auto& idComponent = m_Registry.get<IDComponent>(entity);
+			if (idComponent.ID == id)
+				return Entity(entity, this);
+		}
+
+		Dr_CORE_ASSERT(false, "Entity not found by id!");
+		return Entity{};
+	}
+
+	//	Copy to runtime
+	void Scene::CopyTo(Ref<Scene>& target)
+	{
+
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		auto idComponents = m_Registry.view<IDComponent>();
+		for (auto entity : idComponents)
+		{
+			auto uuid = m_Registry.get<IDComponent>(entity).ID;
+			const auto& name = m_Registry.get<TagComponent>(entity).Tag;
+			Entity e = target->CreateEntityWithUUID(uuid, name);
+			enttMap[uuid] = e.m_EntityHandle;
+		}
+
+		CopyComponent<TransformComponent>(target->m_Registry, m_Registry, enttMap);
+		CopyComponent<NativeScriptComponent>(target->m_Registry, m_Registry, enttMap);
+		CopyComponent<CameraComponent>(target->m_Registry, m_Registry, enttMap);
+		CopyComponent<SpriteRendererComponent>(target->m_Registry, m_Registry, enttMap);
+		CopyComponent<RigidBody2DComponent>(target->m_Registry, m_Registry, enttMap);
+		CopyComponent<BoxCollider2DComponent>(target->m_Registry, m_Registry, enttMap);
+		CopyComponent<CircleCollider2DComponent>(target->m_Registry, m_Registry, enttMap);
 	}
 
 
+	Ref<Scene> Scene::GetScene(UUID uuid)
+	{
+		if (s_ActiveScenes.find(uuid) != s_ActiveScenes.end())
+			return s_ActiveScenes.at(uuid);
+
+		return {};
+	}
 
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
@@ -329,6 +410,11 @@ namespace DAGGer
 	//  -----------------------------  TAG COMPONENT  -----------------------------  //
 	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
+	{
+	}
+	//  -----------------------------  RELATIONSHIP COMPONENT  -----------------------------  //
+	template<>
+	void Scene::OnComponentAdded<RelationshipComponent>(Entity entity, RelationshipComponent& component)
 	{
 	}
 	//  -----------------------------  TRANSFORM COMPONENT  -----------------------------  //
@@ -368,85 +454,10 @@ namespace DAGGer
 	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component)
 	{
 	}
-
-	Entity Scene::FindEntityByTag(const std::string& tag)
+	//  -----------------------------  CIRCLE COLLIDER 2D COMPONENT  -----------------------------  //
+	template<>
+	void Scene::OnComponentAdded<CircleCollider2DComponent>(Entity entity, CircleCollider2DComponent& component)
 	{
-		auto view = m_Registry.view<TagComponent>();
-		for (auto entity : view)
-		{
-			const auto& candidate = view.get<TagComponent>(entity).Tag;
-			if (candidate == tag)
-				return Entity(entity, this);
-		}
-
-		Dr_CORE_ASSERT(false, "Entity not found by tag!");
-		return Entity{};
 	}
-
-	Entity Scene::FindEntityByUUID(UUID id)
-	{
-		auto view = m_Registry.view<IDComponent>();
-		for (auto entity : view)
-		{
-			auto& idComponent = m_Registry.get<IDComponent>(entity);
-			if (idComponent.ID == id)
-				return Entity(entity, this);
-		}
-
-		Dr_CORE_ASSERT(false, "Entity not found by id!");
-		return Entity{};
-	}
-
-	//	Copy to runtime
-	void Scene::CopyTo(Ref<Scene>& target)
-	{
-		// Environment
-		//target->m_Light = m_Light;
-		//target->m_LightMultiplier = m_LightMultiplier;
-		//
-		//target->m_Environment = m_Environment;
-		//target->m_SkyboxTexture = m_SkyboxTexture;
-		//target->m_SkyboxMaterial = m_SkyboxMaterial;
-		//target->m_SkyboxLod = m_SkyboxLod;
-
-		std::unordered_map<UUID, entt::entity> enttMap;
-		auto idComponents = m_Registry.view<IDComponent>();
-		for (auto entity : idComponents)
-		{
-			auto uuid = m_Registry.get<IDComponent>(entity).ID;
-			Entity e = target->CreateEntityWithUUID(uuid, "");
-			enttMap[uuid] = e.m_EntityHandle;
-		}
-
-		CopyComponent<TagComponent>(target->m_Registry, m_Registry, enttMap);
-		CopyComponent<TransformComponent>(target->m_Registry, m_Registry, enttMap);
-		//CopyComponent<MeshComponent>(target->m_Registry, m_Registry, enttMap);
-		//CopyComponent<DirectionalLightComponent>(target->m_Registry, m_Registry, enttMap);
-		//CopyComponent<SkyLightComponent>(target->m_Registry, m_Registry, enttMap);
-		CopyComponent<NativeScriptComponent>(target->m_Registry, m_Registry, enttMap);
-		//CopyComponent<ScriptComponent>(target->m_Registry, m_Registry, enttMap);
-		CopyComponent<CameraComponent>(target->m_Registry, m_Registry, enttMap);
-		CopyComponent<SpriteRendererComponent>(target->m_Registry, m_Registry, enttMap);
-		CopyComponent<RigidBody2DComponent>(target->m_Registry, m_Registry, enttMap);
-		CopyComponent<BoxCollider2DComponent>(target->m_Registry, m_Registry, enttMap);
-		//CopyComponent<CircleCollider2DComponent>(target->m_Registry, m_Registry, enttMap);
-
-		//const auto& entityInstanceMap = ScriptEngine::GetEntityInstanceMap();
-		//if (entityInstanceMap.find(target->GetUUID()) != entityInstanceMap.end())
-		//	ScriptEngine::CopyEntityScriptData(target->GetUUID(), m_SceneID);
-		//
-		//target->SetPhysics2DGravity(GetPhysics2DGravity());
-	}
-
-
-	Ref<Scene> Scene::GetScene(UUID uuid)
-	{
-		if (s_ActiveScenes.find(uuid) != s_ActiveScenes.end())
-			return s_ActiveScenes.at(uuid);
-
-		return {};
-	}
-
-
 
 }	//	END namespace DAGGer

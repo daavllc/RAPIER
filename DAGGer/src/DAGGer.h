@@ -42,7 +42,7 @@
 //  --------------  Scene headers  --------------  //
 #include "DAGGer/Scene/Scene.h"				//	Scene class for the ECS
 #include "DAGGer/Scene/Entity.h"			//	Entity class for the ECS
-// #include "DAGGer/Scene/ScriptableEntity.h"
+#include "DAGGer/Scene/ScriptableEntity.h"	//	Native scriptable entity class
 #include "DAGGer/Scene/Components.h"		//	Struct for components
 // ----------------------------------------------  //
 
@@ -50,6 +50,7 @@
 #include "DAGGer/Renderer/Renderer.h"		//	User-end 3D Render commands
 #include "DAGGer/Renderer/Renderer2D.h"		//	User-end 2D Render commands
 #include "DAGGer/Renderer/RenderCommand.h"	//	Backend DAGGer Render commands
+#include "DAGGer/Renderer/RendererCapabilities.h"	//	Renderer Capabilities
 
 #include "DAGGer/Renderer/Buffer.h"			//	Abstracted class for Vertex and Index buffers
 #include "DAGGer/Renderer/Shader.h"			//	Abstracted class for shaders

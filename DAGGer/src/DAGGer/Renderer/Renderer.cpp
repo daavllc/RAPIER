@@ -11,7 +11,7 @@
 
 namespace DAGGer
 {
-	
+	static RendererAPI* s_RendererAPI = nullptr;
 
 	void Renderer::Init()
 	{

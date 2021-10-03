@@ -1,10 +1,12 @@
 #pragma once
 
-#include <DAGGer.h>
+#include "DAGGer.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
 
 #include "DAGGer/Renderer/EditorCamera.h"
+
+#include <filesystem>
 
 namespace DAGGer
 {
@@ -21,7 +23,7 @@ namespace DAGGer
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 	private:
-		void UpdateWindowTitle(const std::string& sceneName);
+		void UpdateWindowTitle();
 
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
@@ -31,11 +33,16 @@ namespace DAGGer
 		void SaveScene();
 		void SaveSceneAs();
 
+		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+
 		void OnScenePlay();
 		void OnSceneStop();
 
+		void OnDuplicateEntity();
+
 		//	UI Panels
 		void UI_Toolbar();
+		void Titlebar();
 	private:
 		float m_Time = 0.0f;
 		int m_FrameCount = 0;
@@ -46,7 +53,7 @@ namespace DAGGer
 		Ref<VertexArray> m_SquareVA;
 		Ref<Framebuffer> m_Framebuffer;
 
-		Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_EditorScene, m_ActiveScene;
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
@@ -78,10 +85,11 @@ namespace DAGGer
 		ContentBrowserPanel m_ContentBrowserPanel;
 
 
-		std::string m_FilePath;	//	Remeber filepath for Ctrl+S (Save)
+		std::filesystem::path m_EditorScenePath;	//	Remeber filepath for Ctrl+S (Save)
 
 		//	Editor Resources
-		Ref<Texture2D> m_IconPlay, m_IconStop;
+		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStop;
+		Ref<Texture2D> m_IconMinimize, m_IconMaximize, m_IconClose;
 	};
 
 }	//	END namespace DAGGer

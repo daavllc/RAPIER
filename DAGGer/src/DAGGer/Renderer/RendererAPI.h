@@ -6,9 +6,10 @@
 ////////////////////////////////
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "DAGGer/Renderer/VertexArray.h"
+#include "DAGGer/Renderer/RendererCapabilities.h"
+
+#include <glm/glm.hpp>
 
 namespace DAGGer
 {

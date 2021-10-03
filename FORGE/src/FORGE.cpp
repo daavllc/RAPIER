@@ -30,8 +30,8 @@ namespace DAGGer
 	class FORGE : public Application
 	{
 	public:
-		FORGE(ApplicationCommandLineArgs args)
-			: Application("DAGGer FORGE", args, false)
+		FORGE(const DAGGer::ApplicationSpecification& specification, ApplicationCommandLineArgs args)
+			: Application(specification)
 		{
 			Dr_INFO("DAGGer FORGE {}", FORGE_BUILD_ID);
 			PushLayer(new EditorLayer());
@@ -44,7 +44,17 @@ namespace DAGGer
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new FORGE(args);
+		DAGGer::ApplicationSpecification specification;
+		specification.Name = "FORGE";
+		specification.WindowWidth = 1600;
+		specification.WindowHeight = 900;
+		specification.StartMaximized = true;
+		specification.VSync = true;
+		specification.Decorations = true;
+		specification.EnableImGui = true;
+
+
+		return new FORGE(specification, args);
 	}	//	END CreateApplication
 
 }	//	END namespace DAGGer

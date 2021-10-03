@@ -66,13 +66,13 @@ Let's start off in chronological order:
 #pragma once
 
 #include <memory>
+#include "Ref.h"
 
 #include "DAGGer/Core/PlatformDetection.h"
 
 #include "CoreConfig.h" //  includes DAGGer defines
 #include "Log.h"
 #include "Assert.h"
-#include "Ref.h"
 
 namespace DAGGer
 {
@@ -80,10 +80,11 @@ namespace DAGGer
 	void ShutdownCore();
 }	//	END namespace DAGGer
 
+#ifndef Dr_PLATFORM_WINDOWS
+	#error DAGGer only supports Windows!
+#endif
+
 #define Dr_RENDERER_OPENGL
-
-// Platform detection
-
 
 #ifdef Dr_DEBUG
     #if defined(Dr_PLATFORM_WINDOWS)

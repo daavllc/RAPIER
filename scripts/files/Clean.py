@@ -43,7 +43,7 @@ def DeleteVS():
     if os.path.exists('{}/{}'.format(DirBegin, ".vs")):
         if DelPause:
             UsrInput = input("Remove .vs configurations? (Y/n) > ")
-            if not ['n','N'] in UsrInput:
+            if not 'n' in UsrInput:
                 DeleteFolder(DirBegin, ".vs")
                 Count += 1
         else:

@@ -11,16 +11,16 @@ namespace DAGGer {
 
 	void AssetTypes::Init()
 	{
-		s_Types["hsc"]   = AssetType::Scene;
-		s_Types["fbx"]   = AssetType::Mesh;
-		s_Types["obj"]   = AssetType::Mesh;
+		s_Types["hsc"] = AssetType::Scene;
+		s_Types["fbx"] = AssetType::Mesh;
+		s_Types["obj"] = AssetType::Mesh;
 		s_Types["blend"] = AssetType::Mesh;
-		s_Types["png"]   = AssetType::Texture;
-		s_Types["hdr"]   = AssetType::EnvMap;
-		s_Types["hpm"]   = AssetType::PhysicsMat;
-		s_Types["wav"]   = AssetType::Audio;
-		s_Types["ogg"]   = AssetType::Audio;
-		s_Types["cs"]    = AssetType::Script;
+		s_Types["png"] = AssetType::Texture;
+		s_Types["hdr"] = AssetType::EnvMap;
+		s_Types["hpm"] = AssetType::PhysicsMat;
+		s_Types["wav"] = AssetType::Audio;
+		s_Types["ogg"] = AssetType::Audio;
+		s_Types["cs"] = AssetType::Script;
 	}
 
 	size_t AssetTypes::GetAssetTypeID(const std::string& extension)
@@ -191,7 +191,7 @@ namespace DAGGer {
 
 		if (!searchPath.empty())
 		{
-			for (const auto&[key, asset] : s_LoadedAssets)
+			for (const auto& [key, asset] : s_LoadedAssets)
 			{
 				if (asset->FileName.find(query) != std::string::npos && asset->FilePath.find(searchPath) != std::string::npos)
 				{
@@ -210,7 +210,7 @@ namespace DAGGer {
 
 	bool AssetManager::IsDirectory(const std::string& filepath)
 	{
-		for (auto&[handle, asset] : s_LoadedAssets)
+		for (auto& [handle, asset] : s_LoadedAssets)
 		{
 			if (asset->Type == AssetType::Directory && asset->FilePath == filepath)
 				return true;
@@ -221,7 +221,7 @@ namespace DAGGer {
 
 	AssetHandle AssetManager::GetAssetIDForFile(const std::string& filepath)
 	{
-		for (auto&[id, asset] : s_LoadedAssets)
+		for (auto& [id, asset] : s_LoadedAssets)
 		{
 			if (asset->FilePath == filepath)
 				return id;

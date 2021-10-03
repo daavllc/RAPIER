@@ -1,5 +1,5 @@
 #include "drpch.h"
-#include "DAGGer/Utils/FileSystem.h"
+#include "DAGGer/Utilities/FileSystem.h"
 #include "DAGGer/Asset/AssetManager.h"
 
 #include <Windows.h>
@@ -227,7 +227,5 @@ namespace DAGGer
 
 		return 0;
 	}
-
-
 
 }	//	END namespace DAGGer

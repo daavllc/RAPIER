@@ -1,16 +1,25 @@
 #include "EditorLayer.h"
-#include "ImGui/imgui.h"
+#include "conf/Fe_VER.h" // contains FORGE_BUILD_ID
+
+#include "DAGGer/Scene/SceneSerializer.h"
+#include "DAGGer/Utilities/PlatformUtils.h"
+#include "DAGGer/Math/Math.h"
+
+#include "DAGGer/Scene/ScriptableEntity.h"
+
+#include <imgui/imgui.h>
+#include <ImGuizmo.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "DAGGer/Scene/SceneSerializer.h"
-
-#include "DAGGer/Utils/PlatformUtils.h"
-
-#include <ImGuizmo.h>
-
-#include "DAGGer/Math/Math.h"
+//	Box2D
+#include <box2d/b2_body.h>
+#include <box2d/b2_polygon_shape.h>
+#include <box2d/b2_fixture.h>
+#include <box2d/b2_contact.h>
+#include <box2d/b2_world.h>
+#include <box2d/b2_world_callbacks.h>
 
 namespace DAGGer
 {
@@ -25,9 +34,15 @@ namespace DAGGer
 	{
 		Dr_PROFILE_FUNCTION();
 
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
 		m_IconPlay = Texture2D::Create("Resources/Icons/PlayButton.png");
+		m_IconPause = Texture2D::Create("Resources/Icons/PauseButton.png");
 		m_IconStop = Texture2D::Create("Resources/Icons/StopButton.png");
+
+		m_IconMinimize = Texture2D::Create("Resources/Icons/MinimizeButton.png");
+		m_IconMaximize = Texture2D::Create("Resources/Icons/MaximizeButton.png");
+		m_IconClose = Texture2D::Create("Resources/Icons/CloseButton.png");
+
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
@@ -35,7 +50,8 @@ namespace DAGGer
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
-		m_ActiveScene = Ref<Scene>::Create();
+		m_EditorScene = Ref<Scene>::Create();
+		m_ActiveScene = m_EditorScene;
 
 		auto commandLineArgs = Application::Get().GetCommandLineArgs();
 		if (commandLineArgs.Count > 1)
@@ -46,53 +62,7 @@ namespace DAGGer
 		}
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-#if 0
-		// Entity
-
-		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
-		redSquare.AddComponent<SpriteRendererComponent>(DrColor(1.0f, 0.0f, 0.0f, 1.0f));
-
-		auto square = m_ActiveScene->CreateEntity("Green Square");
-		square.AddComponent<SpriteRendererComponent>(DrColor(0.0f, 1.0f, 0.0f, 1.0f));
-
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
-		m_CameraEntity.AddComponent<CameraComponent>();
-
-		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
-		m_SecondCamera.AddComponent<CameraComponent>().Primary = false;
-
-		class CameraController : public ScriptableEntity
-		{
-		public:
-			void OnCreate()
-			{
-			}
-
-			void OnDestroy()
-			{
-			}
-
-			void OnUpdate(Timestep ts)
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
-
-				if (Input::IsKeyPressed(KeyCode::A))
-					translation.x -= speed * ts;
-				if (Input::IsKeyPressed(KeyCode::D))
-					translation.x += speed * ts;
-				if (Input::IsKeyPressed(KeyCode::W))
-					translation.y += speed * ts;
-				if (Input::IsKeyPressed(KeyCode::S))
-					translation.y -= speed * ts;
-			}
-		};
-
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-#endif
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		UpdateWindowTitle();
 	}
 
 	void EditorLayer::OnDetach()
@@ -154,7 +124,6 @@ namespace DAGGer
 			}
 		}
 		
-
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= m_ViewportBounds[0].x;
 		my -= m_ViewportBounds[0].y;
@@ -269,9 +238,10 @@ namespace DAGGer
 		m_ContentBrowserPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
-		ImGui::Text("FrameTime: %.2fms ", m_AverageFrameTime);
+		ImGui::Text("FrameTime: %.2fms | FPS: %d", m_AverageFrameTime, (int)(1000 / m_AverageFrameTime));
 		ImGui::SameLine();
-		ImGui::Text("FPS: %d", (int)(1000 / m_AverageFrameTime));
+		ImGui::Checkbox("VSync", &m_EnableVSync);
+		Application::Get().GetWindow().SetVSync(m_EnableVSync);
 
 		std::string name = "None";
 		if (m_HoveredEntity)
@@ -280,8 +250,6 @@ namespace DAGGer
 
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
-		ImGui::Checkbox("VSync", &m_EnableVSync);
-		Application::Get().GetWindow().SetVSync(m_EnableVSync);
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
@@ -406,6 +374,13 @@ namespace DAGGer
 		ImGui::End();
 	}
 
+	void EditorLayer::Titlebar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+	}
+
 	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
@@ -435,53 +410,74 @@ namespace DAGGer
 		bool shift = (Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift));
 		switch (e.GetKeyCode())
 		{
-		case Key::N:	//	Ctrl+N
-		{
-			if (control)
-				NewScene();
-			break;
+			case Key::N:	//	Ctrl+N
+			{
+				if (control)
+					NewScene();
+				break;
+			}
+			case Key::O:	//	Ctrl+O
+			{
+				if (control)
+					OpenScene();
+				break;
+			}
+			case Key::S:	//	Ctrl+S
+			{
+				if (control && shift)
+					SaveSceneAs();
+				else if (control)
+					SaveScene();
+				break;
+			}
+			case Key::D:
+			{
+				if (control)
+					OnDuplicateEntity();
+			}
 		}
-		case Key::O:	//	Ctrl+O
+		if (m_SceneState == SceneState::Edit)
 		{
-			if (control)
-				OpenScene();
-			break;
-		}
-		case Key::S:	//	Ctrl+S
-		{
-			if (control && shift)
-				SaveSceneAs();
-			else if (control)
-				SaveScene();
-			break;
-		}
-
-		//	Gizmos
-		case Key::Q:
-			if (!ImGuizmo::IsUsing())
-				m_GizmoType = -1;
-			break;
-		case Key::W:
-			if (!ImGuizmo::IsUsing())
-				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case Key::R:
-			if (!ImGuizmo::IsUsing())
-				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case Key::E:
-			if (!ImGuizmo::IsUsing())
-				m_GizmoType = ImGuizmo::OPERATION::SCALE;
-			break;
-
+			switch (e.GetKeyCode())
+			{	//	Gizmos
+				case Key::Q:
+				{
+					if (!ImGuizmo::IsUsing())
+						m_GizmoType = -1;
+					break;
+				}
+				case Key::W:
+				{
+					if (!ImGuizmo::IsUsing())
+						m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+					break;
+				}
+				case Key::R:
+				{
+					if (!ImGuizmo::IsUsing())
+						m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+					break;
+				}
+				case Key::E:
+				{
+					if (!ImGuizmo::IsUsing())
+						m_GizmoType = ImGuizmo::OPERATION::SCALE;
+					break;
+				}
+			}
 		}
 	}
 
 	void EditorLayer::NewScene()
 	{
+		if (m_SceneState != SceneState::Edit)
+			OnSceneStop();
 		m_ActiveScene = Ref<Scene>::Create();
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_EditorScenePath = std::filesystem::path();
+		UpdateWindowTitle();
 	}
 	void EditorLayer::OpenScene()
 	{
@@ -491,6 +487,9 @@ namespace DAGGer
 	}
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
+		if (m_SceneState != SceneState::Edit)
+			OnSceneStop();
+
 		if (path.extension().string() != ".dr")
 		{
 			Dr_WARN("Could not load {0} - not a scene file", path.filename().string());
@@ -501,22 +500,21 @@ namespace DAGGer
 		SceneSerializer serializer(newScene);
 		if (serializer.Deserialize(path.string()))
 		{
-			m_ActiveScene = newScene;
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_EditorScene = newScene;
+			m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+			m_ActiveScene = m_EditorScene;
+			m_EditorScenePath = path;
 		}
+		UpdateWindowTitle();
 	}
 	void EditorLayer::SaveScene()
 	{
-		if (!m_FilePath.empty())
-		{
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(m_FilePath);
-		}
+		if (!m_EditorScenePath.empty())
+			SerializeScene(m_ActiveScene, m_EditorScenePath);
 		else
-		{
 			SaveSceneAs();
-		}
 	}
 	void EditorLayer::SaveSceneAs()
 	{
@@ -524,21 +522,54 @@ namespace DAGGer
 
 		if (!filepath.empty())
 		{
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(filepath);
-			m_FilePath = filepath;
+			SerializeScene(m_ActiveScene, filepath);
+			m_EditorScenePath = filepath;
 		}
+	}
+
+	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneSerializer serializer(m_EditorScene);
+		serializer.Serialize(path.string());
 	}
 
 	void EditorLayer::OnScenePlay()
 	{
 		m_SceneState = SceneState::Play;
+
+		m_ActiveScene = Ref<Scene>::Create();
+		m_EditorScene->CopyTo(m_ActiveScene);
 		m_ActiveScene->OnRuntimeStart();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_GizmoType = -1;
 	}
 	void EditorLayer::OnSceneStop()
 	{
 		m_SceneState = SceneState::Edit;
 		m_ActiveScene->OnRuntimeStop();
+
+		m_SceneHierarchyPanel.SetContext(m_EditorScene);
+		m_ActiveScene = m_EditorScene;
+	}
+
+	void EditorLayer::OnDuplicateEntity()
+	{
+		if (m_SceneState != SceneState::Edit)
+			return;
+
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity)
+			m_EditorScene->DuplicateEntity(selectedEntity);
+	}
+
+	void EditorLayer::UpdateWindowTitle()
+	{
+		std::string Platform = Application::Get().GetPlatformName();
+		std::string Specification = Application::Get().GetConfigurationName();
+		std::string forgeVersion = FORGE_BUILD_ID;
+		std::string newTitle = "DAGGer FORGE " + forgeVersion + " - " + Platform + " " + Specification;
+		Application::Get().GetWindow().SetTitle(newTitle);
 	}
 
 }	//	END namespace DAGGer

@@ -196,6 +196,24 @@ namespace DAGGer
 
 			out << YAML::EndMap; // TagComponent
 		}
+		// --------------------------- RELATIONSHIP COMPONENT ----------------------- //
+		if (entity.HasComponent<RelationshipComponent>())
+		{
+			auto& relationshipComponent = entity.GetComponent<RelationshipComponent>();
+			out << YAML::Key << "Parent" << YAML::Value << relationshipComponent.ParentHandle;
+
+			out << YAML::Key << "Children";
+			out << YAML::Value << YAML::BeginSeq;
+
+			for (auto child : relationshipComponent.Children)
+			{
+				out << YAML::BeginMap;	//	Child
+				out << YAML::Key << "Handle" << YAML::Value << child;
+				out << YAML::EndMap;	//	Child
+			}
+			out << YAML::EndSeq;
+
+		}
 		// --------------------------- TRANSFORM COMPONENT ----------------------- //
 		if (entity.HasComponent<TransformComponent>())
 		{
@@ -273,6 +291,22 @@ namespace DAGGer
 
 			out << YAML::EndMap; // BoxCollider2DComponent
 		}
+		// --------------------------- CIRCLE Collider 2D COMPONENT ----------------------- //
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			out << YAML::Key << "CircleCollider2DComponent";
+			out << YAML::BeginMap; // CircleCollider2DComponent
+
+			auto& cc2dComponent = entity.GetComponent<CircleCollider2DComponent>();
+			out << YAML::Key << "Offset" << YAML::Value << cc2dComponent.Offset;
+			out << YAML::Key << "Radius" << YAML::Value << cc2dComponent.Radius;
+			out << YAML::Key << "Density" << YAML::Value << cc2dComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << cc2dComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
+
+			out << YAML::EndMap; // CircleCollider2DComponent
+		}
 
 		out << YAML::EndMap; // Entity
 	}
@@ -347,6 +381,24 @@ namespace DAGGer
 				Dr_CORE_TRACE("Deserialized entity with ID: \'{0}\',\tname: \'{1}\'", uuid, name);
 
 				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
+				// --------------------------- RELATIONSHIP COMPONENT ----------------------- //
+				auto relationshipComponent = entity["RelationshipComponent"];
+				if (relationshipComponent)
+				{
+					auto rc = deserializedEntity.GetComponent<RelationshipComponent>();
+					uint64_t parentHandle = relationshipComponent["Parent"] ? relationshipComponent["Parent"].as<uint64_t>() : 0;
+					rc.ParentHandle = parentHandle;
+
+					auto children = entity["Children"];
+					if (children)
+					{
+						for (auto child : children)
+						{
+							uint64_t childHandle = child["Handle"].as<uint64_t>();
+							rc.Children.push_back(childHandle);
+						}
+					}
+				}
 				// --------------------------- TRANSFORM COMPONENT ----------------------- //
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
@@ -403,6 +455,18 @@ namespace DAGGer
 					bc2d.Friction    = bc2dComponent["Friction"].as<float>();
 					bc2d.Restitution = bc2dComponent["Restitution"].as<float>();
 					bc2d.RestitutionThreshold = bc2dComponent["RestitutionThreshold"].as<float>();
+				}
+				// --------------------------- CIRCLE COLLIDER 2D COMPONENT ----------------------- //
+				auto cc2dComponent = entity["CircleCollider2DComponent"];
+				if (cc2dComponent)
+				{
+					auto& cc2d = deserializedEntity.AddComponent<CircleCollider2DComponent>();
+					cc2d.Offset = cc2dComponent["Offset"].as<glm::vec2>();
+					cc2d.Radius   = cc2dComponent["Radius"].as<float>();
+					cc2d.Density  = cc2dComponent["Density"].as<float>();
+					cc2d.Friction = cc2dComponent["Friction"].as<float>();
+					cc2d.Restitution = cc2dComponent["Restitution"].as<float>();
+					cc2d.RestitutionThreshold = cc2dComponent["RestitutionThreshold"].as<float>();
 				}
 			}
 		}

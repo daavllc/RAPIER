@@ -13,10 +13,10 @@
 
 namespace DAGGer
 {
-	Scope<Window> Window::Create(const WindowProps& props)
+	Scope<Window> Window::Create(const WindowSpecification& specification)
 	{
 		#ifdef Dr_PLATFORM_WINDOWS
-			return CreateScope<WindowsWindow>(props);
+			return CreateScope<WindowsWindow>(specification);
 		#else
 			Dr_CORE_ASSERT(false, "Unknown platform!");
 			return nullptr

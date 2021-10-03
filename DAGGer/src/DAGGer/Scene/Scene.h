@@ -52,6 +52,7 @@ namespace DAGGer
 		void CopyTo(Ref<Scene>& target);
 
 		UUID GetUUID() const { return m_SceneID; }
+		const std::string& GetName() const { return m_DebugName; }
 
 		static Ref<Scene> GetScene(UUID uuid);
 	private:

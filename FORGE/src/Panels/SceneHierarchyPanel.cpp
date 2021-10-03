@@ -17,23 +17,23 @@ namespace DAGGer
 {
 	extern const std::filesystem::path g_AssetPath;
 
-	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
+	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene)
 	{
-		SetContext(context);
+		SetContext(scene);
 	}
 
-	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
+	void SceneHierarchyPanel::SetContext(const Ref<Scene>& scene)
 	{
-		m_Context = context;
+		m_Context = scene;
 		m_SelectionContext = {};
-		//if (m_SelectionContext && false)
-		//{
-		//	// Try and find same entity in new scene
-		//	auto& entityMap = m_Context->GetEntityMap();
-		//	UUID selectedEntityID = m_SelectionContext.GetUUID();
-		//	if (entityMap.find(selectedEntityID) != entityMap.end())
-		//		m_SelectionContext = entityMap.at(selectedEntityID);
-		//}
+		if (m_SelectionContext && false)
+		{
+			// Try and find same entity in new scene
+			auto& entityMap = m_Context->GetEntityMap();
+			UUID selectedEntityID = m_SelectionContext.GetUUID();
+			if (entityMap.find(selectedEntityID) != entityMap.end())
+				m_SelectionContext = entityMap.at(selectedEntityID);
+		}
 
 	}
 
@@ -47,6 +47,7 @@ namespace DAGGer
 		ImGui::Begin("Scene Hierarchy");
 		if (m_Context)
 		{
+			// Entity List
 			m_Context->m_Registry.each([&](auto entity)
 			{
 				Entity e(entity, m_Context.Raw());
@@ -62,8 +63,24 @@ namespace DAGGer
 				{
 					if (ImGui::MenuItem("Empty Entity"))
 					{
-						auto newEntity = m_Context->CreateEntity("Empty Entity");
+						auto newEntity = m_Context->CreateEntity("New Entity");
 						SetSelectedEntity(newEntity);
+					}
+					if (ImGui::MenuItem("Camera"))
+					{
+						auto newEntity = m_Context->CreateEntity("New Camera");
+						newEntity.AddComponent<CameraComponent>();
+						SetSelectedEntity(newEntity);
+					}
+					if (ImGui::BeginMenu("2D"))
+					{
+						if (ImGui::MenuItem("Sprite"))
+						{
+							auto newEntity = m_Context->CreateEntity("New Sprite");
+							newEntity.AddComponent<SpriteRendererComponent>();
+							SetSelectedEntity(newEntity);
+						}
+						ImGui::EndMenu();
 					}
 					ImGui::EndMenu();
 				}
@@ -74,12 +91,12 @@ namespace DAGGer
 
 			ImGui::Begin("Properties");
 			if (m_SelectionContext)
-				DrawComponents(m_SelectionContext);
+				DrawComponentsView(m_SelectionContext);
 		}
 		ImGui::End();
 	}
 
-	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
+	void SceneHierarchyPanel::DrawEntityNode(Entity entity, const std::string& searchFilter /*= {}*/)
 	{
 		UUID id;
 		if (entity.HasComponent<IDComponent>())
@@ -88,7 +105,7 @@ namespace DAGGer
 		const char* name = "Unnamed Entity";
 		if (entity.HasComponent<TagComponent>())
 			name = entity.GetComponent<TagComponent>().Tag.c_str();
-		
+
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
@@ -103,17 +120,22 @@ namespace DAGGer
 		{
 			if (ImGui::MenuItem("Delete"))
 				entityDeleted = true;
+			if (ImGui::MenuItem("Duplicate"))
+				m_Context->DuplicateEntity(entity);
 
 			ImGui::EndPopup();
 		}
 
 		if (opened)
 		{
+			ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+			ImGui::TextDisabled("%llx", id);
+			DrawComponents(entity, flags);
 			//for (auto child : entity.Children())
 			//{
 			//	Entity e = m_Context->FindEntityByUUID(child);
 			//	if (e)
-			//		DrawEntityNode(e);
+			//		DrawEntityNode(e, searchFilter);
 			//}
 			ImGui::TreePop();
 		}
@@ -193,23 +215,21 @@ namespace DAGGer
 	}
 
 	template<typename T, typename UIFunction>
-	static void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
+	static void DrawComponent(const std::string& name, Entity entity, ImGuiTreeNodeFlags& treeNodeFlags, UIFunction uiFunction)
 	{
-		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_FramePadding;
-
 		if (entity.HasComponent<T>())
 		{
 			auto& component = entity.GetComponent<T>();
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y;
 			ImGui::Separator();
 			bool open = (ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str()));
 			ImGui::PopStyleVar();
 
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
-			if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
+			if (ImGui::Button(">", ImVec2{ lineHeight, lineHeight }))
 			{
 				ImGui::OpenPopup("ComponentSettings");
 			}
@@ -233,8 +253,7 @@ namespace DAGGer
 		}
 	}
 
-
-	void SceneHierarchyPanel::DrawComponents(Entity entity)
+	void SceneHierarchyPanel::DrawComponentsView(Entity entity)
 	{
 		ImGui::AlignTextToFramePadding();
 
@@ -259,9 +278,7 @@ namespace DAGGer
 			ImGui::PopItemWidth();
 		}	//	END TagComponent
 
-		// ID
 		ImGui::SameLine();
-		ImGui::TextDisabled("%llx", id);
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 		ImVec2 textSize = ImGui::CalcTextSize("Add Component");
 		ImGui::SameLine(contentRegionAvailable.x - (textSize.x + GImGui->Style.FramePadding.y));
@@ -270,6 +287,14 @@ namespace DAGGer
 
 		if (ImGui::BeginPopup("AddComponentPanel"))
 		{
+			if (!m_SelectionContext.HasComponent<RelationshipComponent>())
+			{
+				if (ImGui::Button("Relationship"))
+				{
+					m_SelectionContext.AddComponent<RelationshipComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
 			if (!m_SelectionContext.HasComponent<CameraComponent>())
 			{
 				if (ImGui::Button("Camera"))
@@ -302,22 +327,53 @@ namespace DAGGer
 					ImGui::CloseCurrentPopup();
 				}
 			}
+			if (!m_SelectionContext.HasComponent<CircleCollider2DComponent>())
+			{
+				if (ImGui::Button("Circle Collider 2D"))
+				{
+					m_SelectionContext.AddComponent<CircleCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
 			ImGui::EndPopup();
 		}
+		ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_FramePadding;
+		DrawComponents(entity, treeNodeFlags);
+	}
 
-		DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
+	void SceneHierarchyPanel::DrawComponents(Entity entity, ImGuiTreeNodeFlags treeNodeFlags)
+	{
+		//  -----------------------------  NATIVE SCRIPT COMPONENT  -----------------------------  //
+		DrawComponent<NativeScriptComponent>("Native Script", entity, treeNodeFlags, [](auto& component)
 		{
-				DrawVec3Control("Translation", component.Translation);
-				ImGui::Separator();
-				glm::vec3 rotation = glm::degrees(component.Rotation);
-				DrawVec3Control("Rotation", rotation);
-				component.Rotation = glm::radians(rotation);
-				ImGui::Separator();
-				DrawVec3Control("Scale", component.Scale, 1.0f);
-				ImGui::Separator();
-		});	//	END TransformComponent
-
-		DrawComponent<CameraComponent>("Camera", entity, [](auto& component)
+		});
+		//  -----------------------------  SCRIPT COMPONENT  -----------------------------  //
+		DrawComponent<ScriptComponent>("Script", entity, treeNodeFlags, [](auto& component)
+		{
+		});
+		//  -----------------------------  RELATIONSHIP COMPONENT  -----------------------------  //
+		DrawComponent<RelationshipComponent>("Relationship", entity, treeNodeFlags, [](auto& component)
+		{
+			ImGui::TextDisabled("%llx", component.ParentHandle);
+			ImGui::Separator();
+			for (auto& childID : component.Children)
+				ImGui::TextDisabled("%llx", childID);
+			ImGui::Separator();
+		});
+		//  -----------------------------  TRANSFORM COMPONENT  -----------------------------  //
+		DrawComponent<TransformComponent>("Transform", entity, treeNodeFlags, [](auto& component)
+		{
+			DrawVec3Control("Translation", component.Translation);
+			ImGui::Separator();
+			glm::vec3 rotation = glm::degrees(component.Rotation);
+			DrawVec3Control("Rotation", rotation);
+			component.Rotation = glm::radians(rotation);
+			ImGui::Separator();
+			DrawVec3Control("Scale", component.Scale, 1.0f);
+			ImGui::Separator();
+		});
+		//  -----------------------------  CAMERA COMPONENT  -----------------------------  //
+		DrawComponent<CameraComponent>("Camera", entity, treeNodeFlags, [](auto& component)
 		{
 			auto& camera = component.Camera;
 
@@ -371,9 +427,9 @@ namespace DAGGer
 
 				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
 			}
-		});	//	END CameraComponent
-
-		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
+		});
+		//  -----------------------------  SPRITE RENDERER COMPONENT  -----------------------------  //
+		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, treeNodeFlags, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 
@@ -396,7 +452,8 @@ namespace DAGGer
 
 			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 		});
-		DrawComponent<RigidBody2DComponent>("Rigidbody 2D", entity, [](auto& component)
+		//  -----------------------------  RIGID 2D BODY COMPONENT  -----------------------------  //
+		DrawComponent<RigidBody2DComponent>("Rigidbody 2D", entity, treeNodeFlags, [](auto& component)
 		{
 				const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
 			const char* currentBodyTypeStrings = bodyTypeStrings[(int)component.Type];
@@ -420,13 +477,24 @@ namespace DAGGer
 
 			ImGui::Checkbox("Fixed Rotation", &component.FixedRotation);
 		});
-		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](auto& component)
+		//  -----------------------------  BOX COLLIDER COMPONENT  -----------------------------  //
+		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, treeNodeFlags, [](auto& component)
 		{
 			ImGui::DragFloat2("Offset",               glm::value_ptr(component.Offset));
 			ImGui::DragFloat2("Size",                 glm::value_ptr(component.Size));
 			ImGui::DragFloat("Density",               &component.Density,     0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Friction",              &component.Friction,    0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution",           &component.Restitution, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+		});
+		//  -----------------------------  CIRCLE COLLIDER COMPONENT  -----------------------------  //
+		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, treeNodeFlags, [](auto& component)
+		{
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+			ImGui::DragFloat("Radius",      &component.Radius, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Density",     &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction",    &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
 		});
 

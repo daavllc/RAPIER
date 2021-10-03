@@ -22,11 +22,17 @@ namespace DAGGer
 		Dr_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props)
+	Scope<Window> Window::Create(const WindowSpecification& specification)
+	{
+		return CreateScope<WindowsWindow>(specification);
+	}
+
+	WindowsWindow::WindowsWindow(const WindowSpecification& specification)
+		: m_Specification(specification)
 	{
 		Dr_PROFILE_FUNCTION();
 
-		Init(props);
+		Init(specification);
 	}
 
 	WindowsWindow::~WindowsWindow()
@@ -36,15 +42,17 @@ namespace DAGGer
 		Shutdown();
 	}
 
-	void WindowsWindow::Init(const WindowProps& props)
+	void WindowsWindow::Init(const WindowSpecification& specification)
 	{
 		Dr_PROFILE_FUNCTION();
 
-		m_Data.Title = props.Title;
-		m_Data.Width = props.Width;
-		m_Data.Height = props.Height;
+		m_Data.Title = m_Specification.Title;
+		m_Data.Width = m_Specification.Width;
+		m_Data.Height = m_Specification.Height;
+		m_Data.VSync = m_Specification.VSync;
+		m_Data.Decorations = m_Specification.Decorations;
 
-		Dr_CORE_INFO("Creating window '{0}' at ({1}, {2})", props.Title, props.Width, props.Height);
+		Dr_CORE_INFO("Creating window '{0}' at ({1}, {2})", m_Data.Title, m_Data.Width, m_Data.Height);
 
 		if (s_GLFWWindowCount == 0)
 		{
@@ -60,28 +68,37 @@ namespace DAGGer
 				if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
 					glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 			#endif
-			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			if (!m_Data.Decorations)
+				glfwWindowHint(GLFW_DECORATED, false);
+
+			if (m_Specification.Fullscreen)
+			{
+				GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+				const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+				m_Window = glfwCreateWindow(mode->width, mode->height, m_Data.Title.c_str(), primaryMonitor, nullptr);
+			}
+			else
+			{
+				m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			}
 			++s_GLFWWindowCount;
 		}
 
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 		
-		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		SetVSync(true);
 
 		// Set GLFW Callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
-			{
-				WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
-				data.Width = width;
-				data.Height = height;
+		{
+			WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
 
-				WindowResizeEvent event(width, height);
-				data.EventCallback(event);
-				
-			});
+			WindowResizeEvent event(width, height);
+			data.EventCallback(event);
+			data.Height = height;
+			data.Width = width;
+		});
 		
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
@@ -162,6 +179,23 @@ namespace DAGGer
 			data.EventCallback(event);
 		});
 
+		m_ImGuiMouseCursors[ImGuiMouseCursor_Arrow]      = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		m_ImGuiMouseCursors[ImGuiMouseCursor_TextInput]  = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+		m_ImGuiMouseCursors[ImGuiMouseCursor_ResizeAll]  = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);   // FIXME: GLFW doesn't have this.
+		m_ImGuiMouseCursors[ImGuiMouseCursor_ResizeNS]   = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+		m_ImGuiMouseCursors[ImGuiMouseCursor_ResizeEW]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+		m_ImGuiMouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
+		m_ImGuiMouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
+		m_ImGuiMouseCursors[ImGuiMouseCursor_Hand]       = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+
+		//	Update window size
+		{
+			int width, height;
+			glfwGetWindowSize(m_Window, &width, &height);
+			m_Data.Width = width;
+			m_Data.Height = height;
+		}
+
 	}	//	END WindowsWindow::Init
 
 	void WindowsWindow::Shutdown()
@@ -175,6 +209,13 @@ namespace DAGGer
 		{
 			glfwTerminate();
 		}
+	}
+
+	inline std::pair<float, float> WindowsWindow::GetWindowPos() const
+	{
+		int x, y;
+		glfwGetWindowPos(m_Window, &x, &y);
+		return { (float)x, (float)y };
 	}
 
 	void WindowsWindow::OnUpdate()
@@ -202,5 +243,36 @@ namespace DAGGer
 		return m_Data.VSync;
 	}
 
+	void WindowsWindow::SetResizable(bool resizable) const
+	{
+		glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, resizable ? GLFW_TRUE : GLFW_FALSE);
+	}
+
+	void WindowsWindow::SetDecorations(bool enabled) const
+	{
+		if (enabled)
+			glfwWindowHint(GLFW_DECORATED, true);
+		else
+			glfwWindowHint(GLFW_DECORATED, false);
+	}
+
+	void WindowsWindow::Maximize()
+	{
+		glfwMaximizeWindow(m_Window);
+	}
+
+	void WindowsWindow::CenterWindow()
+	{
+		const GLFWvidmode* videmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		int x = (videmode->width / 2) - (m_Data.Width / 2);
+		int y = (videmode->height / 2) - (m_Data.Height / 2);
+		glfwSetWindowPos(m_Window, x, y);
+	}
+
+	void WindowsWindow::SetTitle(const std::string& title)
+	{
+		m_Data.Title = title;
+		glfwSetWindowTitle(m_Window, m_Data.Title.c_str());
+	}
 
 }	//	END namespace DAGGer

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "AssetSerializer.h"
-#include "DAGGer/Utils/FileSystem.h"
-#include "DAGGer/Utils/StringUtils.h"
+#include "DAGGer/Utilities/FileSystem.h"
+#include "DAGGer/Utilities/StringUtils.h"
 
 #include <map>
 #include <unordered_map>

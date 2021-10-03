@@ -16,6 +16,15 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+/*	When adding a new component:
+* Add here
+* Update SceneHierarchyPanel
+* Update SceneSerializer
+* Update Scene::OnComponentAdded
+* Add to Scene::DuplicateEntity
+* Add to Scene::CopyTo
+*/
+
 namespace DAGGer
 {
 	//  -----------------------------  ID COMPONENT  -----------------------------  //
@@ -37,6 +46,18 @@ namespace DAGGer
 			: Tag(tag) {}
 
 	};
+	//  -----------------------------  RELATIONSHIP COMPONENT  -----------------------------  //
+	struct RelationshipComponent
+	{
+		UUID ParentHandle = 0;
+		std::vector<UUID> Children;
+
+		RelationshipComponent() = default;
+		RelationshipComponent(const RelationshipComponent& other) = default;
+		RelationshipComponent(UUID parent)
+			: ParentHandle(parent) {}
+	};
+
 	//  -----------------------------  TRANSFORM COMPONENT  -----------------------------  //
 	struct TransformComponent
 	{
@@ -140,5 +161,23 @@ namespace DAGGer
 		BoxCollider2DComponent() = default;
 		BoxCollider2DComponent(const BoxCollider2DComponent& other) = default;
 	};
+	//  -----------------------------  CIRCLE COLLIDER 2D COMPONENT  -----------------------------  //
+	struct CircleCollider2DComponent
+	{
+		glm::vec2 Offset = { 0.0f,0.0f };
+		float Radius = 0.5f;
+
+		float Density = 1.0f;
+		float Friction = 1.0f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f; // Threshhold when objects stop bouncing
+
+		// Storage for runtime
+		void* RuntimeFixture = nullptr;
+
+		CircleCollider2DComponent() = default;
+		CircleCollider2DComponent(const CircleCollider2DComponent& other) = default;
+	};
+
 
 }	//	END namespace DAGGer

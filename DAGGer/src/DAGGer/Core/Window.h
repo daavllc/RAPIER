@@ -11,21 +11,18 @@
 #include "DAGGer/Core/Base.h"
 #include "DAGGer/Events/Event.h"
 
+#include <functional>
+
 namespace DAGGer
 {
-	struct WindowProps
+	struct WindowSpecification
 	{
-		std::string Title;
-		uint32_t Width;
-		uint32_t Height;
-
-		WindowProps(const std::string& title = "DAGGer Application",
-				uint32_t width = 1600,
-				uint32_t height = 900)
-			: Title(title), Width(width), Height(height)
-		{
-		}
-	};	//	END struct WindowProps
+		std::string Title = "DAGGer Application";
+		uint32_t Width = 1600, Height = 900;
+		bool Fullscreen = false;
+		bool VSync = true;
+		bool Decorations = true;
+	};
 
 	// Interface representing a desktop system based window
 	class Window : public RefCounted
@@ -39,15 +36,25 @@ namespace DAGGer
 
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
+		virtual std::pair<uint32_t, uint32_t> GetSize() const = 0;
+		virtual std::pair<float, float> GetWindowPos() const = 0;
+
+		virtual void Maximize() = 0;
+		virtual void CenterWindow() = 0;
 
 		// Window Attributes
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSyncEnabled() const = 0;
+		virtual void SetResizable(bool resizable) const = 0;
+		virtual void SetDecorations(bool enabled) const = 0;
+
+		virtual const std::string& GetTitle() const = 0;
+		virtual void SetTitle(const std::string& title) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 
-		static Scope<Window> Create(const WindowProps& props = WindowProps());
+		static Scope<Window> Create(const WindowSpecification& specification = WindowSpecification());
 
 	};	//	END class Window
 

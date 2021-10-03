@@ -1,7 +1,7 @@
 #include "drpch.h"
 #include "AssetSerializer.h"
-#include "DAGGer/Utils/StringUtils.h"
-#include "DAGGer/Utils/FileSystem.h"
+#include "DAGGer/Utilities/StringUtils.h"
+#include "DAGGer/Utilities/FileSystem.h"
 #include "DAGGer/Renderer/SceneRenderer.h"
 
 #include "yaml-cpp/yaml.h"
@@ -16,14 +16,14 @@ namespace DAGGer {
 
 		switch (type)
 		{
-			case DAGGer::AssetType::PhysicsMat:
-			{
-				Ref<PhysicsMaterial> material = Ref<PhysicsMaterial>(asset);
-				out << YAML::Key << "StaticFriction" << material->StaticFriction;
-				out << YAML::Key << "DynamicFriction" << material->DynamicFriction;
-				out << YAML::Key << "Bounciness" << material->Bounciness;
-				break;
-			}
+		case DAGGer::AssetType::PhysicsMat:
+		{
+			Ref<PhysicsMaterial> material = Ref<PhysicsMaterial>(asset);
+			out << YAML::Key << "StaticFriction" << material->StaticFriction;
+			out << YAML::Key << "DynamicFriction" << material->DynamicFriction;
+			out << YAML::Key << "Bounciness" << material->Bounciness;
+			break;
+		}
 		}
 		out << YAML::EndMap;
 
@@ -74,20 +74,20 @@ namespace DAGGer {
 
 		switch (asset->Type)
 		{
-			case AssetType::Texture:
-			{
-				asset = Texture2D::Create(asset->FilePath);
-				loadYAMLData = false;
-				break;
-			}
-			case AssetType::Scene:
-			case AssetType::Audio:
-			case AssetType::Script:
-			case AssetType::Other:
-			{
-				loadYAMLData = false;
-				break;
-			}
+		case AssetType::Texture:
+		{
+			asset = Texture2D::Create(asset->FilePath);
+			loadYAMLData = false;
+			break;
+		}
+		case AssetType::Scene:
+		case AssetType::Audio:
+		case AssetType::Script:
+		case AssetType::Other:
+		{
+			loadYAMLData = false;
+			break;
+		}
 		}
 
 		if (loadYAMLData)
@@ -114,7 +114,7 @@ namespace DAGGer {
 		strStream << stream.rdbuf();
 
 		YAML::Node data = YAML::Load(strStream.str());
-		
+
 		if (asset->Type == AssetType::PhysicsMat)
 		{
 			float staticFriction = data["StaticFriction"].as<float>();
