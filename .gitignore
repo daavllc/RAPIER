@@ -18,3 +18,4 @@ bin-int/
 DAGGer/vendor/VulkanSDK
 FORGE/assets/cache
 scripts/__pycache__
+vendor/premake/bin
