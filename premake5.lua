@@ -2,7 +2,7 @@ include "./vendor/premake/premake_customization/solution_items.lua"
 include "./config/dependencies.lua"
 
 workspace "DAGGer"
-	startproject "FORGE"
+	startproject "PUT YOUR PROJECT NAME HERE"
 
 	include "./config/configurations.lua"
 	include "./config/platforms.lua"
@@ -54,11 +54,7 @@ workspace "DAGGer"
 	group "Core"
 		include "DAGGer"
 	group ""
-	
-	group "Tools"
-		include "FORGE"
-	group ""
-	
+
 	group "Sandbox"
-		include "Sandbox"
+		include "PUT YOUR PROJECT NAME HERE"
 	group ""
