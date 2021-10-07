@@ -5,8 +5,6 @@ from pathlib import Path
 
 import Utils
 
-import platform
-
 from io import BytesIO
 from urllib.request import urlopen
 
@@ -49,26 +47,13 @@ class VulkanConfiguration:
 			if reply == 'n':
 				return
 			permissionGranted = (reply == 'y')
-		vulkanInstallURL = ""
-		vulkanPath = ""
-		vulkanBin = ""
-		if platform.system() == "Windows":
-			vulkanInstallURL = f"https://sdk.lunarg.com/sdk/download/{cls.requiredVulkanVersion}/windows/VulkanSDK-{cls.requiredVulkanVersion}-Installer.exe"
-			vulkanPath = f"{cls.vulkanDirectory}/VulkanSDK-{cls.requiredVulkanVersion}-Installer.exe"
-		elif platform.system() == "Linux":
-			vulkanInstallURL = f"https://sdk.lunarg.com/sdk/download/{cls.requiredVulkanVersion}/linux/vulkansdk-linux-x86_64-{cls.requiredVulkanVersion}.tar.gz"
-			vulkanPath = f"{cls.vulkanDirectory}/vulkansdk-linux-x86_64-{cls.requiredVulkanVersion}.tar.gz"
+
+		vulkanInstallURL = f"https://sdk.lunarg.com/sdk/download/{cls.requiredVulkanVersion}/windows/VulkanSDK-{cls.requiredVulkanVersion}-Installer.exe"
+		vulkanPath = f"{cls.vulkanDirectory}/VulkanSDK-{cls.requiredVulkanVersion}-Installer.exe"
 		print("Downloading {0:s} to {1:s}".format(vulkanInstallURL, vulkanPath))
 		Utils.DownloadFile(vulkanInstallURL, vulkanPath)
 		print("Running Vulkan SDK installer...")
-		if platform.system() == "Windows":
-			vulkanBin = vulkanPath
-			os.startfile(os.path.abspath(vulkanBin))
-		elif platform.system() == "Linux":
-			print("Extracting files...")
-			Utils.UnzipFile(vulkanPath, deleteArchiveFile = True)
-			vulkanBin = f"{cls.vulkanDirectory}/{cls.requiredVulkanVersion}/vulkansdk"
-			os.system("bash {}".format(os.path.abspath(vulkanBin).replace(" ", "\\ ")))
+		os.startfile(os.path.abspath(vulkanPath))
 		print("Re-run this script after installation!")
 		quit()
 
@@ -76,28 +61,17 @@ class VulkanConfiguration:
 	def CheckVulkanSDKDebugLibs(cls):
 		shadercdLib = Path(f"{cls.vulkanDirectory}/Lib/shaderc_sharedd.lib")
 
-		VulkanSDKDebugLibsURLlist = []
-		if platform.system() == "Windows":
-			VulkanSDKDebugLibsURLlist = [
-				f"https://sdk.lunarg.com/sdk/download/{cls.requiredVulkanVersion}/windows/VulkanSDK-{cls.requiredVulkanVersion}-DebugLibs.zip",
-				f"https://files.lunarg.com/SDK-{cls.requiredVulkanVersion}/VulkanSDK-{cls.requiredVulkanVersion}-DebugLibs.zip"
-			]
-		elif platform.system() == "Linux":
-			VulkanSDKDebugLibsURLlist = [
-				f"https://sdk.lunarg.com/sdk/download/{cls.requiredVulkanVersion}/linux/vulkansdk-linux-x86_64-{cls.requiredVulkanVersion}-DebugLibs.tar.gz",
-				f"https://files.lunarg.com/SDK-{cls.requiredVulkanVersion}/linux/vulkansdk-linux-x86_64-{cls.requiredVulkanVersion}-DebugLibs.tar.gz"
-			]
+		VulkanSDKDebugLibsURLlist = [
+			f"https://sdk.lunarg.com/sdk/download/{cls.requiredVulkanVersion}/windows/VulkanSDK-{cls.requiredVulkanVersion}-DebugLibs.zip",
+			f"https://files.lunarg.com/SDK-{cls.requiredVulkanVersion}/VulkanSDK-{cls.requiredVulkanVersion}-DebugLibs.zip"
+		]
 
 		if not shadercdLib.exists():
 			print(f"\nNo Vulkan SDK debug libs found. (Checked {shadercdLib})")
-			vulkanPath = ""
-			if platform.system() == "Windows":
-				vulkanPath = f"{cls.vulkanDirectory}/VulkanSDK-{cls.requiredVulkanVersion}-DebugLibs.zip"
-			elif platform.system() == "Linux":
-				vulkanPath = f"{cls.vulkanDirectory}//linux/vulkansdk-linux-x86_64-{cls.requiredVulkanVersion}-DebugLibs.tar.gz"
+			vulkanPath = f"{cls.vulkanDirectory}/VulkanSDK-{cls.requiredVulkanVersion}-DebugLibs.zip"
 			Utils.DownloadFile(VulkanSDKDebugLibsURLlist, vulkanPath)
 			print("Extracting", vulkanPath)
-			Utils.UnzipFile(vulkanPath, deleteArchiveFile = False)
+			Utils.UnzipFile(vulkanPath, deleteZipFile=False)
 			print(f"Vulkan SDK debug libs installed at {os.path.abspath(cls.vulkanDirectory)}")
 		else:
 			print(f"\nVulkan SDK debug libs located at {os.path.abspath(cls.vulkanDirectory)}")

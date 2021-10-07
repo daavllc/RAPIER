@@ -19,15 +19,8 @@ print("\nUpdating submodules...")
 subprocess.call(["git", "submodule", "update", "--init", "--recursive", "--remote"])
 
 if (premakeInstalled):
-	if platform.system() == "Windows":
-		print("\nRunning premake...")
-		subprocess.call([os.path.abspath("./scripts/files/Windows-GenProjects.bat"), "nopause"])
-	elif platform.system() == "Linux":
-		print("\nRunning premake")
-		subprocess.call([os.path.abspath("./scrpts/files/Linux-GenProjects.sh")])
-
-	print("\nSetup completed <premake>!")
+    pass
 else:
-	print("DAGGer requires Premake to generate project files.")
+    print("DAGGer requires Premake to generate project files.")
 
 print("\nSetup completed <done>!")
