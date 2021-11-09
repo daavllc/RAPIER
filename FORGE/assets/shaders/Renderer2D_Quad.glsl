@@ -1,4 +1,7 @@
-// Basic texture shader
+// ---------------------------------------
+// DAGGer
+// Renderer2D Quad Shader
+// ---------------------------------------
 
 #type vertex
 #version 450 core
@@ -23,7 +26,7 @@ struct VertexOutput
 };
 
 layout(location = 0) out VertexOutput Output;
-layout (location = 3) out flat float v_TexIndex;
+layout(location = 3) out flat float v_TexIndex;
 layout(location = 4) out flat int v_EntityID;
 
 void main()
@@ -40,8 +43,8 @@ void main()
 #type fragment
 #version 450 core
 
-layout(location = 0) out vec4 color;
-layout(location = 1) out int color2;
+layout(location = 0) out vec4 o_Color;
+layout(location = 1) out int o_EntityID;
 
 struct VertexOutput
 {
@@ -94,7 +97,7 @@ void main()
 		case 30: texColor *= texture(u_Textures[30], Input.TexCoord * Input.TilingFactor); break;
 		case 31: texColor *= texture(u_Textures[31], Input.TexCoord * Input.TilingFactor); break;
 	}
-	color = texColor;
+	o_Color = texColor;
 
-	color2 = v_EntityID;
+	o_EntityID = v_EntityID;
 }

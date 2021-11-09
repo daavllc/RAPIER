@@ -1,69 +1,60 @@
 import sys
 import os
 import shutil
+import argparse
+from enum import Enum, auto
 
-Verbose = False
-DelPause = True
-
-def dPrint(msg):
-    if Verbose:
-        print(msg)
+DeleteCount = 0
 
 def Start():
-    OS = ""
     # Runtime Options
-    for arg in sys.argv[1:]:
-        if 'v' in arg:
-            Verbose = True
-        if 'p' in arg:
-            DelPause = False
-        # Determine OS
-        if 'w' in arg:
-            OS = "win"
-    
-    if OS:
-        if OS == "win":
-            DeleteVS()
-    else:
-        print("Please specify an option")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose', action='store_true', help='print debug messages')
+    parser.add_argument('ide', choices=['vs', 'gmake2', 'xcode4', 'codelite'], help="ide to clean files from")
+    args = parser.parse_args()
 
-def DeleteVS():
-    Count = 0
-    DirBegin = "../.."
-    Dirs = ["/DAGGer", "/DAGGer/vendor/Glad", "/DAGGer/vendor/glfw", "DAGGer/vendor/imgui", "DAGGer/vendor/yaml-cpp"]
-    fNames = ["DAGGer", "Glad", "GLFW", "ImGui", "yaml-cpp"]
-    fExt = ["sln", "vcxproj", "vcxproj.filters", "vcxproj.user"]
-    fExts = [[1,2,3],[1,2],[1,2],[1],[1,2]]
-    DeleteFile(DirBegin, "DAGGer", fExt[0])
-    for loc in range(len(Dirs)):
-        for ext in fExts[loc]: 
-            inc = DeleteFile(DirBegin + Dirs[loc], fNames[loc], fExt[ext])
-            if inc:
-                Count += 1
-    if os.path.exists('{}/{}'.format(DirBegin, ".vs")):
-        if DelPause:
-            UsrInput = input("Remove .vs configurations? (Y/n) > ")
-            if not 'n' in UsrInput:
-                DeleteFolder(DirBegin, ".vs")
-                Count += 1
+    global DeleteCount
+
+    if args.ide == "vs":
+        root = os.path.realpath('../..')
+        print(f"Checking files in {root}")
+        exts = ["sln", "vcxproj", "vcxproj.filters", "vcxproj.user"]
+        DeleteFiles(root, exts) # ../.. (project folder)
+
+        path = os.path.join(root, 'DAGGer')
+        DeleteFiles(path, exts) # ../../DAGGer
+
+        path = os.path.join(path, 'vendor')
+        for file in os.listdir(path): # ../../DAGGer/vendor
+            DeleteFiles(os.path.join(path, file), exts)
+
+        for folder in ['.vs', 'bin', 'bin-int']: # ../..
+            path = os.path.join(root, folder)
+            if os.path.exists(path):
+                print(f"Deleting '{path}'... ", end="")
+                shutil.rmtree(path)
+                DeleteCount += 1
+                print("Done!")
+
+        if DeleteCount == 0:
+            print("Deleted 0 files/folders")
+        elif DeleteCount == 1:
+            print("Sucessfully deleted 1 file/folder")
         else:
-            DeleteFolder(DirBegin, ".vs")
-    if Count == 1:
-        print("Done! Deleted 1 item")
+            print(f"Successfully deleted {DeleteCount} files and folders.")
     else:
-        print("Done! Deleted {} items".format(Count))
+        print("Only Visual Studio is supported")
+        sys.exit(0)
 
-def DeleteFile(filepath, name, ext):
-    if os.path.exists('{}/{}.{}'.format(filepath, name, ext)):
-        os.remove('{}/{}.{}'.format(filepath, name, ext))
-        print('Deleted {}/{}.{}'.format(filepath, name, ext))
-        return True
-    else:
-        dPrint('Failed to locate {}/{}.{}'.format(filepath, name, ext))
-        return False
-        
-def DeleteFolder(path, folder):
-    shutil.rmtree('{}/{}'.format(path, folder))
-    print('Deleted {}/{}'.format(path, folder))
+def DeleteFiles(path, exts: list[str]) -> None:
+    global DeleteCount
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file)):
+            for ext in exts:
+                if file.endswith(ext):
+                    print(f"Deleting '{os.path.join(path, file)}'... ", end="")
+                    os.remove(os.path.join(path, file))
+                    DeleteCount += 1
+                    print("Done!")
 
 Start()

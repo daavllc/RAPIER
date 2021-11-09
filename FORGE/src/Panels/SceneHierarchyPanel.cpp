@@ -80,6 +80,12 @@ namespace DAGGer
 							newEntity.AddComponent<SpriteRendererComponent>();
 							SetSelectedEntity(newEntity);
 						}
+						if (ImGui::MenuItem("Circle"))
+						{
+							auto newEntity = m_Context->CreateEntity("New Circle");
+							newEntity.AddComponent<CircleRendererComponent>();
+							SetSelectedEntity(newEntity);
+						}
 						ImGui::EndMenu();
 					}
 					ImGui::EndMenu();
@@ -311,6 +317,14 @@ namespace DAGGer
 					ImGui::CloseCurrentPopup();
 				}
 			}
+			if (!m_SelectionContext.HasComponent<CircleRendererComponent>())
+			{
+				if (ImGui::Button("Circle Renderer"))
+				{
+					m_SelectionContext.AddComponent<CircleRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
 			if (!m_SelectionContext.HasComponent<RigidBody2DComponent>())
 			{
 				if (ImGui::Button("Rigidbody 2D"))
@@ -452,6 +466,14 @@ namespace DAGGer
 
 			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 		});
+		//  -----------------------------  CIRCLE RENDERER COMPONENT  -----------------------------  //
+		DrawComponent<CircleRendererComponent>("Circle Renderer", entity, treeNodeFlags, [](auto& component)
+			{
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				//ImGui::DragFloat("Radius", &component.Radius, 0.025f, 0.0f, 1.0f);
+				ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
+				ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
+			});
 		//  -----------------------------  RIGID 2D BODY COMPONENT  -----------------------------  //
 		DrawComponent<RigidBody2DComponent>("Rigidbody 2D", entity, treeNodeFlags, [](auto& component)
 		{

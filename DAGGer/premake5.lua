@@ -38,6 +38,7 @@ project "DAGGer"
 		"src",
 		"vendor",
 		"vendor/spdlog/include",
+
 		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
@@ -48,6 +49,7 @@ project "DAGGer"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}",
+
 		"%{IncludeDir.choc}",
 
 		"%{IncludeDir.Config}",

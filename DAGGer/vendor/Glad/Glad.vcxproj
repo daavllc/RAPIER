@@ -9,6 +9,10 @@
       <Configuration>Debug Win64</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Win64|ARM">
+      <Configuration>Debug Win64</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -17,21 +21,33 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug iOS|x64">
-      <Configuration>Debug iOS</Configuration>
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug iOS-ARM|x64">
+      <Configuration>Debug iOS-ARM</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug iOS|Win32">
-      <Configuration>Debug iOS</Configuration>
+    <ProjectConfiguration Include="Debug iOS-ARM|Win32">
+      <Configuration>Debug iOS-ARM</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug Anrdoid|x64">
-      <Configuration>Debug Anrdoid</Configuration>
+    <ProjectConfiguration Include="Debug iOS-ARM|ARM">
+      <Configuration>Debug iOS-ARM</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Anrdoid-ARM|x64">
+      <Configuration>Debug Anrdoid-ARM</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug Anrdoid|Win32">
-      <Configuration>Debug Anrdoid</Configuration>
+    <ProjectConfiguration Include="Debug Anrdoid-ARM|Win32">
+      <Configuration>Debug Anrdoid-ARM</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Anrdoid-ARM|ARM">
+      <Configuration>Debug Anrdoid-ARM</Configuration>
+      <Platform>ARM</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release Win64|x64">
       <Configuration>Release Win64</Configuration>
@@ -41,6 +57,10 @@
       <Configuration>Release Win64</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Win64|ARM">
+      <Configuration>Release Win64</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
@@ -49,21 +69,33 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release iOS|x64">
-      <Configuration>Release iOS</Configuration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release iOS-ARM|x64">
+      <Configuration>Release iOS-ARM</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release iOS|Win32">
-      <Configuration>Release iOS</Configuration>
+    <ProjectConfiguration Include="Release iOS-ARM|Win32">
+      <Configuration>Release iOS-ARM</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release Anrdoid|x64">
-      <Configuration>Release Anrdoid</Configuration>
+    <ProjectConfiguration Include="Release iOS-ARM|ARM">
+      <Configuration>Release iOS-ARM</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Anrdoid-ARM|x64">
+      <Configuration>Release Anrdoid-ARM</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release Anrdoid|Win32">
-      <Configuration>Release Anrdoid</Configuration>
+    <ProjectConfiguration Include="Release Anrdoid-ARM|Win32">
+      <Configuration>Release Anrdoid-ARM</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Anrdoid-ARM|ARM">
+      <Configuration>Release Anrdoid-ARM</Configuration>
+      <Platform>ARM</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Distribution Win64|x64">
       <Configuration>Distribution Win64</Configuration>
@@ -73,6 +105,10 @@
       <Configuration>Distribution Win64</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Distribution Win64|ARM">
+      <Configuration>Distribution Win64</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Distribution|x64">
       <Configuration>Distribution</Configuration>
       <Platform>x64</Platform>
@@ -81,21 +117,33 @@
       <Configuration>Distribution</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Distribution iOS|x64">
-      <Configuration>Distribution iOS</Configuration>
+    <ProjectConfiguration Include="Distribution|ARM">
+      <Configuration>Distribution</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Distribution iOS-ARM|x64">
+      <Configuration>Distribution iOS-ARM</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Distribution iOS|Win32">
-      <Configuration>Distribution iOS</Configuration>
+    <ProjectConfiguration Include="Distribution iOS-ARM|Win32">
+      <Configuration>Distribution iOS-ARM</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Distribution Anrdoid|x64">
-      <Configuration>Distribution Anrdoid</Configuration>
+    <ProjectConfiguration Include="Distribution iOS-ARM|ARM">
+      <Configuration>Distribution iOS-ARM</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Distribution Anrdoid-ARM|x64">
+      <Configuration>Distribution Anrdoid-ARM</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Distribution Anrdoid|Win32">
-      <Configuration>Distribution Anrdoid</Configuration>
+    <ProjectConfiguration Include="Distribution Anrdoid-ARM|Win32">
+      <Configuration>Distribution Anrdoid-ARM</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Distribution Anrdoid-ARM|ARM">
+      <Configuration>Distribution Anrdoid-ARM</Configuration>
+      <Platform>ARM</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -118,13 +166,14 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS-ARM|ARM'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <WindowsSDKDesktopARMSupport>true</WindowsSDKDesktopARMSupport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid-ARM|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
@@ -142,13 +191,14 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS-ARM|ARM'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <WindowsSDKDesktopARMSupport>true</WindowsSDKDesktopARMSupport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid-ARM|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
@@ -166,13 +216,14 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS-ARM|ARM'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <WindowsSDKDesktopARMSupport>true</WindowsSDKDesktopARMSupport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid-ARM|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
@@ -187,10 +238,10 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug iOS|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug iOS-ARM|ARM'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid-ARM|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -199,10 +250,10 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release iOS|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release iOS-ARM|ARM'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid-ARM|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution Win64|x64'">
@@ -211,10 +262,10 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution iOS|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution iOS-ARM|ARM'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid-ARM|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -230,15 +281,15 @@
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS|Win32'">
-    <OutDir>bin\Debug-ios-iOS\Glad\</OutDir>
-    <IntDir>bin-int\Debug-ios-iOS\Glad\</IntDir>
-    <TargetName>libGlad</TargetName>
-    <TargetExt>.a</TargetExt>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS-ARM|ARM'">
+    <OutDir>bin\Debug-windows-iOS-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-iOS-ARM\Glad\</IntDir>
+    <TargetName>Glad</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid|Win32'">
-    <OutDir>bin\Debug-windows-Anrdoid\Glad\</OutDir>
-    <IntDir>bin-int\Debug-windows-Anrdoid\Glad\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid-ARM|Win32'">
+    <OutDir>bin\Debug-windows-Anrdoid-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-Anrdoid-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
@@ -254,15 +305,15 @@
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS|Win32'">
-    <OutDir>bin\Release-ios-iOS\Glad\</OutDir>
-    <IntDir>bin-int\Release-ios-iOS\Glad\</IntDir>
-    <TargetName>libGlad</TargetName>
-    <TargetExt>.a</TargetExt>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS-ARM|ARM'">
+    <OutDir>bin\Release-windows-iOS-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-iOS-ARM\Glad\</IntDir>
+    <TargetName>Glad</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid|Win32'">
-    <OutDir>bin\Release-windows-Anrdoid\Glad\</OutDir>
-    <IntDir>bin-int\Release-windows-Anrdoid\Glad\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid-ARM|Win32'">
+    <OutDir>bin\Release-windows-Anrdoid-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-Anrdoid-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
@@ -278,15 +329,15 @@
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS|Win32'">
-    <OutDir>bin\Distribution-ios-iOS\Glad\</OutDir>
-    <IntDir>bin-int\Distribution-ios-iOS\Glad\</IntDir>
-    <TargetName>libGlad</TargetName>
-    <TargetExt>.a</TargetExt>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS-ARM|ARM'">
+    <OutDir>bin\Distribution-windows-iOS-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Distribution-windows-iOS-ARM\Glad\</IntDir>
+    <TargetName>Glad</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid|Win32'">
-    <OutDir>bin\Distribution-windows-Anrdoid\Glad\</OutDir>
-    <IntDir>bin-int\Distribution-windows-Anrdoid\Glad\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid-ARM|Win32'">
+    <OutDir>bin\Distribution-windows-Anrdoid-ARM\Glad\</OutDir>
+    <IntDir>bin-int\Distribution-windows-Anrdoid-ARM\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
@@ -322,7 +373,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug iOS-ARM|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -338,7 +389,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Anrdoid-ARM|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -392,7 +443,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release iOS-ARM|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -411,7 +462,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Anrdoid-ARM|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -468,7 +519,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution iOS-ARM|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -487,7 +538,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution Anrdoid-ARM|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>

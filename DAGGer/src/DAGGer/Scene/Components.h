@@ -79,7 +79,7 @@ namespace DAGGer
 				* glm::scale(glm::mat4(1.0f), Scale);
 		}
 	};
-	//  -----------------------------  SPRITE COMPONENT  -----------------------------  //
+	//  -----------------------------  SPRITE RENDERER COMPONENT  -----------------------------  //
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
@@ -89,6 +89,19 @@ namespace DAGGer
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
+			: Color(color) {}
+	};
+	//  -----------------------------  CIRCLE RENDERER COMPONENT  -----------------------------  //
+	struct CircleRendererComponent
+	{
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		float Radius = 0.5f;
+		float Thickness = 1.0f;
+		float Fade = 0.005f;
+
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent&) = default;
+		CircleRendererComponent(const glm::vec4& color)
 			: Color(color) {}
 	};
 	//  -----------------------------  CAMERA COMPONENT  -----------------------------  //

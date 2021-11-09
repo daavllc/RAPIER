@@ -23,7 +23,7 @@ workspace "DAGGer"
 	filter {"platforms:Win32 or Linux32 or Mac32"}		--	x86
 		architecture "x86"
 
-	filter {"platforms:iOS-64 or Android-64"}				--	ARM
+	filter {"platforms:iOS-ARM or Android-ARM"}				--	ARM
 		architecture "ARM"
 
 	filter {"system:windows"}			--	WINDOWS
@@ -39,7 +39,7 @@ workspace "DAGGer"
 		defaultplatform "Mac64"
 	filter ""
 
-	-- Debug/Release/Dist /-/ Build on OS /-/ Build for OS
+	-- Debug/Release/Dist /-/ Built on OS /-/ Built for OS
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.platform}"
 	
 	group "Dependencies"
@@ -50,15 +50,7 @@ workspace "DAGGer"
 		include "DAGGer/vendor/imgui"
 		include "DAGGer/vendor/yaml-cpp"
 	group ""
-	
-	group "Core"
-		include "DAGGer"
-	group ""
-	
-	group "Tools"
-		include "FORGE"
-	group ""
-	
-	group "Sandbox"
-		include "Sandbox"
-	group ""
+
+	include "DAGGer"
+	include "Sandbox"
+	include "FORGE"
