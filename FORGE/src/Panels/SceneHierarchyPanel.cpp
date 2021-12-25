@@ -512,8 +512,8 @@ namespace DAGGer
 		//  -----------------------------  CIRCLE COLLIDER COMPONENT  -----------------------------  //
 		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, treeNodeFlags, [](auto& component)
 		{
-			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
-			ImGui::DragFloat("Radius",      &component.Radius, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset), 0.05f);
+			ImGui::DragFloat("Radius",      &component.Radius, 0.01f, 0.0f);
 			ImGui::DragFloat("Density",     &component.Density, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Friction",    &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);

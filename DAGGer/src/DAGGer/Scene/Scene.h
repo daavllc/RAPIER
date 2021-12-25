@@ -43,8 +43,8 @@ namespace DAGGer
 
 		void DuplicateEntity(Entity entity);
 
-		template<typename T>
-		auto GetAllEntitiesWith() { return m_Registry.view<T>(); }
+		template<typename... Components>
+		auto GetAllEntitiesWith() { return m_Registry.view<Components...>(); }
 		Entity FindEntityByTag(const std::string& tag);
 
 		Entity FindEntityByUUID(UUID id);
