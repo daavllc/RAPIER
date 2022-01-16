@@ -21,11 +21,11 @@ def Start():
         exts = ["sln", "vcxproj", "vcxproj.filters", "vcxproj.user"]
         DeleteFiles(root, exts) # ../.. (project folder)
 
-        path = os.path.join(root, 'DAGGer')
-        DeleteFiles(path, exts) # ../../DAGGer
+        path = os.path.join(root, 'RAPIER')
+        DeleteFiles(path, exts) # ../../RAPIER
 
         path = os.path.join(path, 'vendor')
-        for file in os.listdir(path): # ../../DAGGer/vendor
+        for file in os.listdir(path): # ../../RAPIER/vendor
             DeleteFiles(os.path.join(path, file), exts)
 
         for folder in ['.vs', 'bin', 'bin-int']: # ../..

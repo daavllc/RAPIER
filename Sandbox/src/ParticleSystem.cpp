@@ -30,7 +30,7 @@ ParticleSystem::ParticleSystem(uint32_t maxParticles)
 	m_ParticlePool.resize(maxParticles);
 }
 
-void ParticleSystem::OnUpdate(DAGGer::Timestep ts)
+void ParticleSystem::OnUpdate(RAPIER::Timestep ts)
 {
 	for (auto& particle : m_ParticlePool)
 	{
@@ -52,9 +52,9 @@ void ParticleSystem::OnUpdate(DAGGer::Timestep ts)
 std::mt19937 Random::s_RandomEngine;
 std::uniform_int_distribution<std::mt19937::result_type> Random::s_Distribution;
 
-void ParticleSystem::OnRender(DAGGer::OrthographicCamera& camera)
+void ParticleSystem::OnRender(RAPIER::OrthographicCamera& camera)
 {
-	DAGGer::Renderer2D::BeginScene(camera);
+	RAPIER::Renderer2D::BeginScene(camera);
 
 	for (auto& particle : m_ParticlePool)
 	{
@@ -68,10 +68,10 @@ void ParticleSystem::OnRender(DAGGer::OrthographicCamera& camera)
 
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 		glm::vec3 position = { particle.Position.x, particle.Position.y, 0.2f };
-		DAGGer::Renderer2D::DrawRotatedQuad(position, DrSize2(size, size), particle.Rotation, color);
+		RAPIER::Renderer2D::DrawRotatedQuad(position, DrSize2(size, size), particle.Rotation, color);
 		
 	}
-	DAGGer::Renderer2D::EndScene();
+	RAPIER::Renderer2D::EndScene();
 }
 
 void ParticleSystem::Emit(const ParticleProps& particleProps)

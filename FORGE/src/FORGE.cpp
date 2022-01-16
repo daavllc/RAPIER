@@ -1,23 +1,21 @@
-//------------------------------------------------------------------------------------------------------------
-//----====================================================================================================~~~~
-//----=                        _______       ___       _____       ______      _____                     =----
-//----=                       |  _____|     / _ \     |  __ \     / ____ \    | ____|                    =----
-//----=                       | |          / / \ \    | |  \ \   | /    \_\   | |                        =----
-//----=                       | |___      | |   | |   | |__/ /   | |   ___    | |__                      =----
-//----=                       |  ___|     | |   | |   |  __  |   | |  |_  |   |  __|                     =----
-//----=                       | |         | |   | |   | |  | |   | |    | |   | |                        =----
-//----=                       | |          \ \_/ /    | |  | |    \ \___| |   | |___                     =----
-//----=                       |_|           \___/     |_|  |_|     \_____/    |_____|                    =----
-//----=                                                                                                  =----
-//----====================================================================================================~~~~
-// Author: Anonoei (https://github.com/anonoei)
-//	License : GPLv3
+//------------------------------------------------------------------
+//----==========================================================----
+//----=               __________  ____  ____________           =----
+//----=              / ____/ __ \/ __ \/ ____/ ____/           =----
+//----=             / /_  / / / / /_/ / / __/ __/              =----
+//----=            / __/ / /_/ / _, _/ /_/ / /___              =----
+//----=           /_/    \____/_/ |_|\____/_____/              =----
+//----=                                                        =----
+//----==============================================================
+// Author: DAAV, LLC (https://github.com/daavofficial)
+//	License : MIT
 //	Language: C++17
-//	Dependencies: DAGGer
-//	The graphical editor for DAGGer... FORGE - the Fast Open Reliable Graphics Editor!
+//	Dependencies: RAPIER
+//	The Fast Open Reliable Graphics Editor, RAPIER's graphical editor
 ///////////////////////////////////////
-#include <DAGGer.h>				//	Include DAGGer
-#include <DAGGer/Core/Entry.h>	//	Entry Point
+
+#include <RAPIER.h>				//	Include RAPIER
+#include <RAPIER/Core/Entry.h>	//	Entry Point
 
 #include "EditorLayer.h"
 
@@ -25,15 +23,15 @@
 
 #include "conf/Fe_VER.h" // contains FORGE_BUILD_ID
 
-namespace DAGGer
+namespace RAPIER
 {
 	class FORGE : public Application
 	{
 	public:
-		FORGE(const DAGGer::ApplicationSpecification& specification, ApplicationCommandLineArgs args)
-			: Application(specification)
+		FORGE(const RAPIER::ApplicationSpecification& specification, ApplicationCommandLineArgs args)
+			: Application(specification, args)
 		{
-			Dr_INFO("DAGGer FORGE {}", FORGE_BUILD_ID);
+			RP_INFO("RAPIER FORGE {}", FORGE_BUILD_ID);
 			PushLayer(new EditorLayer());
 		}
 
@@ -44,7 +42,7 @@ namespace DAGGer
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		DAGGer::ApplicationSpecification specification;
+		RAPIER::ApplicationSpecification specification;
 		specification.Name = "FORGE";
 		specification.WindowWidth = 1600;
 		specification.WindowHeight = 900;
@@ -57,4 +55,4 @@ namespace DAGGer
 		return new FORGE(specification, args);
 	}	//	END CreateApplication
 
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

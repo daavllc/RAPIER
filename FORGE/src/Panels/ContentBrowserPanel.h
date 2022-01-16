@@ -2,13 +2,13 @@
 
 #include <filesystem>
 
-#include "DAGGer/Renderer/Texture.h"
-#include "DAGGer/Events/Event.h"
-#include "DAGGer/Events/KeyEvent.h"
+#include "RAPIER/Renderer/Texture.h"
+#include "RAPIER/Events/Event.h"
+#include "RAPIER/Events/KeyEvent.h"
 
 #include <imgui/imgui.h>
 
-namespace DAGGer
+namespace RAPIER
 {
 	class FileColumn
 	{
@@ -67,4 +67,4 @@ namespace DAGGer
 		Ref<Texture2D> m_DirectoryIcon;
 		Ref<Texture2D> m_FileIcon;
 	};
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

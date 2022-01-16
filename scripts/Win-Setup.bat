@@ -1,4 +1,4 @@
 @echo off
 cd files
-python3 Setup.py
+python Setup.py
 PAUSE 

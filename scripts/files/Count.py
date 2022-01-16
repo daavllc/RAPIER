@@ -17,7 +17,7 @@ def Main():
 		elif i < len(SearchFor) - 1:
 			p += " and "
 	print(p + " files")
-	info.Add(Project("DAGGer", "DAGGer/src"))
+	info.Add(Project("RAPIER", "RAPIER/src"))
 	info.Add(Project("FORGE", "FORGE/src"))
 	c = ["PROJECT", "DIRS", "FILES", "LINES", "CHARS", "SIZE"]
 	if len(c[0]) > info.LongestName:
@@ -96,7 +96,7 @@ class Project:
 			sepChar = "\\"
 		else:
 			sepChar = "/"
-		path = self._fAppend + path # main DAGGer folder
+		path = self._fAppend + path # main RAPIER folder
 		return path.replace("/", sepChar)
 	def SetData(self, fData):
 		self.Data = fData[:2]

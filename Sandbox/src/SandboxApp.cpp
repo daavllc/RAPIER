@@ -1,15 +1,15 @@
-#include <DAGGer.h>
+#include <RAPIER.h>
 // Entry Point
-#include <DAGGer/Core/Entry.h>
+#include <RAPIER/Core/Entry.h>
 
 #include "Sandbox2D.h"
 #include "ExampleLayer.h"
 
-class Sandbox : public DAGGer::Application
+class Sandbox : public RAPIER::Application
 {
 public:
 	Sandbox()
-		: Application("DAGGer Application")
+		: Application("RAPIER Application")
 	{
 		//PushLayer(new ExampleLayer());
 		PushLayer(new Sandbox2D());
@@ -20,7 +20,7 @@ public:
 	}
 };	//	END class Sandbox
 
-DAGGer::Application* DAGGer::CreateApplication()
+RAPIER::Application* RAPIER::CreateApplication()
 {
 	return new Sandbox();
 }	//	END CreateApplication

@@ -1,11 +1,11 @@
 #include "EditorLayer.h"
 #include "conf/Fe_VER.h" // contains FORGE_BUILD_ID
 
-#include "DAGGer/Scene/SceneSerializer.h"
-#include "DAGGer/Utilities/PlatformUtils.h"
-#include "DAGGer/Math/Math.h"
+#include "RAPIER/Scene/SceneSerializer.h"
+#include "RAPIER/Utilities/PlatformUtils.h"
+#include "RAPIER/Math/Math.h"
 
-#include "DAGGer/Scene/ScriptableEntity.h"
+#include "RAPIER/Scene/ScriptableEntity.h"
 
 #include <imgui/imgui.h>
 #include <ImGuizmo.h>
@@ -21,7 +21,7 @@
 #include <box2d/b2_world.h>
 #include <box2d/b2_world_callbacks.h>
 
-namespace DAGGer
+namespace RAPIER
 {
 	extern const std::filesystem::path g_AssetPath;
 
@@ -32,7 +32,7 @@ namespace DAGGer
 
 	void EditorLayer::OnAttach()
 	{
-		Dr_PROFILE_FUNCTION();
+		RP_PROFILE_FUNCTION();
 
 		m_IconPlay = Texture2D::Create("Resources/Icons/PlayButton.png");
 		m_IconPause = Texture2D::Create("Resources/Icons/PauseButton.png");
@@ -67,12 +67,12 @@ namespace DAGGer
 
 	void EditorLayer::OnDetach()
 	{
-		Dr_PROFILE_FUNCTION();
+		RP_PROFILE_FUNCTION();
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
-		Dr_PROFILE_FUNCTION();
+		RP_PROFILE_FUNCTION();
 
 		m_Time = m_Time + (float)ts.GetMilliseconds();
 		m_FrameCount += 1;
@@ -144,7 +144,7 @@ namespace DAGGer
 	}
 	void EditorLayer::OnImGuiRender()
 	{
-		Dr_PROFILE_FUNCTION();
+		RP_PROFILE_FUNCTION();
 
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
@@ -176,7 +176,7 @@ namespace DAGGer
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise 
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DAGGer FORGE", &dockspaceOpen, window_flags);
+		ImGui::Begin("RAPIER FORGE", &dockspaceOpen, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -230,7 +230,8 @@ namespace DAGGer
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("Scene Preferences"));
+				if (ImGui::MenuItem("Scene Preferences"))
+					std::cout << "Preferences" << std::endl;
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
@@ -393,8 +394,8 @@ namespace DAGGer
 		m_EditorCamera.OnEvent(e);
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<KeyPressedEvent>(Dr_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
-		dispatcher.Dispatch<MouseButtonPressedEvent>(Dr_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+		dispatcher.Dispatch<KeyPressedEvent>(RP_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(RP_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
@@ -526,6 +527,7 @@ namespace DAGGer
 				}
 			}
 		}
+		return true;
 	}
 
 	void EditorLayer::NewScene()
@@ -541,7 +543,7 @@ namespace DAGGer
 	}
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("DAGGer Scene (*.dr)\0*.dr\0");
+		std::string filepath = FileDialogs::OpenFile("RAPIER Scene (*.dr)\0*.dr\0");
 		if (!filepath.empty())
 			OpenScene(filepath);
 	}
@@ -552,7 +554,7 @@ namespace DAGGer
 
 		if (path.extension().string() != ".dr")
 		{
-			Dr_WARN("Could not load {0} - not a scene file", path.filename().string());
+			RP_WARN("Could not load {0} - not a scene file", path.filename().string());
 			return;
 		}
 
@@ -578,7 +580,7 @@ namespace DAGGer
 	}
 	void EditorLayer::SaveSceneAs()
 	{
-		std::string filepath = FileDialogs::SaveFile("DAGGer Scene (*.dr)\0*.dr\0");
+		std::string filepath = FileDialogs::SaveFile("RAPIER Scene (*.dr)\0*.dr\0");
 
 		if (!filepath.empty())
 		{
@@ -599,10 +601,19 @@ namespace DAGGer
 
 		m_ActiveScene = Ref<Scene>::Create();
 		m_EditorScene->CopyTo(m_ActiveScene);
-		m_ActiveScene->OnRuntimeStart();
+		if (m_ActiveScene->HasPrimaryCameraEntity())
+		{
+			m_ActiveScene->OnRuntimeStart();
 
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-		m_GizmoType = -1;
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_GizmoType = -1;
+		}
+		else
+		{
+			m_SceneState = SceneState::Edit;
+			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+			m_ActiveScene = m_EditorScene;
+		}
 	}
 	void EditorLayer::OnSceneStop()
 	{
@@ -628,8 +639,8 @@ namespace DAGGer
 		std::string Platform = Application::Get().GetPlatformName();
 		std::string Specification = Application::Get().GetConfigurationName();
 		std::string forgeVersion = FORGE_BUILD_ID;
-		std::string newTitle = "DAGGer FORGE " + forgeVersion + " - " + Platform + " " + Specification;
+		std::string newTitle = "RAPIER FORGE " + forgeVersion + " - " + Platform + " " + Specification;
 		Application::Get().GetWindow().SetTitle(newTitle);
 	}
 
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

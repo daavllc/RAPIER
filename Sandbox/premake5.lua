@@ -15,15 +15,15 @@ project "Sandbox"
 	
 	includedirs
 	{
-		"%{wks.location}/DAGGer/vendor/",
-		"%{wks.location}/DAGGer/src",
+		"%{wks.location}/RAPIER/vendor/",
+		"%{wks.location}/RAPIER/src",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}"
 	}
 	
 	links
 	{
-		"DAGGer"
+		"RAPIER"
 	}
 		
 	filter {"system:windows"}			--	WINDOWS
@@ -36,16 +36,16 @@ project "Sandbox"
 		systemversion "latest"
 
 	filter "configurations:Debug"	--	DEBUG
-		defines "Dr_DEBUG"
+		defines "RPDEBUG"
 		runtime "Debug"
 		symbols "on"		
 		
 	filter "configurations:Release"	--	RELEASE
-		defines "Dr_RELEASE"
+		defines "RPRELEASE"
 		runtime "Release"
 		optimize "on"
 		
 	filter "configurations:Distribution"	--	DISTRIBUTION
-		defines "Dr_DISTRIBUTION"
+		defines "RPDISTRIBUTION"
 		runtime "Release"
 		optimize "on"

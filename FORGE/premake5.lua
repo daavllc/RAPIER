@@ -17,9 +17,9 @@ project "FORGE"
 	
 	includedirs
 	{
-		"%{wks.location}/DAGGer/vendor/spdlog/include",
-		"%{wks.location}/DAGGer/src",
-		"%{wks.location}/DAGGer/vendor",
+		"%{wks.location}/RAPIER/vendor/spdlog/include",
+		"%{wks.location}/RAPIER/src",
+		"%{wks.location}/RAPIER/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
@@ -32,7 +32,7 @@ project "FORGE"
 	
 	links
 	{
-		"DAGGer"
+		"RAPIER"
 	}
 		
 	filter {"system:windows"}			--	WINDOWS
@@ -45,7 +45,7 @@ project "FORGE"
 		systemversion "latest"
 
 	filter "configurations:Debug"	--	DEBUG
-		defines "Dr_DEBUG"
+		defines "RP_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
@@ -55,11 +55,11 @@ project "FORGE"
 		}
 
 	filter "configurations:Release"	--	RELEASE
-		defines "Dr_RELEASE"
+		defines "RP_RELEASE"
 		runtime "Release"
 		optimize "on"
 		
 	filter "configurations:Distribution"	--	DISTRIBUTION
-		defines "Dr_DISTRIBUTION"
+		defines "RP_DISTRIBUTION"
 		runtime "Release"
 		optimize "on"

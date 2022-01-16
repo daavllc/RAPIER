@@ -1,4 +1,4 @@
 @echo off
 cd files
-python3 Clean.py vs
+python Clean.py vs
 PAUSE

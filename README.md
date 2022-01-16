@@ -1,58 +1,92 @@
-# DAGGer v0.3.2
-#### DA Gordian Graphics Engine Reimagined
-This is supposed to serve as an easy to use C++17 graphics/game engine. I'm not writting the engine with the intent for other people use use, however feel free to use, modify, and create whatever you want with it!
+# RAPIER
+#### Renderer Agnostic Paramount Imagination Engine Reborn
 
-![DAGGer](/Branding/SplashScreen.jpg?raw=true "DAGGer")
+![RAPIER](/Branding/RAPIER_SplashScreen.jpg?raw=true "RAPIER")
 
-## Features (WiP):
-  * Free and Open Source
-  * Cross-platform
-  * Multi-Render API (only OpenGL for now)
-  * Easy-to-use API
-  * Supporting a single freelance developer 
+## Purpose
+Provide the backbone for graphical projects to be built upon. Creating a render API agnostic graphics engine enables the best possbile performance on any platform by using the API built for that platform. Creating a multi-platform engine also enables projects to be more easily ported to different platforms with less hassle. 
 
-~Written 2021/10/03
+## Details
+ - Project lead: [Anonoei](https://github.com/Anonoei)
+ - Language: C++17
+ - License: MIT
+ - Dependancies:
+   - [premake](https://github.com/premake/premake-core) - Build configuration
+   - [box2d](https://github.com/erincatto/box2d) - 2D Physics
+   - [entt](https://github.com/skypjack/entt) - Entity management
+   - [glfw](https://github.com/glfw/glfw) - Window manager
+   - [glm](https://github.com/Groovounet/glm) - Mathematics
+   - [imgui](https://github.com/ocornut/imgui) -  GUI
+   - [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) - GUI gizmos
+   - [spdlog](https://github.com/gabime/spdlog) - Logging
+   - [stb (image)](https://github.com/nothings/stb) - Image loading
+   - [yaml-cpp](https://github.com/jbeder/yaml-cpp) - Serialization
+   - [VulkanSDK](https://www.lunarg.com/vulkan-sdk/) - Shader compilation
+   - [glad](https://glad.dav1d.de/) - OpenGL bindings
 
-## Getting Started
-Visual Studio 2017 or 2019 is recommended, DAGGer is officially untested on other development environments while I focus on a Windows build.
+----
 
-<ins>**1. Downloading the repository:**</ins>
-Start by cloning the repository with `git clone --recursive https://github.com/Anonoei/DAGGer`.
+## Current status/roadmap
+ - [ ] Initial Release
+ - [ ] Documentation
+ - [X] FORGE
+   - [ ] Initial Release
+   - [X] Physics Collider Visualizers
+   - [X] Play/Pause
+   - [X] Initial implementation
+ - [X] RAPIER
+   - [ ] POMMEL
+     - [ ] Initial implementation
+   - [ ] 3D
+     - [ ] Physics
+   - [X] 2D
+     - [X] Physics
+     - [X] Initial implementation
+   - [ ] Features
+     - [ ] HDR
+ - [ ] Platforms
+   - [ ] Desktop
+     - [X] Windows
+     - [ ] Linux
+     - [ ] MacOS
+   - [ ] Mobile
+     - [ ] iOS
+     - [ ] Android
+   - [ ] Console
+     - [ ] Sony
+     - [ ] Microsoft
+     - [ ] Nintendo
+ - [ ] Render APIs
+   - [ ] Metal
+   - [ ] DirectX
+   - [ ] Vulkan
+   - [X] OpenGL
 
-If the repository was cloned non-recursively previously, use `git submodule update --init` to clone the necessary submodules.
+## Installation
+There are currently no releases, so you must download and compile from source. Check the `Contributing` section for instructions.
+## Contributing
+Visual Studio 2017 or 2019 is recommended, RAPIER is officially untested on other development environments while we focus on a Windows build and feature development.
 
-<ins>**2. Configuring the dependencies:**</ins>
+1. **Download the repository**
+   - Run `git clone --recursive https://github.com/daavofficial/RAPIER`.
+   - Near the rop right, click Code > Download ZIP
+     - Extract the zip file
 
-1. Run the [Win-Setup.bat](https://github.com/Anonoei/DAGGer/blob/master/scripts/Win-Setup.bat) file found in the `scripts` folder. This will download the required prerequisites for DAGGer if they are not present yet.
-2. One prerequisite is the Vulkan SDK. If it is not installed, the script will download and execute the `VulkanSDK.exe` file, and will prompt the user to install the SDK.
-3. After installation, run the [Win-Setup.bat](https://github.com/Anonoei/DAGGer/blob/master/scripts/Win-Setup.bat) file again. If the Vulkan SDK is installed properly, it will then download the Vulkan SDK Debug libraries. (This may take a longer amount of time)
-4. After downloading and extracting the files, the [Win-GenProjects.bat](https://github.com/Anonoei/DAGGer/blob/master/scripts/files/Win-GenProjects.bat) script will be executed automatically, which will then generate a Visual Studio solution file for user's usage.
+2. **Creating the solution**
 
-If you make changes to the `premake5.lua` files, or if you want to regenerate the project files, rerun [Win-Setup.bat](https://github.com/Anonoei/DAGGer/blob/master/scripts/Win-Setup.bat), found in the `scripts` folder.
+   1. Run [Win-Setup.bat](https://github.com/daavofficial/RAPIER/blob/master/scripts/Win-Setup.bat) found in the [scripts](https://github.com/daavofficial/RAPIER/blob/master/scripts) folder. This will download any missing dependencies for RAPIER.
+      - If the VulkanSDK is not installed, you will be prompted to download and install it. Once downloaded, follow the steps it provides to install it. After it is installed, please re-run [Win-Setup.bat](https://github.com/daavofficial/RAPIER/blob/master/scripts/Win-Setup.bat) to verify it's installation
+      - If premake is not found in the [vendor/premake/bin](https://github.com/daavofficial/RAPIER/blob/master/vendor/premake/bin) folder, you will be prompted to download premake.
+   2. After all dependencies are installed, [Win-GenProjects.bat](https://github.com/daavofficial/RAPIER/blob/master/scripts/files/Win-GenProjects.bat) will be executed automatically, and will generate a Visual Studio solution file for you to use.
 
-***
+If you make changes to any `premake5.lua` files, or if you want to regenerate the project files, re-run [Win-Setup.bat](https://github.com/daavofficial/RAPIER/blob/master/scripts/Win-Setup.bat).
 
-## Libraries (Coming Later):
-#### DAALS (DA Asset Library Systemics)
-DAALS are various abstrtacted libraries for specific tasks, from a music and sound engine to weather to health management
-DAALS Name | Purpose | Sub-items
----------- | ------- | -----------
-DAAGS | Generation of maps/weather | LARG, LASG, LAWS
-DACMS | Color Management Systems | CAPE, CARP
-DAINS | A.I./machine learning | NIANN, NIME, NISST, NNICS
-DAUMS | Health Management | HARE, HATE
-DAUSS | Music and Sound | MASAE, MASTA
+----
+## License: MIT
+Copyright © 2022 DAAV, LLC
 
-## License: GPLv3
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

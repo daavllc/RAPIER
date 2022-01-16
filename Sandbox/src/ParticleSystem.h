@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DAGGer.h>
+#include <RAPIER.h>
 
 struct ParticleProps
 {
@@ -16,8 +16,8 @@ class ParticleSystem
 public:
 	ParticleSystem(uint32_t maxParticles = 100000);
 
-	void OnUpdate(DAGGer::Timestep ts);
-	void OnRender(DAGGer::OrthographicCamera& camera);
+	void OnUpdate(RAPIER::Timestep ts);
+	void OnRender(RAPIER::OrthographicCamera& camera);
 
 	void Emit(const ParticleProps& particleProps);
 private:

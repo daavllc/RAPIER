@@ -1,14 +1,14 @@
 #pragma once
 
-#include "DAGGer.h"
+#include "RAPIER.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
 
-#include "DAGGer/Renderer/EditorCamera.h"
+#include "RAPIER/Renderer/EditorCamera.h"
 
 #include <filesystem>
 
-namespace DAGGer
+namespace RAPIER
 {
 	class EditorLayer : public Layer
 	{
@@ -96,4 +96,4 @@ namespace DAGGer
 		Ref<Texture2D> m_IconMinimize, m_IconMaximize, m_IconClose;
 	};
 
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

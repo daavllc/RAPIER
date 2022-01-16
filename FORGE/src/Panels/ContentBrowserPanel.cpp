@@ -1,7 +1,7 @@
-#include "drpch.h"
+#include "rppch.h"
 #include "ContentBrowserPanel.h"
 
-namespace DAGGer
+namespace RAPIER
 {
 	//	Change once we have projects
 	extern const std::filesystem::path g_AssetPath = "assets";
@@ -147,4 +147,4 @@ namespace DAGGer
 	{
 		return m_Columns[m_Columns.size() - 1].GetPath();
 	}
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

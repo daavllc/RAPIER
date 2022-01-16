@@ -1,9 +1,9 @@
 #pragma once
 
-#include <DAGGer.h>
+#include <RAPIER.h>
 #include "ParticleSystem.h"
 
-class Sandbox2D : public DAGGer::Layer
+class Sandbox2D : public RAPIER::Layer
 {
 public:
 	Sandbox2D();
@@ -12,17 +12,17 @@ public:
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 
-	void OnUpdate(DAGGer::Timestep ts) override;
+	void OnUpdate(RAPIER::Timestep ts) override;
 	virtual void OnImGuiRender() override;
-	void OnEvent(DAGGer::Event& e) override;
+	void OnEvent(RAPIER::Event& e) override;
 private:
-	DAGGer::OrthographicCameraController m_CameraController;
+	RAPIER::OrthographicCameraController m_CameraController;
 
-	DAGGer::Ref<DAGGer::Texture2D> m_CheckerboardTexture;
-	DAGGer::Ref<DAGGer::Texture2D> m_SpriteSheet;
+	RAPIER::Ref<RAPIER::Texture2D> m_CheckerboardTexture;
+	RAPIER::Ref<RAPIER::Texture2D> m_SpriteSheet;
 
-	std::unordered_map<char, DAGGer::Ref<DAGGer::SubTexture2D>> m_Textures;
-	DAGGer::Ref<DAGGer::SubTexture2D> m_ErrTexture;
+	std::unordered_map<char, RAPIER::Ref<RAPIER::SubTexture2D>> m_Textures;
+	RAPIER::Ref<RAPIER::SubTexture2D> m_ErrTexture;
 	uint32_t m_MapWidth, m_MapHeight = 0;
 
 };

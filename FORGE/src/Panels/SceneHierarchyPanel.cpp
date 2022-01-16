@@ -3,7 +3,7 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
-#include "DAGGer/Scene/Components.h"
+#include "RAPIER/Scene/Components.h"
 #include <cstring>
 
 
@@ -13,7 +13,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-namespace DAGGer
+namespace RAPIER
 {
 	extern const std::filesystem::path g_AssetPath;
 
@@ -459,7 +459,7 @@ namespace DAGGer
 					if (texture->IsLoaded())
 						component.Texture = texture;
 					else
-						Dr_WARN("Could not load texture {0}", texturePath.filename().string());
+						RP_WARN("Could not load texture {0}", texturePath.filename().string());
 				}
 				ImGui::EndDragDropTarget();
 			}
@@ -522,4 +522,4 @@ namespace DAGGer
 
 	}	//	END DrawComponents
 
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

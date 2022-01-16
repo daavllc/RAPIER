@@ -1,12 +1,12 @@
 #pragma once
 
-#include "DAGGer/Scene/Scene.h"
-#include "DAGGer/Scene/Entity.h"
-#include "DAGGer/Core/Base.h"
+#include "RAPIER/Scene/Scene.h"
+#include "RAPIER/Scene/Entity.h"
+#include "RAPIER/Core/Base.h"
 
 typedef int ImGuiTreeNodeFlags;
 
-namespace DAGGer
+namespace RAPIER
 {
 	class SceneHierarchyPanel
 	{
@@ -29,4 +29,4 @@ namespace DAGGer
 		Entity m_SelectionContext;
 	};
 
-}	//	END namespace DAGGer
+}	//	END namespace RAPIER

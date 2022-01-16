@@ -1,19 +1,19 @@
-[submodule "DAGGer/vendor/glfw"]
-	path = DAGGer/vendor/glfw
-	url = https://github.com/anonoei/glfw
-[submodule "DAGGer/vendor/imgui"]
-	path = DAGGer/vendor/imgui
+[submodule "RAPIER/vendor/glfw"]
+	path = RAPIER/vendor/glfw
+	url = https://github.com/daavofficial/glfw
+[submodule "RAPIER/vendor/imgui"]
+	path = RAPIER/vendor/imgui
 	url = https://github.com/anonoei/imgui
 	branch = docking
-[submodule "DAGGer/vendor/yaml-cpp"]
-	path = DAGGer/vendor/yaml-cpp
+[submodule "RAPIER/vendor/yaml-cpp"]
+	path = RAPIER/vendor/yaml-cpp
 	url = https://github.com/anonoei/yaml-cpp
-[submodule "DAGGer/vendor/ImGuizmo"]
-	path = DAGGer/vendor/ImGuizmo
+[submodule "RAPIER/vendor/ImGuizmo"]
+	path = RAPIER/vendor/ImGuizmo
 	url = https://github.com/anonoei/ImGuizmo
-[submodule "DAGGer/vendor/DAALS"]
-	path = DAGGer/vendor/DAALS
+[submodule "RAPIER/vendor/DAALS"]
+	path = RAPIER/vendor/DAALS
 	url = https://github.com/anonoei/DAALS
-[submodule "DAGGer/vendor/box2d"]
-	path = DAGGer/vendor/box2d
+[submodule "RAPIER/vendor/box2d"]
+	path = RAPIER/vendor/box2d
 	url = https://github.com/anonoei/box2d

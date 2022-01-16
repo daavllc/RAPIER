@@ -10,7 +10,7 @@ from urllib.request import urlopen
 
 class VulkanConfiguration:
 	requiredVulkanVersion = "1.2.170.0"
-	vulkanDirectory = "./DAGGer/vendor/VulkanSDK"
+	vulkanDirectory = "./RAPIER/vendor/VulkanSDK"
 
 	@classmethod
 	def Validate(cls):

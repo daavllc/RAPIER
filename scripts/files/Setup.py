@@ -25,6 +25,6 @@ if (premakeInstalled):
 
     print("\nSetup completed <premake>!")
 else:
-    print("DAGGer requires Premake to generate project files.")
+    print("RAPIER requires Premake to generate project files.")
 
 print("\nSetup completed <done>!")

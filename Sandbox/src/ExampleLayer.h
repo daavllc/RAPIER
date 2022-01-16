@@ -1,8 +1,8 @@
 #pragma once
 
-#include <DAGGer.h>
+#include <RAPIER.h>
 
-class ExampleLayer : public DAGGer::Layer
+class ExampleLayer : public RAPIER::Layer
 {
 public:
 	ExampleLayer();
@@ -11,19 +11,19 @@ public:
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 
-	void OnUpdate(DAGGer::Timestep ts) override;
+	void OnUpdate(RAPIER::Timestep ts) override;
 	virtual void OnImGuiRender() override;
-	void OnEvent(DAGGer::Event& e) override;
+	void OnEvent(RAPIER::Event& e) override;
 private:
-	DAGGer::ShaderLibrary m_ShaderLibrary;
-	DAGGer::Ref<DAGGer::Shader> m_Shader;
-	DAGGer::Ref<DAGGer::VertexArray> m_VertexArray;
+	RAPIER::ShaderLibrary m_ShaderLibrary;
+	RAPIER::Ref<RAPIER::Shader> m_Shader;
+	RAPIER::Ref<RAPIER::VertexArray> m_VertexArray;
 
-	DAGGer::Ref<DAGGer::Shader> m_FlatColorShader;
-	DAGGer::Ref<DAGGer::VertexArray> m_SquareVA;
+	RAPIER::Ref<RAPIER::Shader> m_FlatColorShader;
+	RAPIER::Ref<RAPIER::VertexArray> m_SquareVA;
 
-	DAGGer::Ref<DAGGer::Texture2D> m_Texture, m_ChernoLogoTexture;
+	RAPIER::Ref<RAPIER::Texture2D> m_Texture, m_ChernoLogoTexture;
 
-	DAGGer::OrthographicCameraController m_CameraController;
+	RAPIER::OrthographicCameraController m_CameraController;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };

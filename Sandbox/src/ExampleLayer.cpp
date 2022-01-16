@@ -8,7 +8,7 @@
 ExampleLayer::ExampleLayer()
 	: Layer("ExampleLayer"), m_CameraController(1280.0f / 720.0f)
 {
-	m_VertexArray = DAGGer::VertexArray::Create();
+	m_VertexArray = RAPIER::VertexArray::Create();
 
 	float vertices[3 * 7] = {
 		-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -16,19 +16,19 @@ ExampleLayer::ExampleLayer()
 		 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 	};
 
-	DAGGer::Ref<DAGGer::VertexBuffer> vertexBuffer = DAGGer::VertexBuffer::Create(vertices, sizeof(vertices));
-	DAGGer::BufferLayout layout = {
-		{ DAGGer::ShaderDataType::Float3, "a_Position" },
-		{ DAGGer::ShaderDataType::Float4, "a_Color" }
+	RAPIER::Ref<RAPIER::VertexBuffer> vertexBuffer = RAPIER::VertexBuffer::Create(vertices, sizeof(vertices));
+	RAPIER::BufferLayout layout = {
+		{ RAPIER::ShaderDataType::Float3, "a_Position" },
+		{ RAPIER::ShaderDataType::Float4, "a_Color" }
 	};
 	vertexBuffer->SetLayout(layout);
 	m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 	uint32_t indices[3] = { 0, 1, 2 };
-	DAGGer::Ref<DAGGer::IndexBuffer> indexBuffer = DAGGer::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+	RAPIER::Ref<RAPIER::IndexBuffer> indexBuffer = RAPIER::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 	m_VertexArray->AddIndexBuffer(indexBuffer);
 
-	m_SquareVA = DAGGer::VertexArray::Create();
+	m_SquareVA = RAPIER::VertexArray::Create();
 
 	float squareVertices[5 * 4] = {
 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -37,15 +37,15 @@ ExampleLayer::ExampleLayer()
 		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 	};
 
-	DAGGer::Ref<DAGGer::VertexBuffer> squareVB = DAGGer::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+	RAPIER::Ref<RAPIER::VertexBuffer> squareVB = RAPIER::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 	squareVB->SetLayout({
-		{ DAGGer::ShaderDataType::Float3, "a_Position" },
-		{ DAGGer::ShaderDataType::Float2, "a_TexCoord" }
+		{ RAPIER::ShaderDataType::Float3, "a_Position" },
+		{ RAPIER::ShaderDataType::Float2, "a_TexCoord" }
 		});
 	m_SquareVA->AddVertexBuffer(squareVB);
 
 	uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-	DAGGer::Ref<DAGGer::IndexBuffer> squareIB = DAGGer::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+	RAPIER::Ref<RAPIER::IndexBuffer> squareIB = RAPIER::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 	m_SquareVA->AddIndexBuffer(squareIB);
 
 	std::string vertexSrc = R"(
@@ -78,7 +78,7 @@ ExampleLayer::ExampleLayer()
 			}
 		)";
 
-	m_Shader = DAGGer::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
+	m_Shader = RAPIER::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
 	std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -107,12 +107,12 @@ ExampleLayer::ExampleLayer()
 			}
 		)";
 
-	m_FlatColorShader = DAGGer::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+	m_FlatColorShader = RAPIER::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
 	auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
-	m_Texture = DAGGer::Texture2D::Create("assets/textures/Checkerboard.png");
-	m_ChernoLogoTexture = DAGGer::Texture2D::Create("assets/textures/ChernoLogo.png");
+	m_Texture = RAPIER::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_ChernoLogoTexture = RAPIER::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 	textureShader->Bind();
 	textureShader->SetInt("u_Texture", 0);
@@ -126,16 +126,16 @@ void ExampleLayer::OnDetach()
 {
 }
 
-void ExampleLayer::OnUpdate(DAGGer::Timestep ts)
+void ExampleLayer::OnUpdate(RAPIER::Timestep ts)
 {
 	// Update
 	m_CameraController.OnUpdate(ts);
 
 	// Render
-	DAGGer::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-	DAGGer::RenderCommand::Clear();
+	RAPIER::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+	RAPIER::RenderCommand::Clear();
 
-	DAGGer::Renderer::BeginScene(m_CameraController.GetCamera());
+	RAPIER::Renderer::BeginScene(m_CameraController.GetCamera());
 
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -148,21 +148,21 @@ void ExampleLayer::OnUpdate(DAGGer::Timestep ts)
 		{
 			glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-			DAGGer::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
+			RAPIER::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
 		}
 	}
 
 	auto textureShader = m_ShaderLibrary.Get("Texture");
 
 	m_Texture->Bind();
-	DAGGer::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+	RAPIER::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 	m_ChernoLogoTexture->Bind();
-	DAGGer::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+	RAPIER::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 	// Triangle
-	// DAGGer::Renderer::Submit(m_Shader, m_VertexArray);
+	// RAPIER::Renderer::Submit(m_Shader, m_VertexArray);
 
-	DAGGer::Renderer::EndScene();
+	RAPIER::Renderer::EndScene();
 }
 
 void ExampleLayer::OnImGuiRender()
@@ -172,7 +172,7 @@ void ExampleLayer::OnImGuiRender()
 	ImGui::End();
 }
 
-void ExampleLayer::OnEvent(DAGGer::Event& e)
+void ExampleLayer::OnEvent(RAPIER::Event& e)
 {
 	m_CameraController.OnEvent(e);
 }

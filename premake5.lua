@@ -1,7 +1,7 @@
 include "./vendor/premake/premake_customization/solution_items.lua"
 include "./config/dependencies.lua"
 
-workspace "DAGGer"
+workspace "RAPIER"
 	startproject "FORGE"
 
 	include "./config/configurations.lua"
@@ -44,13 +44,13 @@ workspace "DAGGer"
 	
 	group "Dependencies"
 		include "vendor/premake"
-		include "DAGGer/vendor/box2d"
-		include "DAGGer/vendor/glfw"
-		include "DAGGer/vendor/Glad"
-		include "DAGGer/vendor/imgui"
-		include "DAGGer/vendor/yaml-cpp"
+		include "RAPIER/vendor/box2d"
+		include "RAPIER/vendor/glfw"
+		include "RAPIER/vendor/Glad"
+		include "RAPIER/vendor/imgui"
+		include "RAPIER/vendor/yaml-cpp"
 	group ""
 
-	include "DAGGer"
+	include "RAPIER"
 	include "Sandbox"
 	include "FORGE"
