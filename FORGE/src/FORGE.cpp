@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "conf/Fe_VER.h" // contains FORGE_BUILD_ID
+#include "conf/FE_VER.h" // contains FORGE_BUILD_ID
 
 namespace RAPIER
 {

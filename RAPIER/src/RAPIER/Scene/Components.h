@@ -4,19 +4,39 @@
 #include "RAPIER/Scene/SceneCamera.h"
 #include "RAPIER/Renderer/Texture.h"
 
+#include "RAPIER/Script/ScriptModuleField.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
-/*	When adding a new component:
+/*	When adding a new component: TODO: make this not stupid
 * Add here
 * Update SceneHierarchyPanel
 * Update SceneSerializer
 * Update Scene::OnComponentAdded
 * Add to Scene::DuplicateEntity
 * Add to Scene::CopyTo
+* 
+* Add to Script::ScriptEngineRegistry.cpp
+* Add to Script::ScriptWrappers.h/.cpp
+*/
+
+/* COMPONENTS
+IDComponent
+TagComponent
+RelationshipComponent
+TransformComponent
+SpriteRendererComponent
+CircleRendererComponent
+CameraComponent
+NativeScriptComponent
+ScriptComponent
+RigidBody2DComponent
+BoxCollider2DComponent
+CircleCollider2DComponent
 */
 
 namespace RAPIER
@@ -128,6 +148,7 @@ namespace RAPIER
 	struct ScriptComponent
 	{
 		std::string ModuleName;
+		ScriptModuleFieldMap ModuleFieldMap;
 
 		ScriptComponent() = default;
 		ScriptComponent(const ScriptComponent& other) = default;
@@ -160,7 +181,7 @@ namespace RAPIER
 		float Density = 1.0f;
 		float Friction = 0.5f;
 		float Restitution = 0.0f;
-		float RestitutionThreshold = 0.5f; // Threshhold when objects stop bouncing
+		float RestitutionThreshold = 0.5f; // Threshold when objects stop bouncing
 
 		//	Storage for runtime
 		void* RuntimeFixture = nullptr;
@@ -177,7 +198,7 @@ namespace RAPIER
 		float Density = 1.0f;
 		float Friction = 1.0f;
 		float Restitution = 0.0f;
-		float RestitutionThreshold = 0.5f; // Threshhold when objects stop bouncing
+		float RestitutionThreshold = 0.5f; // Threshold when objects stop bouncing
 
 		// Storage for runtime
 		void* RuntimeFixture = nullptr;

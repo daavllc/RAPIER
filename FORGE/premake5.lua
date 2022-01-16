@@ -12,7 +12,7 @@ project "FORGE"
 		"src/**.h",
 		"src/**.cpp",
 		
-		"%{IncludeDir.Config}/conf/Fe_VER.h"
+		"%{IncludeDir.Config}/conf/FE_VER.h"
 	}
 	
 	includedirs
@@ -51,15 +51,26 @@ project "FORGE"
 
 		postbuildcommands
 		{
-			"{COPYDIR} \"%{LibraryDir.VulkanSDK_DebugDLL}\" \"%{cfg.targetdir}\""
+			'{COPYDIR} "%{LibraryDir.VulkanSDK_DebugDLL}" "%{cfg.targetdir}"',
+			'{COPY} "../RAPIER/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
 		}
 
 	filter "configurations:Release"	--	RELEASE
 		defines "RP_RELEASE"
 		runtime "Release"
 		optimize "on"
+
+		postbuildcommands
+		{
+			'{COPY} "../RAPIER/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+		}
 		
 	filter "configurations:Distribution"	--	DISTRIBUTION
 		defines "RP_DISTRIBUTION"
 		runtime "Release"
 		optimize "on"
+
+		postbuildcommands
+		{
+			'{COPY} "../RAPIER/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+		}

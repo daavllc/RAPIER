@@ -49,6 +49,7 @@ project "RAPIER"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.mono}",
 
 		"%{IncludeDir.choc}",
 
@@ -63,6 +64,9 @@ project "RAPIER"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+
+		"%{Library.mono}",
+
 		"opengl32.lib"
 	}
 	

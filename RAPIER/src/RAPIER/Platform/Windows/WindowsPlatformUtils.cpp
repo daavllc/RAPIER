@@ -1,5 +1,5 @@
 #include "rppch.h"
-#include "RAPIER/Utils/PlatformUtils.h"
+#include "RAPIER/Utilities/PlatformUtils.h"
 
 #include <commdlg.h>
 #include <GLFW/glfw3.h>

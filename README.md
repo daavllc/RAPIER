@@ -23,6 +23,7 @@ Provide the backbone for graphical projects to be built upon. Creating a render 
    - [yaml-cpp](https://github.com/jbeder/yaml-cpp) - Serialization
    - [VulkanSDK](https://www.lunarg.com/vulkan-sdk/) - Shader compilation
    - [glad](https://glad.dav1d.de/) - OpenGL bindings
+   - [mono](https://github.com/mono/mono) - C# bindings
 
 ----
 

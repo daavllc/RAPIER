@@ -17,6 +17,7 @@ IncludeDir["shaderc"]     = "%{wks.location}/RAPIER/vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "%{wks.location}/RAPIER/vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"]   = "%{VULKAN_SDK}/Include"
 IncludeDir["choc"]        = "%{wks.location}/RAPIER/vendor/choc"
+IncludeDir["mono"]        = "%{wks.location}/RAPIER/vendor/mono/include"
 
 IncludeDir["Config"]      = "%{wks.location}/config/include"
 IncludeDir["DAALS"]       = "%{wks.location}/RAPIER/vendor/DAALS/include"
@@ -39,3 +40,5 @@ Library["SPIRV_Tools_Debug"]        = "%{LibraryDir.VulkanSDK_Debug}/SPIRV-Tools
 Library["ShaderC_Release"]          = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 Library["SPIRV_Cross_Release"]      = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+
+Library["mono"]                     = "%{wks.location}/RAPIER/vendor/mono/lib/Release/mono-2.0-sgen.lib"

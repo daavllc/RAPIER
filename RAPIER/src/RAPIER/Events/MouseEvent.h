@@ -1,7 +1,9 @@
 #pragma once
 
 #include "RAPIER/Events/Event.h"
-#include "RAPIER/Core/Input.h"
+#include "RAPIER/Core/MouseCodes.h"
+
+#include <sstream>
 
 namespace RAPIER
 {
@@ -22,7 +24,7 @@ namespace RAPIER
 		}
 
 		EVENT_CLASS_TYPE(MouseMoved)
-			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
 	private:
 		float m_MouseX, m_MouseY;
 	};
@@ -44,7 +46,7 @@ namespace RAPIER
 		}
 
 		EVENT_CLASS_TYPE(MouseScrolled)
-			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
 		float m_XOffset, m_YOffset;
 	};

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "RAPIER/Events/Event.h"
-#include "RAPIER/Core/Input.h"
+#include "RAPIER/Core/KeyCodes.h"
+
+#include <sstream>
 
 namespace RAPIER
 {
