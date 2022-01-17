@@ -17,3 +17,6 @@
 [submodule "RAPIER/vendor/box2d"]
 	path = RAPIER/vendor/box2d
 	url = https://github.com/anonoei/box2d
+[submodule "RAPIER/vendor/optick"]
+	path = RAPIER/vendor/optick
+	url = https://github.com/anonoei/optick.git
