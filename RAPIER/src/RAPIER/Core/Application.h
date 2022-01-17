@@ -1,14 +1,14 @@
 #pragma once
 
 #include "RAPIER/Core/Base.h"
-
+#include "RAPIER/Core/Timestep.h"
+#include "RAPIER/Core/Timer.h"
 #include "RAPIER/Core/Window.h"
 #include "RAPIER/Core/LayerStack.h"
+
 #include "RAPIER/Core/Events/Event.h"
 #include "RAPIER/Core/Events/ApplicationEvent.h"
 
-#include "RAPIER/Core/Timestep.h"
-#include "RAPIER/Core/Timer.h"
 
 #include "RAPIER/ImGui/ImGuiLayer.h"
 
@@ -20,13 +20,13 @@ namespace RAPIER
 	{
 		std::string Name = "RAPIER Application";
 		uint32_t WindowWidth = 1600, WindowHeight = 900;
+		bool Decorations = true;
 		bool Fullscreen = false;
 		bool VSync = true;
-		std::string WorkingDirectory;
 		bool StartMaximized = true;
 		bool Resizeable = true;
-		bool Decorations = true;
 		bool EnableImGui = true;
+		std::string WorkingDirectory;
 	};
 	struct ApplicationCommandLineArgs
 	{
@@ -44,6 +44,11 @@ namespace RAPIER
 	public:
 		Application(const ApplicationSpecification& specification, ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
+		void Close();
+
+		virtual void OnInit() {}
+		virtual void OnShutdown() {}
+		virtual void OnUpdate(Timestep ts) {}
 
 		void OnEvent(Event& e);
 
@@ -53,15 +58,13 @@ namespace RAPIER
 		void PopOverlay(Layer* layer);
 		void RenderImGui();
 
+		std::string OpenFile(const char* filter = "All\0*.*\0") const;
+		std::string OpenFolder(const char* initialFolder = "") const;
+		std::string SaveFile(const char* filter = "All\0*.*\0") const;
+
 		inline void SetShowStats(bool show) { m_ShowStats = show; }
 
 		inline Window& GetWindow() { return *m_Window; }
-
-		void Close();
-
-		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
-
-		//void SetShowStats(bool show) { m_ShowStats = show; }
 
 		static inline Application& Get() { return *s_Instance; }
 
@@ -73,6 +76,8 @@ namespace RAPIER
 		inline ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 
 		inline PerformanceProfiler* GetPerformanceProfiler() { return m_Profiler; }
+
+		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 	private:
 		void Run();
 		bool OnWindowClose(WindowCloseEvent& e);
@@ -84,10 +89,12 @@ namespace RAPIER
 		bool m_Running = true, m_Minimized = false;
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
-		PerformanceProfiler* m_Profiler = nullptr;
-		bool m_ShowStats = true;
+
 		Timestep m_Timestep = 0.0f;
 		float m_LastFrameTime = 0.0f;
+		PerformanceProfiler* m_Profiler = nullptr;
+		bool m_ShowStats = true;
+
 		bool m_EnableVSync = true;
 	private:
 		static Application* s_Instance;

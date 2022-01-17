@@ -38,7 +38,7 @@ namespace RAPIER
 		~FORGE()
 		{
 		}
-	};	//	END class Sandbox
+	};	//	END class FORGE
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{

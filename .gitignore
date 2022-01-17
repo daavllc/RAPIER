@@ -1,6 +1,7 @@
 # Binaries
 bin/
 bin-int/
+POMMEL/obj/
 __pycache__/
 
 # RAPIER files
@@ -17,5 +18,4 @@ __pycache__/
 # Directories
 RAPIER/vendor/VulkanSDK
 FORGE/assets/cache
-scripts/__pycache__
 vendor/premake/bin

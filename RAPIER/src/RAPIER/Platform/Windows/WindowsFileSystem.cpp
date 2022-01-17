@@ -1,6 +1,6 @@
 #include "rppch.h"
 #include "RAPIER/Utilities/FileSystem.h"
-#include "RAPIER/Asset/AssetManager.h"
+#include "RAPIER/Utilities/StringUtils.h"
 
 #include <Windows.h>
 #include <commdlg.h>
@@ -22,210 +22,106 @@ namespace RAPIER
 		s_Callback = callback;
 	}
 
-	bool FileSystem::CreateFolder(const std::string& filepath)
+	void FileSystem::SkipNextFileSystemChange()
 	{
-		BOOL created = CreateDirectoryA(filepath.c_str(), NULL);
-		if (!created)
+		s_IgnoreNextChange = true;
+	}
+
+	bool FileSystem::WriteBytes(const std::filesystem::path& filepath, const Buffer& buffer)
+	{
+		std::ofstream stream(filepath, std::ios::binary | std::ios::trunc);
+
+		if (!stream)
 		{
-			DWORD error = GetLastError();
-
-			if (error == ERROR_ALREADY_EXISTS)
-				RP_CORE_ERROR("{0} already exists!", filepath);
-
-			if (error == ERROR_PATH_NOT_FOUND)
-				RP_CORE_ERROR("{0}: One or more directories do not exist.", filepath);
-
+			stream.close();
 			return false;
 		}
+
+		stream.write((char*)buffer.Data, buffer.Size);
+		stream.close();
 
 		return true;
 	}
 
-	bool FileSystem::Exists(const std::string& filepath)
+	Buffer FileSystem::ReadBytes(const std::filesystem::path& filepath)
 	{
-		DWORD attribs = GetFileAttributesA(filepath.c_str());
+		Buffer buffer;
 
-		if (attribs == INVALID_FILE_ATTRIBUTES)
-			return false;
+		std::ifstream stream(filepath, std::ios::binary | std::ios::ate);
+		RP_CORE_ASSERT(stream);
 
-		return true;
+		std::streampos end = stream.tellg();
+		stream.seekg(0, std::ios::beg);
+		uint32_t size = end - stream.tellg();
+		RP_CORE_ASSERT(size != 0);
+
+		buffer.Allocate(size);
+		stream.read((char*)buffer.Data, buffer.Size);
+
+		return buffer;
 	}
 
-	std::string FileSystem::Rename(const std::string& filepath, const std::string& newName)
+	bool FileSystem::HasEnvironmentVariable(const std::string& key)
 	{
-		s_IgnoreNextChange = true;
-		std::filesystem::path p = filepath;
-		std::string newFilePath = p.parent_path().string() + "/" + newName + p.extension().string();
-		MoveFileA(filepath.c_str(), newFilePath.c_str());
-		s_IgnoreNextChange = false;
-		return newFilePath;
-	}
+		HKEY hKey;
+		LPCSTR keyPath = "Environment";
+		LSTATUS lOpenStatus = RegOpenKeyExA(HKEY_CURRENT_USER, keyPath, 0, KEY_ALL_ACCESS, &hKey);
 
-	bool FileSystem::MoveFile(const std::string& filepath, const std::string& dest)
-	{
-		s_IgnoreNextChange = true;
-		std::filesystem::path p = filepath;
-		std::string destFilePath = dest + "/" + p.filename().string();
-		BOOL result = MoveFileA(filepath.c_str(), destFilePath.c_str());
-		s_IgnoreNextChange = false;
-		return result != 0;
-	}
-
-	bool FileSystem::DeleteFile(const std::string& filepath)
-	{
-		s_IgnoreNextChange = true;
-		std::string fp = filepath;
-		fp.append(1, '\0');
-		SHFILEOPSTRUCTA file_op;
-		file_op.hwnd = NULL;
-		file_op.wFunc = FO_DELETE;
-		file_op.pFrom = fp.c_str();
-		file_op.pTo = "";
-		file_op.fFlags = FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT;
-		file_op.fAnyOperationsAborted = false;
-		file_op.hNameMappings = 0;
-		file_op.lpszProgressTitle = "";
-		int result = SHFileOperationA(&file_op);
-		s_IgnoreNextChange = false;
-		return result == 0;
-	}
-
-	void FileSystem::StartWatching()
-	{
-		DWORD threadId;
-		s_WatcherThread = CreateThread(NULL, 0, Watch, 0, 0, &threadId);
-		RP_CORE_ASSERT(s_WatcherThread != NULL);
-	}
-
-	void FileSystem::StopWatching()
-	{
-		s_Watching = false;
-		DWORD result = WaitForSingleObject(s_WatcherThread, 5000);
-		if (result == WAIT_TIMEOUT)
-			TerminateThread(s_WatcherThread, 0);
-		CloseHandle(s_WatcherThread);
-	}
-
-	static std::string wchar_to_string(wchar_t* input)
-	{
-		std::wstring string_input(input);
-		std::string converted(string_input.begin(), string_input.end());
-		return converted;
-	}
-
-	unsigned long FileSystem::Watch(void* param)
-	{
-		LPCWSTR	filepath = L"assets";
-		BYTE* buffer = new BYTE[10 * 1024]; // 1 MB
-		OVERLAPPED overlapped = { 0 };
-		HANDLE handle = NULL;
-		DWORD bytesReturned = 0;
-
-		handle = CreateFile(
-			filepath,
-			FILE_LIST_DIRECTORY,
-			FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-			NULL,
-			OPEN_EXISTING,
-			FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
-			NULL
-		);
-
-		ZeroMemory(&overlapped, sizeof(overlapped));
-
-		if (handle == INVALID_HANDLE_VALUE)
-			RP_CORE_ERROR("Unable to accquire directory handle: {0}", GetLastError());
-
-		overlapped.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-
-		if (overlapped.hEvent == NULL)
+		if (lOpenStatus == ERROR_SUCCESS)
 		{
-			RP_CORE_ERROR("CreateEvent failed!");
-			return 0;
+			lOpenStatus = RegQueryValueExA(hKey, key.c_str(), 0, NULL, NULL, NULL);
+			RegCloseKey(hKey);
 		}
 
-		while (s_Watching)
+		return lOpenStatus == ERROR_SUCCESS;
+	}
+
+	bool FileSystem::SetEnvironmentVariable(const std::string& key, const std::string& value)
+	{
+		HKEY hKey;
+		LPCSTR keyPath = "Environment";
+		DWORD createdNewKey;
+		LSTATUS lOpenStatus = RegCreateKeyExA(HKEY_CURRENT_USER, keyPath, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &createdNewKey);
+		if (lOpenStatus == ERROR_SUCCESS)
 		{
-			DWORD status = ReadDirectoryChangesW(
-				handle,
-				buffer,
-				10 * 1024 * sizeof(BYTE),
-				TRUE,
-				FILE_NOTIFY_CHANGE_CREATION | FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME,
-				&bytesReturned,
-				&overlapped,
-				NULL
-			);
+			LSTATUS lSetStatus = RegSetValueExA(hKey, key.c_str(), 0, REG_SZ, (LPBYTE)value.c_str(), value.length() + 1);
+			RegCloseKey(hKey);
 
-			if (!status)
-				RP_CORE_ERROR(GetLastError());
-
-			DWORD waitOperation = WaitForSingleObject(overlapped.hEvent, 5000);
-			if (waitOperation != WAIT_OBJECT_0)
-				continue;
-
-			if (s_IgnoreNextChange)
-				continue;
-
-			std::string oldName;
-			char fileName[MAX_PATH * 10] = "";
-
-			FILE_NOTIFY_INFORMATION* current = (FILE_NOTIFY_INFORMATION*)buffer;
-			for (;;)
+			if (lSetStatus == ERROR_SUCCESS)
 			{
-				ZeroMemory(fileName, sizeof(fileName));
-				WideCharToMultiByte(CP_ACP, 0, current->FileName, current->FileNameLength / sizeof(WCHAR), fileName, sizeof(fileName), NULL, NULL);
-				std::filesystem::path filepath = "assets/" + std::string(fileName);
-
-				FileSystemChangedEvent e;
-				e.FilePath = filepath.string();
-				e.NewName = filepath.filename().string();
-				e.OldName = filepath.filename().string();
-				e.IsDirectory = std::filesystem::is_directory(filepath);
-
-				switch (current->Action)
-				{
-				case FILE_ACTION_ADDED:
-				{
-					e.Action = FileSystemAction::Added;
-					s_Callback(e);
-					break;
-				}
-				case FILE_ACTION_REMOVED:
-				{
-					e.IsDirectory = AssetManager::IsDirectory(e.FilePath);
-					e.Action = FileSystemAction::Delete;
-					s_Callback(e);
-					break;
-				}
-				case FILE_ACTION_MODIFIED:
-				{
-					e.Action = FileSystemAction::Modified;
-					s_Callback(e);
-					break;
-				}
-				case FILE_ACTION_RENAMED_OLD_NAME:
-				{
-					oldName = filepath.filename().string();
-					break;
-				}
-				case FILE_ACTION_RENAMED_NEW_NAME:
-				{
-					e.OldName = oldName;
-					e.Action = FileSystemAction::Rename;
-					s_Callback(e);
-					break;
-				}
-				}
-
-				if (!current->NextEntryOffset)
-					break;
-
-				current += current->NextEntryOffset;
+				SendMessageTimeoutA(HWND_BROADCAST, WM_SETTINGCHANGE, 0, (LPARAM)"Environment", SMTO_BLOCK, 100, NULL);
+				return true;
 			}
 		}
 
-		return 0;
+		return false;
 	}
+
+	std::string FileSystem::GetEnvironmentVariable(const std::string& key)
+	{
+		HKEY hKey;
+		LPCSTR keyPath = "Environment";
+		DWORD createdNewKey;
+		LSTATUS lOpenStatus = RegCreateKeyExA(HKEY_CURRENT_USER, keyPath, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &createdNewKey);
+		if (lOpenStatus == ERROR_SUCCESS)
+		{
+			DWORD valueType;
+			char* data = new char[512];
+			DWORD dataSize = 512;
+			LSTATUS status = RegGetValueA(hKey, NULL, key.c_str(), RRF_RT_ANY, &valueType, (PVOID)data, &dataSize);
+
+			RegCloseKey(hKey);
+
+			if (status == ERROR_SUCCESS)
+			{
+				std::string result(data);
+				delete[] data;
+				return result;
+			}
+		}
+
+		return std::string{};
+	}
+
 
 }	//	END namespace RAPIER

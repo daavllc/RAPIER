@@ -1,13 +1,23 @@
 #pragma once
 
 #include "AssetSerializer.h"
+#include "RAPIER/Project/Project.h"
 #include "RAPIER/Utilities/FileSystem.h"
 #include "RAPIER/Utilities/StringUtils.h"
+
+#include "RAPIER/Debug/Profiler.h"
 
 #include <map>
 #include <unordered_map>
 
-namespace RAPIER {
+namespace RAPIER
+{
+	// Deserialized from project file - these are just defaults
+	class AssetManagerConfig
+	{
+		std::string AssetDirectory = "Assets/";
+		std::string AssetRegistryPath = "Assets/AssetRegistry.rpr";
+	};
 
 	class AssetTypes
 	{
@@ -23,79 +33,38 @@ namespace RAPIER {
 	class AssetManager
 	{
 	public:
-		using AssetsChangeEventFn = std::function<void()>;
+		using AssetsChangeEventFn = std::function<void(const std::vector<FileSystemChangedEvent>&)>;
 	public:
 		static void Init();
 		static void SetAssetChangeCallback(const AssetsChangeEventFn& callback);
 		static void Shutdown();
 
-		static std::vector<Ref<Asset>> GetAssetsInDirectory(AssetHandle directoryHandle);
-
-		static std::vector<Ref<Asset>> SearchFiles(const std::string& query, const std::string& searchPath);
-		static std::string GetParentPath(const std::string& path);
-
-		static bool IsDirectory(const std::string& filepath);
-
-		static AssetHandle GetAssetIDForFile(const std::string& filepath);
-		static bool IsAssetHandleValid(AssetHandle assetHandle);
-
-		static void Rename(Ref<Asset>& asset, const std::string& newName);
-		static void RemoveAsset(AssetHandle assetHandle);
-
-		template<typename T, typename... Args>
-		static Ref<T> CreateAsset(const std::string& filename, AssetType type, AssetHandle directoryHandle, Args&&... args)
-		{
-			static_assert(std::is_base_of<Asset, T>::value, "CreateAsset only works for types derived from Asset");
-
-			auto& directory = GetAsset<Directory>(directoryHandle);
-
-			Ref<T> asset = Ref<T>::Create(std::forward<Args>(args)...);
-			asset->Type = type;
-			asset->FilePath = directory->FilePath + "/" + filename;
-			asset->FileName = Utils::RemoveExtension(Utils::GetFilename(asset->FilePath));
-			asset->Extension = Utils::GetFilename(filename);
-			asset->ParentDirectory = directoryHandle;
-			asset->Handle = std::hash<std::string>()(asset->FilePath);
-			asset->IsDataLoaded = true;
-			s_LoadedAssets[asset->Handle] = asset;
-
-			AssetSerializer::SerializeAsset(asset);
-
-			return asset;
-		}
-
-		template<typename T>
-		static Ref<T> GetAsset(AssetHandle assetHandle)
-		{
-			RP_CORE_ASSERT(s_LoadedAssets.find(assetHandle) != s_LoadedAssets.end());
-			Ref<Asset> asset = s_LoadedAssets[assetHandle];
-
-			if (!asset->IsDataLoaded)
-				asset = AssetSerializer::LoadAssetData(asset);
-
-			return asset.As<T>();
-		}
-
-		static bool IsAssetType(AssetHandle assetHandle, AssetType type)
-		{
-			return s_LoadedAssets.find(assetHandle) != s_LoadedAssets.end() && s_LoadedAssets[assetHandle]->Type == type;
-		}
-
 		static std::string StripExtras(const std::string& filename);
+		static void OnImGuiRender(bool& open);
 	private:
-		static void ImportAsset(const std::string& filepath, AssetHandle parentHandle);
-		static void ConvertAsset(const std::string& assetPath, const std::string& conversionType);
-		static AssetHandle ProcessDirectory(const std::string& directoryPath, AssetHandle parentHandle);
+		static void LoadAssetRegistry();
+		static void ProcessDirectory(const std::filesystem::path& directoryPath);
 		static void ReloadAssets();
+		static void WriteRegistryToFile();
 
-		static void OnFileSystemChanged(FileSystemChangedEvent e);
+		//static AssetMetadata& GetMetadataInternal(AssetHandle handle);
 
-		static AssetHandle FindParentHandleInChildren(Ref<Directory>& dir, const std::string& dirName);
-		static AssetHandle FindParentHandle(const std::string& filepath);
+		static void OnFileSystemChanged(const std::vector<FileSystemChangedEvent>& events);
+		static void OnAssetRenamed(AssetHandle assetHandle, const std::filesystem::path& newFilePath);
+		static void OnAssetMoved(AssetHandle assetHandle, const std::filesystem::path& destinationPath);
+		static void OnAssetDeleted(AssetHandle assetHandle);
 
 	private:
 		static std::unordered_map<AssetHandle, Ref<Asset>> s_LoadedAssets;
+		static std::unordered_map<AssetHandle, Ref<Asset>> s_MemoryAssets;
 		static AssetsChangeEventFn s_AssetsChangeCallback;
+		//inline static AssetRegistry s_AssetRegistry;
+
+	private:
+		friend class ContentBrowserPanel;
+		friend class ContentBrowserAsset;
+		friend class ContentBrowserDirectory;
+
 	};
 
 }	//	END namespace RAPIER

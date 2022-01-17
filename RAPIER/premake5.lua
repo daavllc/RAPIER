@@ -13,6 +13,7 @@ project "RAPIER"
 	files
 	{
 		"src/**.h",
+		"src/**.hpp",
 		"src/**.cpp",
 
 		"%{IncludeDir.stb_image}/**.h",
@@ -25,6 +26,12 @@ project "RAPIER"
 		"%{IncludeDir.ImGuizmo}/**.cpp",
 		
 		"%{IncludeDir.Config}/conf/RP_VER.h"
+	}
+	
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",	--	For ImGui
+		"GLFW_INCLUDE_NONE"
 	}
 
 	includedirs
@@ -45,6 +52,7 @@ project "RAPIER"
 		"%{IncludeDir.VulkanSDK}",
 		"%{IncludeDir.mono}",
 		"%{IncludeDir.miniaudio}",
+
 		"%{IncludeDir.optick}",
 
 		"%{IncludeDir.choc}",
@@ -55,22 +63,16 @@ project "RAPIER"
 
 	links
 	{
+		"Box2D",
 		"GLFW",
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"Box2D",
 		"optick",
 
 		"%{Library.mono}",
 
 		"opengl32.lib"
-	}
-
-	defines
-	{
-		"_CRT_SECURE_NO_WARNINGS",	--	For ImGui
-		"GLFW_INCLUDE_NONE"
 	}
 	
 	filter "files:vendor/ImGuizmo/**.cpp"
@@ -79,26 +81,11 @@ project "RAPIER"
 	filter {"system:windows"}			--	WINDOWS
 		systemversion "latest"
 
-		defines
-		{
-			"RP_COMPILE_WINDOWS"
-		}
-
 	filter {"system:linux"}				--	LINUX
 		systemversion "latest"
 
-		defines
-		{
-			"RP_COMPILE_LINUX"
-		}
-
 	filter {"system:macosx"}			--	MACOS
 		systemversion "latest"
-
-		defines
-		{
-			"RP_COMPILE_MACOS"
-		}
 
 	filter "configurations:Debug"	--	DEBUG
 		defines "RP_DEBUG"
@@ -109,8 +96,7 @@ project "RAPIER"
 		{
 			"%{Library.ShaderC_Debug}",
 			"%{Library.SPIRV_Cross_Debug}",
-			"%{Library.SPIRV_Cross_GLSL_Debug}",
-			"%{Library.SPIRV_Tools_Debug}"
+			"%{Library.SPIRV_Cross_GLSL_Debug}"
 		}
 		
 	filter "configurations:Release"	--	RELEASE

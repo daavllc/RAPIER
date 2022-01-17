@@ -24,8 +24,6 @@ Provide the backbone for graphical projects to be built upon. Creating a render 
    - [VulkanSDK](https://www.lunarg.com/vulkan-sdk/) - Shader compilation
    - [glad](https://glad.dav1d.de/) - OpenGL bindings
    - [mono](https://github.com/mono/mono) - C# bindings
-   - [miniaudio](https://github.com/mackron/miniaudio) - Audio backend
-   - [optick](https://github.com/bombomby/optick) - Profiling
 
 ----
 
@@ -65,10 +63,6 @@ Provide the backbone for graphical projects to be built upon. Creating a render 
    - [ ] Vulkan
    - [X] OpenGL
 
-## POMMEL
-The Painless Open Method Manipulation Equivocal Loader (POMMEL), is RAPIER's scripting backend, and enables importing C# scripts without re-compiling. A pommel provides the counter-balance on the sword you weild, and in this case provides the balance between the difficult to update on the fly C++, and C#.
-## FORGE
-The Fast Open Relaiable Graphical Editor (FORGE), is RAPIER's graphical editor. A forge can be used to heat metal and conform it to your will, and in this case it lets you more easily conform RAPIER to complete the project you're working on.
 ## Installation
 There are currently no releases, so you must download and compile from source. Check the `Contributing` section for instructions.
 ## Contributing

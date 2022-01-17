@@ -1,6 +1,8 @@
 #pragma once
 
 #include "RAPIER.h"
+#include "RAPIER/Project/UserPreferences.h"
+
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
 
@@ -46,6 +48,8 @@ namespace RAPIER
 		void UI_Toolbar();
 		void Titlebar();
 	private:
+		Ref<UserPreferences> m_UserPreferences;
+
 		float m_Time = 0.0f;
 		int m_FrameCount = 0;
 		float m_AverageFrameTime = 0.0f;
