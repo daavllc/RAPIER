@@ -3,6 +3,7 @@
 #include "RAPIER/Core/PlatformDetection.h"
 
 #ifdef RP_PLATFORM_WINDOWS
+	#include <Windows.h>
 	#ifndef NOMINMAX
 		// See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
 		#define NOMINMAX
@@ -24,11 +25,6 @@
 #include <unordered_set>
 
 #include "RAPIER/Core/Base.h"
-
 #include "RAPIER/Core/Log.h"
 
-#include "RAPIER/Debug/Instrumentor.h"
-
-#ifdef RP_PLATFORM_WINDOWS
-	#include <Windows.h>
-#endif
+#include "RAPIER/Debug/Profiler.h"

@@ -18,6 +18,8 @@ IncludeDir["SPIRV_Cross"] = "%{wks.location}/RAPIER/vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"]   = "%{VULKAN_SDK}/Include"
 IncludeDir["choc"]        = "%{wks.location}/RAPIER/vendor/choc"
 IncludeDir["mono"]        = "%{wks.location}/RAPIER/vendor/mono/include"
+IncludeDir["miniaudio"]   = "%{wks.location}/RAPIER/vendor/miniaudio/include"
+IncludeDir["optick"]   = "%{wks.location}/RAPIER/vendor/optick/src"
 
 IncludeDir["Config"]      = "%{wks.location}/config/include"
 IncludeDir["DAALS"]       = "%{wks.location}/RAPIER/vendor/DAALS/include"

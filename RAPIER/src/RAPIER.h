@@ -9,18 +9,25 @@
 // Author: DAAV, LLC (https://github.com/daavofficial)
 //	License : MIT
 //	Language: C++17
-//	This file is used to access RAPIER functions from your application, include it!
+//	Include this file in your RAPIER application
 ///////////////////////////////////////////////////
 #pragma once
 
 #include "RAPIER/Core/Base.h"
+#include "RAPIER/Core/Assert.h"				//	Defines to RAPIER Asserts
+#include "RAPIER/Core/Log.h"				//	Class for accessing logging functions
 
 #include "RAPIER/Core/Application.h"		//	Abstracted class for applications
 #include "RAPIER/Core/Layer.h"				//	Class for managing layers
-#include "RAPIER/Core/Log.h"				//	Class for accessing logging functions
-#include "RAPIER/Core/Assert.h"				//	Defines to RAPIER Asserts
+#include "RAPIER/Core/Timestep.h"			//	Allows updates based on real time instead of frame time
+#include "RAPIER/Core/Timer.h"				//	Definition for timer
 
-#include "RAPIER/Core/Timestep.h"			//	Allows updates based of real time instead of frame time
+//  --------------  Event headers  --------------  //
+#include "RAPIER/Core/Events/Event.h"
+#include "RAPIER/Core/Events/ApplicationEvent.h"
+#include "RAPIER/Core/Events/KeyEvent.h"
+#include "RAPIER/Core/Events/MouseEvent.h"
+
 //  --------------  Input headers  --------------  //
 #include "RAPIER/Core/Input.h"				//	Main input header file 
 #include "RAPIER/Core/KeyCodes.h"			//	RAPIER Key Codes

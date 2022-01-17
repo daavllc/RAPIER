@@ -2,8 +2,8 @@
 
 #include "Camera.h"
 #include "RAPIER/Core/Timestep.h"
-#include "RAPIER/Events/Event.h"
-#include "RAPIER/Events/MouseEvent.h"
+#include "RAPIER/Core/Events/Event.h"
+#include "RAPIER/Core/Events/MouseEvent.h"
 
 #include <glm/glm.hpp>
 

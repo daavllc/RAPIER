@@ -107,7 +107,7 @@ namespace RAPIER
 	OpenGLFrameBuffer::OpenGLFrameBuffer(const FramebufferSpecification& spec)
 		: m_Specification(spec)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		for (auto spec : m_Specification.Attachments.Attachments)
 		{
@@ -121,7 +121,7 @@ namespace RAPIER
 	}
 	OpenGLFrameBuffer::~OpenGLFrameBuffer()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glDeleteFramebuffers(1, &m_RendererID);
 		glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
@@ -130,7 +130,7 @@ namespace RAPIER
 
 	void OpenGLFrameBuffer::Invalidate()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		if (m_RendererID)
 		{
@@ -202,21 +202,21 @@ namespace RAPIER
 
 	void OpenGLFrameBuffer::Bind()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 		glViewport(0, 0, m_Specification.Width, m_Specification.Height);
 	}
 	void OpenGLFrameBuffer::Unbind()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
 		{
@@ -232,7 +232,7 @@ namespace RAPIER
 
 	int OpenGLFrameBuffer::ReadPixel(uint32_t attachmentIndex, int x, int y)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		RP_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "Invalid AttachmentIndex!");
 		glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
@@ -243,7 +243,7 @@ namespace RAPIER
 
 	void OpenGLFrameBuffer::ClearAttachment(uint32_t attachmentIndex, int value)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		RP_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "Invalid AttachmentIndex!");
 

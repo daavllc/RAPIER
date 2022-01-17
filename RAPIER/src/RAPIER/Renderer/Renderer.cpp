@@ -9,7 +9,7 @@ namespace RAPIER
 
 	void Renderer::Init()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		RenderCommand::Init();
 		SceneRenderer::Init();

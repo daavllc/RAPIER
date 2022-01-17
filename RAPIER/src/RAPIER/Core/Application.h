@@ -4,8 +4,8 @@
 
 #include "RAPIER/Core/Window.h"
 #include "RAPIER/Core/LayerStack.h"
-#include "RAPIER/Events/Event.h"
-#include "RAPIER/Events/ApplicationEvent.h"
+#include "RAPIER/Core/Events/Event.h"
+#include "RAPIER/Core/Events/ApplicationEvent.h"
 
 #include "RAPIER/Core/Timestep.h"
 #include "RAPIER/Core/Timer.h"

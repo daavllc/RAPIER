@@ -13,7 +13,7 @@ namespace RAPIER
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		if (Input::IsKeyPressed(RP_KEY_A))
 			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
@@ -41,7 +41,7 @@ namespace RAPIER
 	}
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(RP_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
@@ -50,7 +50,7 @@ namespace RAPIER
 
 	void OrthographicCameraController::CalculateView()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
 		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
@@ -64,7 +64,7 @@ namespace RAPIER
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
@@ -73,7 +73,7 @@ namespace RAPIER
 	}
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 		return false;

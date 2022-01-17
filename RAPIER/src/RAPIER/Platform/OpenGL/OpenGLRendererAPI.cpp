@@ -29,7 +29,7 @@ namespace RAPIER
 
 	void OpenGLRendererAPI::Init()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		#ifdef RP_DEBUG
 			glEnable(GL_DEBUG_OUTPUT);

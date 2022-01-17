@@ -35,7 +35,7 @@ namespace RAPIER
 
 	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		RP_CORE_ASSERT(!Exists(name), "Shader already exists!");
 		m_Shaders[name] = shader;
@@ -43,7 +43,7 @@ namespace RAPIER
 
 	void ShaderLibrary::Add(const Ref<Shader>& shader)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		auto& name = shader->GetName();
 		Add(name, shader);
@@ -51,7 +51,7 @@ namespace RAPIER
 
 	Ref<Shader> ShaderLibrary::Load(const std::string& filepath)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		auto shader = Shader::Create(filepath);
 		Add(shader);
@@ -59,7 +59,7 @@ namespace RAPIER
 	}
 	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		auto shader = Shader::Create(filepath);
 		Add(name, shader);
@@ -68,7 +68,7 @@ namespace RAPIER
 
 	const Ref<Shader> ShaderLibrary::Get(const std::string& name) const
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		RP_CORE_ASSERT(Exists(name), "Shader not found!");
 		return m_Shaders.at(name);
@@ -76,7 +76,7 @@ namespace RAPIER
 
 	bool ShaderLibrary::Exists(const std::string& name) const
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		return m_Shaders.find(name) != m_Shaders.end();
 	}

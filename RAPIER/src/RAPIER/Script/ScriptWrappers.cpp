@@ -6,7 +6,7 @@
 #include "RAPIER/Core/Application.h"
 #include "RAPIER/Script/ScriptEngine.h"
 
-#include "RAPIER/Debug/Instrumentor.h"
+#include "RAPIER/Debug/Profiler.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
@@ -290,25 +290,25 @@ namespace RAPIER::Script
 
 	void RAPIER_Log_LogMessage(LogLevel level, MonoString* message)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		char* msg = mono_string_to_utf8(message);
 		switch (level)
 		{
 		case LogLevel::Trace:
-			RP_CORE_TRACE(msg);
+			RP_CONSOLE_TRACE(msg);
 			break;
 		case LogLevel::Info:
-			RP_CORE_INFO(msg);
+			RP_CONSOLE_INFO(msg);
 			break;
 		case LogLevel::Warn:
-			RP_CORE_WARN(msg);
+			RP_CONSOLE_WARN(msg);
 			break;
 		case LogLevel::Error:
-			RP_CORE_ERROR(msg);
+			RP_CONSOLE_ERROR(msg);
 			break;
 		case LogLevel::Critical:
-			RP_CORE_CRITICAL(msg);
+			RP_CONSOLE_CRITICAL(msg);
 			break;
 		}
 

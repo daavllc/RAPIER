@@ -8,7 +8,7 @@ namespace RAPIER
 	// --------------- Vertex Buffer ---------------------------------------------------------
 	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -16,7 +16,7 @@ namespace RAPIER
 	}
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -25,28 +25,28 @@ namespace RAPIER
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Unbind() const
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
@@ -57,7 +57,7 @@ namespace RAPIER
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 		:m_Count(count)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glCreateBuffers(1, &m_RendererID);
 
@@ -69,21 +69,21 @@ namespace RAPIER
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Bind() const
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Unbind() const
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

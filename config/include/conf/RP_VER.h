@@ -1,1 +1,1 @@
-#define RAPIER_BUILD_ID "v0.3.3"
+#define RAPIER_BUILD_ID "v0.3.4"

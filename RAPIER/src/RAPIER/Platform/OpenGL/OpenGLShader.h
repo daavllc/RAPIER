@@ -46,6 +46,8 @@ namespace RAPIER
 		void CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shaderSources);
 		void CompileOrGetOpenGLBinaries();
 		void CreateProgram();
+		void CompileOpenGLBinariesForAMD(GLenum& program, std::array<uint32_t, 2>& glShadersIDs);
+		void CreateProgramAMD();
 		void Reflect(GLenum stage, const std::vector<uint32_t>& shaderData);
 	private:
 		uint32_t m_RendererID;

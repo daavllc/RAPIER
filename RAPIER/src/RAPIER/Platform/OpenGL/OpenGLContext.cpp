@@ -15,7 +15,7 @@ namespace RAPIER
 
 	void OpenGLContext::Init()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -29,7 +29,7 @@ namespace RAPIER
 
 	void OpenGLContext::SwapBuffers()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		glfwSwapBuffers(m_WindowHandle);
 	}

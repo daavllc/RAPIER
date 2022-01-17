@@ -1,9 +1,9 @@
 #include "rppch.h"
 #include "RAPIER/Platform/Windows/WindowsWindow.h"
 
-#include "RAPIER/Events/ApplicationEvent.h"
-#include "RAPIER/Events/KeyEvent.h"
-#include "RAPIER/Events/MouseEvent.h"
+#include "RAPIER/Core/Events/ApplicationEvent.h"
+#include "RAPIER/Core/Events/KeyEvent.h"
+#include "RAPIER/Core/Events/MouseEvent.h"
 
 #include "RAPIER/Renderer/Renderer.h"
 
@@ -26,21 +26,21 @@ namespace RAPIER
 	WindowsWindow::WindowsWindow(const WindowSpecification& specification)
 		: m_Specification(specification)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		Init(specification);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowSpecification& specification)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_Data.Title = m_Specification.Title;
 		m_Data.Width = m_Specification.Width;
@@ -52,14 +52,14 @@ namespace RAPIER
 
 		if (s_GLFWWindowCount == 0)
 		{
-			RP_PROFILE_SCOPE("glfwInit");
+			RP_PROFILE_FUNC("glfwInit");
 			int success = glfwInit();
 			RP_CORE_ASSERT(success, "Could not intialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
 		{
-			RP_PROFILE_SCOPE("glfwCreateWindow");
+			RP_PROFILE_FUNC("glfwCreateWindow");
 			#if defined(RP_DEBUG)
 				if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
 					glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
@@ -196,7 +196,7 @@ namespace RAPIER
 
 	void WindowsWindow::Shutdown()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		glfwDestroyWindow(m_Window);
 		--s_GLFWWindowCount;
@@ -216,7 +216,7 @@ namespace RAPIER
 
 	void WindowsWindow::OnUpdate()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		glfwPollEvents();
 		m_Context->SwapBuffers();
@@ -224,7 +224,7 @@ namespace RAPIER
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		if (enabled)
 			glfwSwapInterval(1);

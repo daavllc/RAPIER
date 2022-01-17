@@ -23,7 +23,7 @@ namespace RAPIER
 
 	void ImGuiLayer::OnAttach()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
@@ -63,7 +63,7 @@ namespace RAPIER
 
 	void ImGuiLayer::OnDetach()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -82,7 +82,7 @@ namespace RAPIER
 
 	void ImGuiLayer::Begin()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -92,7 +92,7 @@ namespace RAPIER
 
 	void ImGuiLayer::End()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
@@ -113,7 +113,7 @@ namespace RAPIER
 
 	void ImGuiLayer::SetDarkThemeColors()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		auto& style = ImGui::GetStyle().Colors;
 		style[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };

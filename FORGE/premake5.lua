@@ -25,6 +25,8 @@ project "FORGE"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.DAALS}",
+		"%{IncludeDir.miniaudio}",
+		"%{IncludeDir.optick}",
 
 		"%{IncludeDir.Config}",
 		"%{wks.location}"
@@ -38,11 +40,26 @@ project "FORGE"
 	filter {"system:windows"}			--	WINDOWS
 		systemversion "latest"
 
+		defines
+		{
+			"RP_COMPILE_WINDOWS"
+		}
+
 	filter {"system:linux"}				--	LINUX
 		systemversion "latest"
 
+		defines
+		{
+			"RP_COMPILE_LINUX"
+		}
+
 	filter {"system:macosx"}			--	MACOS
 		systemversion "latest"
+
+		defines
+		{
+			"RP_COMPILE_MACOS"
+		}
 
 	filter "configurations:Debug"	--	DEBUG
 		defines "RP_DEBUG"

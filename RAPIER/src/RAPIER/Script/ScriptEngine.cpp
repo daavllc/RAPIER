@@ -14,12 +14,12 @@
 #include "ScriptEngineRegistry.h"
 
 #include "RAPIER/Scene/Scene.h"
-#include "RAPIER/Debug/Instrumentor.h"
+#include "RAPIER/Debug/Profiler.h"
 
-#include <imgui/imgui.h>
+#include "imgui.h"
 
-namespace RAPIER
-{
+namespace RAPIER {
+
 	static MonoDomain* s_CurrentMonoDomain = nullptr;
 	static MonoDomain* s_NewMonoDomain = nullptr;
 	static std::string s_CoreAssemblyPath;
@@ -143,7 +143,7 @@ namespace RAPIER
 		RP_CORE_ASSERT(!s_CurrentMonoDomain, "Mono has already been initialised!");
 		mono_set_assemblies_path("mono/lib");
 		// mono_jit_set_trace_options("--verbose");
-		auto domain = mono_jit_init("Hazel");
+		auto domain = mono_jit_init("RAPIER");
 	}
 
 	static void ShutdownMono()
@@ -186,7 +186,7 @@ namespace RAPIER
 
 	static uint32_t Instantiate(EntityScriptClass& scriptClass)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		// NOTE(Peter): This likes to crash when the file system watcher detects a change in a prefab file, and it's probably because we're trying to call this from a different thread other than the main thread.
 		MonoObject* instance = mono_object_new(s_CurrentMonoDomain, scriptClass.Class);
@@ -237,7 +237,7 @@ namespace RAPIER
 			std::string message = GetStringProperty("Message", exceptionClass, pException);
 			std::string stackTrace = GetStringProperty("StackTrace", exceptionClass, pException);
 
-			RP_CORE_ERROR("{0}: {1}. Stack Trace: {2}", typeName, message, stackTrace);
+			RP_CONSOLE_ERROR("{0}: {1}. Stack Trace: {2}", typeName, message, stackTrace);
 
 			void* args[] = { pException };
 			MonoObject* result = mono_runtime_invoke(s_ExceptionMethod, nullptr, args, nullptr);
@@ -413,7 +413,7 @@ namespace RAPIER
 	{
 		return s_SceneContext;
 	}
-	
+
 	void ScriptEngine::CopyEntityScriptData(UUID dst, UUID src)
 	{
 		RP_CORE_ASSERT(s_EntityInstanceMap.find(dst) != s_EntityInstanceMap.end());
@@ -440,7 +440,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnCreateEntity(Entity entity)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnCreateMethod)
@@ -449,7 +449,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnUpdateEntity(Entity entity, Timestep ts)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		entityInstance.ScriptClass->FullName.c_str();
 		if (entityInstance.ScriptClass->OnUpdateMethod)
@@ -461,7 +461,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnPhysicsUpdateEntity(Entity entity, float fixedTimeStep)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnPhysicsUpdateMethod)
 		{
@@ -472,7 +472,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnCollision2DBegin(Entity entity, Entity other)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnCollision2DBeginMethod)
 		{
@@ -484,7 +484,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnCollision2DEnd(Entity entity, Entity other)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnCollision2DEndMethod)
 		{
@@ -496,7 +496,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnCollisionBegin(Entity entity, Entity other)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnCollisionBeginMethod)
 		{
@@ -508,7 +508,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnCollisionEnd(Entity entity, Entity other)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnCollisionEndMethod)
 		{
@@ -520,7 +520,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnTriggerBegin(Entity entity, Entity other)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnTriggerBeginMethod)
 		{
@@ -532,7 +532,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnTriggerEnd(Entity entity, Entity other)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnTriggerEndMethod)
 		{
@@ -544,7 +544,7 @@ namespace RAPIER
 
 	void ScriptEngine::OnJointBreak(Entity entity, const glm::vec3& linearForce, const glm::vec3& angularForce)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		EntityInstance& entityInstance = GetEntityInstanceData(entity.GetSceneUUID(), entity.GetUUID()).Instance;
 		if (entityInstance.ScriptClass->OnJointBreakMethod)
 		{
@@ -571,7 +571,7 @@ namespace RAPIER
 		}
 
 		MonoClass* clazz = mono_class_from_name(s_CoreAssemblyImage, namespaceName.c_str(), className.c_str());
-		RP_PROFILE_FUNCTION(clazz, "Could not find class!");
+		RP_CORE_ASSERT(clazz, "Could not find class!");
 		MonoObject* obj = mono_object_new(mono_domain_get(), clazz);
 
 		if (callConstructor)
@@ -630,7 +630,7 @@ namespace RAPIER
 
 	bool ScriptEngine::ModuleExists(const std::string& moduleName)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		if (!s_AppAssemblyImage) // No assembly loaded
 			return false;
@@ -663,7 +663,7 @@ namespace RAPIER
 		return name;
 	}
 
-	static FieldType GetRapierFieldType(MonoType* monoType)
+	static FieldType GetRAPIERFieldType(MonoType* monoType)
 	{
 		int type = mono_type_get_type(monoType);
 		switch (type)
@@ -693,7 +693,7 @@ namespace RAPIER
 
 	void ScriptEngine::InitScriptEntity(Entity entity)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		Scene* scene = entity.m_Scene;
 		UUID id = entity.GetComponent<IDComponent>().ID;
@@ -761,7 +761,7 @@ namespace RAPIER
 					continue;
 
 				MonoType* fieldType = mono_field_get_type(iter);
-				FieldType hazelFieldType = GetRapierFieldType(fieldType);
+				FieldType RAPIERFieldType = GetRAPIERFieldType(fieldType);
 
 				char* typeName = mono_type_get_name(fieldType);
 
@@ -774,13 +774,13 @@ namespace RAPIER
 					continue;
 				}
 
-				if (hazelFieldType == FieldType::None || hazelFieldType == FieldType::ClassReference)
+				if (RAPIERFieldType == FieldType::None || RAPIERFieldType == FieldType::ClassReference)
 					continue;
 
 				// TODO: Attributes
 				MonoCustomAttrInfo* attr = mono_custom_attrs_from_field(scriptClass.Class, iter);
 
-				PublicField field = { name, typeName, hazelFieldType };
+				PublicField field = { name, typeName, RAPIERFieldType };
 				field.m_MonoClassField = iter;
 				field.CopyStoredValueFromRuntime(entityInstance);
 				fieldMap.emplace(name, std::move(field));
@@ -835,7 +835,7 @@ namespace RAPIER
 				if (monoType == nullptr)
 					continue;
 
-				FieldType type = GetRapierFieldType(monoType);
+				FieldType type = GetRAPIERFieldType(monoType);
 				if (type == FieldType::ClassReference)
 					continue;
 
@@ -871,9 +871,10 @@ namespace RAPIER
 		}
 	}
 
+
 	void ScriptEngine::InstantiateEntityClass(Entity entity)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		Scene* scene = entity.m_Scene;
 		UUID id = entity.GetComponent<IDComponent>().ID;
@@ -920,16 +921,16 @@ namespace RAPIER
 	{
 		switch (type)
 		{
-			case FieldType::Bool:		 return 1;
-			case FieldType::Float:       return 4;
-			case FieldType::Int:         return 4;
-			case FieldType::UnsignedInt: return 4;
-			case FieldType::String:      return 8;
-			case FieldType::Vec2:        return 4 * 2;
-			case FieldType::Vec3:        return 4 * 3;
-			case FieldType::Vec4:        return 4 * 4;
-			case FieldType::Asset:       return 8;
-			case FieldType::Entity:		 return 8;
+		case FieldType::Bool:		 return 1;
+		case FieldType::Float:       return 4;
+		case FieldType::Int:         return 4;
+		case FieldType::UnsignedInt: return 4;
+		case FieldType::String:      return 8;
+		case FieldType::Vec2:        return 4 * 2;
+		case FieldType::Vec3:        return 4 * 3;
+		case FieldType::Vec4:        return 4 * 4;
+		case FieldType::Asset:       return 8;
+		case FieldType::Entity:		 return 8;
 		}
 		RP_CORE_ASSERT(false, "Unknown field type!");
 		return 0;
@@ -1277,4 +1278,5 @@ namespace RAPIER
 	}
 
 	std::unordered_map<std::string, std::string> ScriptEngine::s_PublicFieldStringValue;
+
 }

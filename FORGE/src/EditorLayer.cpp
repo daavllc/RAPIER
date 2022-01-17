@@ -32,7 +32,7 @@ namespace RAPIER
 
 	void EditorLayer::OnAttach()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_IconPlay = Texture2D::Create("Resources/Icons/PlayButton.png");
 		m_IconPause = Texture2D::Create("Resources/Icons/PauseButton.png");
@@ -67,12 +67,12 @@ namespace RAPIER
 
 	void EditorLayer::OnDetach()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_Time = m_Time + (float)ts.GetMilliseconds();
 		m_FrameCount += 1;
@@ -144,7 +144,7 @@ namespace RAPIER
 	}
 	void EditorLayer::OnImGuiRender()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;

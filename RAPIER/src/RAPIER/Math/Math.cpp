@@ -8,7 +8,7 @@ namespace RAPIER::Math
 {
 	bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		// From glm::decompose in matrix_decompose.inl
 

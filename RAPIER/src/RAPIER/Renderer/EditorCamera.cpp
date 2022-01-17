@@ -20,7 +20,7 @@ namespace RAPIER
 
 	void EditorCamera::UpdateProjection()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_AspectRatio = m_ViewportWidth / m_ViewportHeight;
 		m_Projection = glm::perspective(glm::radians(m_FOV), m_AspectRatio, m_NearClip, m_FarClip);
@@ -28,7 +28,7 @@ namespace RAPIER
 
 	void EditorCamera::UpdateView()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		// m_Yaw = m_Pitch = 0.0f; // Lock the camera's rotation
 		m_Position = CalculatePosition();
@@ -65,7 +65,7 @@ namespace RAPIER
 
 	void EditorCamera::OnUpdate(Timestep ts)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		if (Input::IsKeyPressed(Key::LeftAlt))
 		{

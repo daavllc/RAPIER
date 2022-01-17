@@ -8,7 +8,7 @@ namespace RAPIER
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
 		: m_Width(width), m_Height(height)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		GLenum internalFormat = GL_RGBA8, dataFormat = GL_RGBA;
 
@@ -29,13 +29,13 @@ namespace RAPIER
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 		: m_Path(path)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
 		stbi_uc* data = nullptr;
 		{
-			RP_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string&)");
+			RP_PROFILE_FUNC("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string&)");
 			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		}
 		
@@ -79,14 +79,14 @@ namespace RAPIER
 	}
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		glDeleteTextures(1, &m_RendererID);
 	}
 
 	void OpenGLTexture2D::SetData(void* data, uint32_t size)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		#ifdef RP_ENABLE_ASSERTS
 			uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
@@ -97,7 +97,7 @@ namespace RAPIER
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		glBindTextureUnit(slot, m_RendererID);
 	}

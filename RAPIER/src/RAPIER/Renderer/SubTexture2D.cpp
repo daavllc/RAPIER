@@ -6,7 +6,7 @@ namespace RAPIER
 	SubTexture2D::SubTexture2D(const Ref<Texture2D>& texture, const glm::vec2& min, const glm::vec2& max)
 		: m_Texture(texture)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		m_TexCoords[0] = { min.x, min.y };
 		m_TexCoords[1] = { max.x, min.y };
@@ -16,7 +16,7 @@ namespace RAPIER
 
 	Ref<SubTexture2D> SubTexture2D::CreateFromCoords(const Ref<Texture2D>& texture, const glm::vec2& coords, const glm::vec2& spriteSize)
 	{
-		RP_PROFILE_RENDERER_FUNCTION();
+		RP_PROFILE_RENDERER_FUNC();
 
 		uint32_t AddX = 1;
 		uint32_t AddY = spriteSize.y / spriteSize.x;

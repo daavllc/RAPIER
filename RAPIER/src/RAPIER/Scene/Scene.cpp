@@ -65,7 +65,7 @@ namespace RAPIER
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		// Update scripts
 		{
@@ -103,7 +103,7 @@ namespace RAPIER
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
 		{
-			RP_PROFILE_FUNCTION();
+			RP_PROFILE_FUNC();
 
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -121,7 +121,7 @@ namespace RAPIER
 
 		if (mainCamera)
 		{
-			RP_PROFILE_FUNCTION();
+			RP_PROFILE_FUNC();
 
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
@@ -152,7 +152,7 @@ namespace RAPIER
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		Renderer2D::BeginScene(camera);
 
@@ -259,7 +259,7 @@ namespace RAPIER
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
@@ -277,7 +277,7 @@ namespace RAPIER
 
 	Entity Scene::GetPrimaryCameraEntity()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		auto view = m_Registry.view<CameraComponent>();
 		for (auto entity : view)
@@ -309,7 +309,7 @@ namespace RAPIER
 
 	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<IDComponent>(uuid);

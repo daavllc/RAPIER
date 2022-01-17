@@ -1,6 +1,9 @@
 #pragma once
 
 #include <chrono>
+#include <unordered_map>
+
+#include "Log.h"
 
 namespace RAPIER
 {

@@ -173,7 +173,7 @@ namespace RAPIER
 	}
 	void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		RP_CORE_ASSERT(entity.HasComponent<IDComponent>(), "No ID Component");
 
 		out << YAML::BeginMap; // Entity
@@ -322,7 +322,7 @@ namespace RAPIER
 	//////////////////////////////////////////////////////////////////////////////
 	void SceneSerializer::Serialize(const std::string& filepath)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		YAML::Emitter out;
 		out << YAML::BeginMap;
@@ -347,7 +347,7 @@ namespace RAPIER
 	//////////////////////////////////////////////////////////////////////////////
 	void SceneSerializer::SerializeRuntime(const std::string& filepath)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		// Not implemented
 		RP_CORE_ASSERT(false);
 	}
@@ -356,7 +356,7 @@ namespace RAPIER
 	//////////////////////////////////////////////////////////////////////////////
 	bool SceneSerializer::Deserialize(const std::string& filepath)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		YAML::Node data;
 		try
@@ -494,7 +494,7 @@ namespace RAPIER
 	//////////////////////////////////////////////////////////////////////////////
 	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		// Not implemented
 		RP_CORE_ASSERT(false);

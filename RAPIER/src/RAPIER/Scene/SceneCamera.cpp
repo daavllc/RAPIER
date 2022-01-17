@@ -37,7 +37,7 @@ namespace RAPIER
 
 	void SceneCamera::RecalculateProjection()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		if (m_ProjectionType == ProjectionType::Perspective)
 		{

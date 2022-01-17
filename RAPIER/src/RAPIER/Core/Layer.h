@@ -2,7 +2,7 @@
 
 #include "RAPIER/Core/Base.h"
 #include "RAPIER/Core/Timestep.h"
-#include "RAPIER/Events/Event.h"
+#include "RAPIER/Core/Events/Event.h"
 
 namespace RAPIER
 {

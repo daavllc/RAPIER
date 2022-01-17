@@ -2,9 +2,9 @@
 
 #include "RAPIER/Core/Layer.h"
 
-#include "RAPIER/Events/KeyEvent.h"
-#include "RAPIER/Events/MouseEvent.h"
-#include "RAPIER/Events/ApplicationEvent.h"
+#include "RAPIER/Core/Events/KeyEvent.h"
+#include "RAPIER/Core/Events/MouseEvent.h"
+#include "RAPIER/Core/Events/ApplicationEvent.h"
 
 // ImGui uses OpenGL only
 

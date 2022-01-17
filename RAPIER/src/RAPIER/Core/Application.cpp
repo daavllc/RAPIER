@@ -8,6 +8,8 @@
 
 #include "RAPIER/Core/Input.h"
 
+#include "RAPIER/Script/ScriptEngine.h"
+
 #include <glfw/glfw3.h>
 #include <imgui/imgui.h>
 
@@ -22,7 +24,7 @@ namespace RAPIER
 	Application::Application(const ApplicationSpecification& specification, ApplicationCommandLineArgs args)
 		: m_Specification(specification), m_CommandLineArgs(args)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 		RP_CORE_ASSERT(!s_Instance, "Application already exists!");
 
 		s_Instance = this;
@@ -52,11 +54,13 @@ namespace RAPIER
 			m_ImGuiLayer = new ImGuiLayer();
 			PushOverlay(m_ImGuiLayer);
 		}
+
+		ScriptEngine::Init("Resources/Scripts/POMMEL.dll");
 	}
 
 	Application::~Application()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		for (Layer* layer : m_LayerStack)
 		{
@@ -65,6 +69,7 @@ namespace RAPIER
 		}
 
 		Renderer::Shutdown();
+		ScriptEngine::Shutdown();
 
 		delete m_Profiler;
 		m_Profiler = nullptr;
@@ -72,7 +77,7 @@ namespace RAPIER
 
 	void Application::PushLayer(Layer* layer)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
@@ -80,7 +85,7 @@ namespace RAPIER
 
 	void Application::PushOverlay(Layer* layer)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
@@ -142,11 +147,11 @@ namespace RAPIER
 
 	void Application::Run()
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		while (m_Running)
 		{
-			RP_PROFILE_SCOPE("RunLoop");
+			RP_PROFILE_FRAME("Mainthread");
 
 			float time = (float)glfwGetTime();
 			m_Timestep = time - m_LastFrameTime;
@@ -155,14 +160,14 @@ namespace RAPIER
 			if (!m_Minimized)
 			{
 				{
-					RP_PROFILE_SCOPE("LayerStack OnUpdate");
+					RP_SCOPE_PERF("LayerStack:OnUpdate");
 
 					for (Layer* layer : m_LayerStack)
 						layer->OnUpdate(m_Timestep);
 				}
 				if (m_Specification.EnableImGui)
 				{
-					RP_PROFILE_SCOPE("LayerStack OnImGuiRender");
+					RP_SCOPE_PERF("LayerStack:OnImGuiRender");
 					this->RenderImGui();
 					m_ImGuiLayer->End();
 				}
@@ -179,7 +184,7 @@ namespace RAPIER
 
 	void Application::OnEvent(Event& e)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(RP_BIND_EVENT_FN(Application::OnWindowClose));
@@ -201,7 +206,7 @@ namespace RAPIER
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		RP_PROFILE_FUNCTION();
+		RP_PROFILE_FUNC();
 
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{

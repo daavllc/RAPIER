@@ -19,9 +19,10 @@
 * Update Scene::OnComponentAdded
 * Add to Scene::DuplicateEntity
 * Add to Scene::CopyTo
-* 
-* Add to Script::ScriptEngineRegistry.cpp
-* Add to Script::ScriptWrappers.h/.cpp
+* To access from C#
+  * Add to Script::ScriptEngineRegistry.cpp
+  * Add to Script::ScriptWrappers.h/.cpp
+  * Add Implementation in Components.cs
 */
 
 /* COMPONENTS

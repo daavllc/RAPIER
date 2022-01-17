@@ -3,8 +3,8 @@
 #include <filesystem>
 
 #include "RAPIER/Renderer/Texture.h"
-#include "RAPIER/Events/Event.h"
-#include "RAPIER/Events/KeyEvent.h"
+#include "RAPIER/Core/Events/Event.h"
+#include "RAPIER/Core/Events/KeyEvent.h"
 
 #include <imgui/imgui.h>
 

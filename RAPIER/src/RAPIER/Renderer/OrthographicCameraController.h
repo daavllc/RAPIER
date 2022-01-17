@@ -3,8 +3,8 @@
 #include "RAPIER/Core/Timestep.h"
 #include "RAPIER/Renderer/OrthographicCamera.h"
 
-#include "RAPIER/Events/ApplicationEvent.h"
-#include "RAPIER/Events/MouseEvent.h"
+#include "RAPIER/Core/Events/ApplicationEvent.h"
+#include "RAPIER/Core/Events/MouseEvent.h"
 
 namespace RAPIER
 {

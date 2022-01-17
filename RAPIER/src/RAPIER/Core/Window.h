@@ -3,7 +3,7 @@
 #include "rppch.h"
 
 #include "RAPIER/Core/Base.h"
-#include "RAPIER/Events/Event.h"
+#include "RAPIER/Core/Events/Event.h"
 
 #include <functional>
 
